@@ -1,35 +1,25 @@
-html, body, #root {
-  height: 100%;
-}
 
 body {
   margin: 0;
+  background-color: #000;
   font-family: "Segoe UI", sans-serif;
   color: #fff;
-  background-color: #111;
 }
-
 .main-container {
   text-align: center;
   padding: 100px 20px;
-  background: rgba(0, 0, 0, 0.6);
-  min-height: 100vh;
 }
-
 .logo {
   width: 100px;
   margin-bottom: 20px;
 }
-
 .hero h1 {
   font-size: 3em;
   margin: 0;
 }
-
 .highlight {
   color: #f58220;
 }
-
 .subtitle {
   font-size: 1.2em;
   margin: 10px 0 30px;
@@ -37,7 +27,6 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
-
 .button-group button {
   margin: 10px;
   padding: 15px 30px;
@@ -47,12 +36,10 @@ body {
   border-radius: 6px;
   transition: background-color 0.3s;
 }
-
 .button-group button:hover {
   background-color: #f58220;
   color: #fff;
 }
-
 .google-btn {
   background-color: white;
   color: #333;

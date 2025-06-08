@@ -1,6 +1,8 @@
+
 import React from "react";
 import { signInWithPopup, GoogleAuthProvider, getAuth } from "firebase/auth";
-import "../App.css";
+import "../../src/App.css";
+import logo from "../assets/logo-foxorox.png";
 
 function Home() {
   const subscribe = (plan) => {
@@ -19,7 +21,7 @@ function Home() {
   const loginWithGoogle = () => {
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
-    signInWithPopup(auth, provider).catch((err) =>
+    signInWithPopup(auth, provider).catch(err =>
       alert("Login error: " + err.message)
     );
   };
@@ -27,10 +29,8 @@ function Home() {
   return (
     <div className="main-container">
       <header className="hero">
-        <img src="/logo-foxorox.png" alt="Foxorox Logo" className="logo" />
-        <h1>
-          Welcome to <span className="highlight">Foxorox</span>
-        </h1>
+        <img src={logo} alt="Foxorox Logo" className="logo" />
+        <h1>Welcome to <span className="highlight">Foxorox</span></h1>
         <p className="subtitle">
           AI-powered stock insights. Driven by 40+ years of trading experience.
         </p>

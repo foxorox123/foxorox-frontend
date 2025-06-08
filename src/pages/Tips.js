@@ -1,10 +1,12 @@
+
 import React from "react";
 
 function Tips() {
   return (
-    <div className="main-container">
+    <div style={{ padding: "40px", color: "#fff" }}>
       <h1>Trading Tips</h1>
-      <p>Here you will see all the market tips and analysis.</p>
+      <p>Tip: Always manage your risk!</p>
+      <img src="/tip-image-placeholder.png" alt="Tip Example" />
     </div>
   );
 }
