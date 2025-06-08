@@ -1,7 +1,7 @@
 import React from "react";
 import { signInWithPopup, GoogleAuthProvider, getAuth } from "firebase/auth";
 import "../App.css";
-import logo from "../assets/logo-foxorox.png";
+<img src="/logo-foxorox.png" alt="Foxorox Logo" />
 
 function Home() {
   const subscribe = (plan) => {
