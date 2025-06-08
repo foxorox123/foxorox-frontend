@@ -10,8 +10,11 @@ function AppRoutes() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (user) navigate("/tips");
-  }, [user]);
+  if (user) {
+    console.log("Zalogowano:", user);
+    navigate("/tips");
+  }
+}, [user]);
 
   return (
     <Routes>
