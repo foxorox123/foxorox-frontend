@@ -1,19 +1,10 @@
-// src/App.js
-import React, { useEffect, useState } from "react";
+
+import React from "react";
 import "./App.css";
-import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "./firebase-config";
 
 function App() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
-
   const subscribe = (plan) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
@@ -37,31 +28,11 @@ function App() {
       });
   };
 
-  const logout = () => {
-    signOut(auth).then(() => {
-      alert("Logged out");
-    });
-  };
-
   return (
     <div className="main-container">
       <header className="hero">
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          {user ? (
-            <button className="google-btn" onClick={logout}>
-              Sign out
-            </button>
-          ) : (
-            <button className="google-btn" onClick={loginWithGoogle}>
-              Sign in with Google
-            </button>
-          )}
-        </div>
-
         <img src="/logo-foxorox.png" alt="Foxorox Logo" className="logo" />
-        <h1>
-          Welcome to <span className="highlight">Foxorox</span>
-        </h1>
+        <h1>Welcome to <span className="highlight">Foxorox</span></h1>
         <p className="subtitle">
           AI-powered stock insights. Driven by 40+ years of trading experience.
         </p>
@@ -69,12 +40,9 @@ function App() {
           <button onClick={() => subscribe("basic_monthly")}>
             Subscribe – $79.99/month
           </button>
-
-          {user && (
-            <button onClick={() => alert("Trading tips coming soon...")}>
-              Go to Trading Tips
-            </button>
-          )}
+          <button className="google-btn" onClick={loginWithGoogle}>
+            Sign in with Google
+          </button>
         </div>
       </header>
     </div>
