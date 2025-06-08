@@ -1,10 +1,10 @@
 import React from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Tips from "./pages/Tips";
 import { useAuth } from "./AuthContext";
 
-function App() {
+function AppRoutes() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -17,6 +17,14 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/tips" element={<Tips />} />
     </Routes>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppRoutes />
+    </Router>
   );
 }
 
