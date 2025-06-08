@@ -11,6 +11,28 @@ body {
   padding: 100px 20px;
 }
 
+.auth-control {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+}
+
+.auth-button {
+  padding: 8px 14px;
+  background-color: white;
+  color: #333;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.auth-button:hover {
+  background-color: #f58220;
+  color: white;
+}
+
 .logo {
   width: 100px;
   margin-bottom: 20px;
