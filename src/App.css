@@ -1,14 +1,12 @@
-
 html, body, #root {
   height: 100%;
 }
 
 body {
   margin: 0;
-  background: url("/cyborg-fox-bg.jpg") no-repeat center center fixed;
-  background-size: cover;
   font-family: "Segoe UI", sans-serif;
   color: #fff;
+  background-color: #111;
 }
 
 .main-container {

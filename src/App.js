@@ -1,6 +1,5 @@
-// src/App.js
 import React from "react";
-import "./App.css"; // Dodaj stylizację
+import "./App.css";
 
 function App() {
   const subscribe = (plan) => {
@@ -17,7 +16,6 @@ function App() {
   };
 
   const loginWithGoogle = () => {
-    // TODO: Firebase Google Auth
     alert("Google login coming soon...");
   };
 
