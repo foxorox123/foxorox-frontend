@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { auth, provider, signInWithPopup, signOut } from "./firebase";
+// src/App.js
+import React from "react";
 import "./App.css";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "./firebase-config";
 
 function App() {
-  const [user, setUser] = useState(null);
-
   const subscribe = (plan) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
@@ -18,17 +18,14 @@ function App() {
       });
   };
 
-  const loginWithGoogle = async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      setUser(result.user);
-    } catch (err) {
-      console.error("Login failed:", err);
-    }
-  };
-
-  const logout = () => {
-    signOut(auth).then(() => setUser(null));
+  const loginWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        alert("Logged in as: " + result.user.email);
+      })
+      .catch((error) => {
+        alert("Login error: " + error.message);
+      });
   };
 
   return (
@@ -39,22 +36,14 @@ function App() {
         <p className="subtitle">
           AI-powered stock insights. Driven by 40+ years of trading experience.
         </p>
-
-        {user ? (
-          <>
-            <p>Hello, {user.displayName}</p>
-            <button onClick={logout}>Sign out</button>
-          </>
-        ) : (
-          <div className="button-group">
-            <button onClick={() => subscribe("basic_monthly")}>
-              Subscribe – $79.99/month
-            </button>
-            <button className="google-btn" onClick={loginWithGoogle}>
-              Sign in with Google
-            </button>
-          </div>
-        )}
+        <div className="button-group">
+          <button onClick={() => subscribe("basic_monthly")}>
+            Subscribe – $79.99/month
+          </button>
+          <button className="google-btn" onClick={loginWithGoogle}>
+            Sign in with Google
+          </button>
+        </div>
       </header>
     </div>
   );
