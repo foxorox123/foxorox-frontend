@@ -108,12 +108,19 @@ function App() {
 
       const plan = localStorage.getItem("selectedPlan");
       if (usr && plan) {
-        localStorage.removeItem("selectedPlan");
-        subscribe(plan);
+        if (usr.emailVerified) {
+          localStorage.removeItem("selectedPlan");
+          subscribe(plan);
+        } else {
+          alert("Please verify your email before proceeding to checkout.");
+        }
       }
     });
+
     return () => unsubscribe();
   }, []);
+}
+
 
   const subscribe = (plan) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
