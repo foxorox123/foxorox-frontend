@@ -57,7 +57,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
             <button onClick={() => navigate("/tips")}>
               📈 Go to Trading Tips
             </button>
-          )}s
+          )}
         </div>
       </header>
     </div>
