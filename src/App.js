@@ -11,7 +11,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
 
   useEffect(() => {
     if (user) {
-      navigate("/pages/tips");
+      navigate("/tips");
     }
   }, [user, navigate]);
 
