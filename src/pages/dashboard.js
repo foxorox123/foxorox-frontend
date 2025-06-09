@@ -2,15 +2,18 @@ import React, { useEffect } from "react";
 import "./Dashboard.css";
 
 function Dashboard({ user, logout }) {
-  const logs = [
-    { time: "2025-06-08 10:21", action: "Subscriptions activated (Global Yearly)" },
-    { time: "2025-06-05 08:10", action: "Logged in from Warsaw, Poland" },
+  const subscriptionType = "Global Yearly"; // Możesz też dynamicznie pobierać z backendu
+
+  const bullTips = [
+    "📈 AI suggests upward momentum in S&P 500.",
+    "🚀 Bullish breakout possible on WIG20.",
+    "📊 DAX 40 holding above support zone.",
   ];
 
-  const tips = [
-    "📈 AI indicates potential bullish reversal in S&P 500.",
-    "📉 Watch for resistance at 15,300 on NASDAQ – high volatility expected.",
-    "💡 Markov model signals neutral trend on DAX 40 this week.",
+  const bearTips = [
+    "📉 NASDAQ shows topping pattern.",
+    "⚠️ CAC 40 resistance at 7,800 – watch closely.",
+    "🔻 Bear divergence on FTSE 100 hourly chart.",
   ];
 
   useEffect(() => {
@@ -24,7 +27,6 @@ function Dashboard({ user, logout }) {
       locale: "en",
       width: "100%",
       height: "600",
-      largeChartUrl: "",
       isTransparent: false,
       showSymbolLogo: true,
       plotLineColorGrowing: "rgba(0, 255, 0, 1)",
@@ -42,7 +44,6 @@ function Dashboard({ user, logout }) {
             { s: "OANDA:SPX500USD", d: "S&P 500" },
             { s: "DJ:DJI", d: "Dow Jones" },
           ],
-          originalTitle: "America",
         },
         {
           title: "Europe",
@@ -51,7 +52,6 @@ function Dashboard({ user, logout }) {
             { s: "EURONEXT:PX1", d: "CAC 40" },
             { s: "LSE:UKX", d: "FTSE 100" },
           ],
-          originalTitle: "Europe",
         },
         {
           title: "EMEA",
@@ -60,7 +60,6 @@ function Dashboard({ user, logout }) {
             { s: "TADAWUL:TASI", d: "Tadawul All Share" },
             { s: "MOEX:IMOEX", d: "MOEX Russia" },
           ],
-          originalTitle: "EMEA",
         },
         {
           title: "Asia",
@@ -69,7 +68,6 @@ function Dashboard({ user, logout }) {
             { s: "HKEX:HSI", d: "Hang Seng" },
             { s: "SSE:000001", d: "Shanghai Composite" },
           ],
-          originalTitle: "Asia",
         },
       ],
     });
@@ -86,7 +84,12 @@ function Dashboard({ user, logout }) {
           <h1>📊 Foxorox Dashboard</h1>
         </div>
         <div className="right">
-          <span>{user.email}</span>
+          <div style={{ textAlign: "right" }}>
+            <strong>{user.email}</strong>
+            <div style={{ fontSize: "0.9em", color: "#ccc" }}>
+              Subscription: {subscriptionType}
+            </div>
+          </div>
           <button onClick={logout} className="logout-btn">Sign out</button>
         </div>
       </header>
@@ -97,25 +100,25 @@ function Dashboard({ user, logout }) {
           <div id="tradingview-widget" />
         </section>
 
-        <section className="activity-logs">
-          <h2>🧾 Activity Logs</h2>
-          <ul>
-            {logs.map((log, index) => (
-              <li key={index}>
-                <strong>{log.time}</strong>: {log.action}
-              </li>
-            ))}
-          </ul>
-        </section>
+        <div className="ai-tips-wrapper">
+          <section className="ai-tips">
+            <h2>📗 AI Tips for Bulls</h2>
+            <ul>
+              {bullTips.map((tip, index) => (
+                <li key={index}>{tip}</li>
+              ))}
+            </ul>
+          </section>
 
-        <section className="ai-tips">
-          <h2>💡 AI Tips</h2>
-          <ul>
-            {tips.map((tip, index) => (
-              <li key={index}>{tip}</li>
-            ))}
-          </ul>
-        </section>
+          <section className="ai-tips">
+            <h2>📕 AI Tips for Bears</h2>
+            <ul>
+              {bearTips.map((tip, index) => (
+                <li key={index}>{tip}</li>
+              ))}
+            </ul>
+          </section>
+        </div>
       </main>
     </div>
   );

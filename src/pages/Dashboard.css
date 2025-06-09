@@ -31,3 +31,29 @@
 h2 {
   margin-bottom: 10px;
 }
+
+.ai-tips-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.ai-tips {
+  flex: 1 1 45%;
+  background-color: #111;
+  border: 1px solid #f58220;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.ai-tips h2 {
+  color: #f58220;
+  margin-bottom: 10px;
+}
+
+.ai-tips ul {
+  list-style: none;
+  padding: 0;
+  color: #ccc;
+}
