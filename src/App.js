@@ -44,13 +44,13 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
             🟢 Basic Monthly – $79.99
           </button>
           <button onClick={() => subscribe("basic_yearly")}>
-            🔵 Basic Yearly – $499.99
+            🔵 Basic Yearly – $790.00
           </button>
           <button onClick={() => subscribe("global_monthly")}>
-            🟠 Global Monthly – $149.99
+            🟠 Global Monthly – $129.99
           </button>
           <button onClick={() => subscribe("global_yearly")}>
-            🔴 Global Yearly – $999.99
+            🔴 Global Yearly – $1290.00
           </button>
 
           {user && (
