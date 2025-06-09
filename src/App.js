@@ -119,8 +119,6 @@ function App() {
 
     return () => unsubscribe();
   }, []);
-}
-
 
   const subscribe = (plan) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
@@ -147,7 +145,7 @@ function App() {
     });
   };
 
-    return (
+  return (
     <Routes>
       <Route
         path="/"
