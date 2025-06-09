@@ -7,6 +7,7 @@ import Tips from "./pages/Tips";
 import Login from "./pages/Login";
 import PlansPage from "./pages/PlansPage";
 import { Navigate } from "react-router-dom";
+import Dashboard from .pages/Dashboard;
 
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
   const navigate = useNavigate();
@@ -17,7 +18,25 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
       navigate("/login");
       return;
     }
+    const isSubscribed = await checkSubscription(user.email);
+  if (isSubscribed) {
+    navigate("/dashboard");
+  } else if (user.emailVerified) {
+    subscribe(plan); // Stripe checkout
+  } else {
+    alert("Please verify your email before subscribing.");
+  }
+};
     subscribe(plan);
+  };
+   const checkSubscription = async (email) => {
+    const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    return data.active;
   };
 
   return (
@@ -146,38 +165,48 @@ function App() {
   };
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <MainPage
-            user={user}
-            loginWithGoogle={loginWithGoogle}
-            logout={logout}
-            subscribe={subscribe}
-          />
-        }
-      />
-      <Route
-        path="/login"
-        element={<Login onSuccess={() => navigate("/plans")} />}
-      />
-      <Route
-        path="/tips"
-        element={<Tips user={user} logout={logout} />}
-      />
-      <Route
-        path="/plans"
-        element={
-          user ? (
-            <PlansPage user={user} logout={logout} subscribe={subscribe} />
-          ) : (
-            <Navigate to="/" />
-          )
-        }
-      />
-    </Routes>
-  );
+  <Routes>
+    <Route
+      path="/"
+      element={
+        <MainPage
+          user={user}
+          loginWithGoogle={loginWithGoogle}
+          logout={logout}
+          subscribe={subscribe}
+        />
+      }
+    />
+
+    <Route
+      path="/login"
+      element={<Login onSuccess={() => navigate("/dashboard")} />}
+    />
+
+    <Route
+      path="/dashboard"
+      element={
+        user ? (
+          <Dashboard user={user} logout={logout} />
+        ) : (
+          <Navigate to="/login" />
+        )
+      }
+    />
+
+    <Route
+      path="/plans"
+      element={
+        user ? (
+          <PlansPage user={user} logout={logout} subscribe={subscribe} />
+        ) : (
+          <Navigate to="/login" />
+        )
+      }
+    />
+  </Routes>
+);
+
 }
 
 export default App;
