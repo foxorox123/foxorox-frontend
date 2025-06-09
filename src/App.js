@@ -6,6 +6,10 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Tips from "./pages/Tips";
 import Login from "./pages/Login";
 
+// src/MainPage.js
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
   const navigate = useNavigate();
 
@@ -20,81 +24,50 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
 
   return (
     <div className="main-container">
-      <header className="hero">
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          {user ? (
-            <button className="google-btn" onClick={logout}>
-              Sign out
-            </button>
-          ) : (
-            <button className="google-btn" onClick={loginWithGoogle}>
-              Sign in with Google
-            </button>
-          )}
+      <div className="auth-control">
+        {user ? (
+          <button className="auth-button" onClick={logout}>Sign out</button>
+        ) : (
+          <button className="auth-button" onClick={loginWithGoogle}>Sign in with Google</button>
+        )}
+      </div>
+
+      <img src="/logo-foxorox.png" alt="Foxorox Logo" className="logo" />
+      <h1>Welcome to <span className="highlight">Foxorox</span></h1>
+      <p className="subtitle">
+        AI-powered stock insights. Driven by 40+ years of trading experience.
+      </p>
+
+      <h3 style={{ color: "#fff", marginTop: "40px" }}>Choose your plan:</h3>
+
+      <div className="plans-grid">
+        <div className="plan-card">
+          <h2>🟢 Basic Monthly</h2>
+          <p>Access AI-based candle prediction for NASDAQ & S&P 500. Updated daily.</p>
+          <button onClick={() => handleSubscribe("basic_monthly")}>$79.99/month</button>
         </div>
-
-        <img src="/logo-foxorox.png" alt="Foxorox Logo" className="logo" />
-        <h1>
-          Welcome to <span className="highlight">Foxorox</span>
-        </h1>
-        <p className="subtitle">
-          AI-powered stock insights. Driven by 40+ years of trading experience.
-        </p>
-
-        <div className="plans-grid">
-          <h3 style={{ color: "#fff", fontSize: "1.5em", marginBottom: "30px" }}>
-            Choose your plan:
-          </h3>
-
-          <div className="plan-card">
-            <h2>🟢 Basic Monthly</h2>
-            <p>
-              AI-powered candle pattern prediction for <strong>NASDAQ</strong> and <strong>S&P 500</strong>.
-              Ideal for starting with algorithmic insights.
-            </p>
-            <button onClick={() => handleSubscribe("basic_monthly")}>
-              Subscribe – $79.99
-            </button>
-          </div>
-
-          <div className="plan-card">
-            <h2>🔵 Basic Yearly</h2>
-            <p>
-              Full year of AI predictions at a discounted price.
-              Covers <strong>NASDAQ</strong> and <strong>S&P 500</strong>.
-            </p>
-            <button onClick={() => handleSubscribe("basic_yearly")}>
-              Subscribe – $790.00
-            </button>
-          </div>
-
-          <div className="plan-card">
-            <h2>🟠 Global Monthly</h2>
-            <p>
-              Includes <strong>Markov process modeling</strong> and AI insights for:
-              <br />
-              <em>NASDAQ, S&P 500, DAX 40, WIG20, CAC 40, FTSE 100, Nikkei 225</em>.
-            </p>
-            <button onClick={() => handleSubscribe("global_monthly")}>
-              Subscribe – $129.99
-            </button>
-          </div>
-
-          <div className="plan-card">
-            <h2>🔴 Global Yearly</h2>
-            <p>
-              All premium features for one year. Advanced AI + cross-market analytics.
-              Best value for professionals and funds.
-            </p>
-            <button onClick={() => handleSubscribe("global_yearly")}>
-              Subscribe – $1290.00
-            </button>
-          </div>
+        <div className="plan-card">
+          <h2>🔵 Basic Yearly</h2>
+          <p>Same as Basic Monthly but billed annually at a discount.</p>
+          <button onClick={() => handleSubscribe("basic_yearly")}>$790.00/year</button>
         </div>
-      </header>
+        <div className="plan-card">
+          <h2>🟠 Global Monthly</h2>
+          <p>Includes AI & Markov analysis for indices: NASDAQ, S&P 500, DAX, WIG20, CAC, FTSE, Nikkei.</p>
+          <button onClick={() => handleSubscribe("global_monthly")}>$129.99/month</button>
+        </div>
+        <div className="plan-card">
+          <h2>🔴 Global Yearly</h2>
+          <p>All global markets + full feature access for a year at best value.</p>
+          <button onClick={() => handleSubscribe("global_yearly")}>$1290.00/year</button>
+        </div>
+      </div>
     </div>
   );
 }
+
+export default MainPage;
+
 
 function App() {
   const [user, setUser] = useState(null);
