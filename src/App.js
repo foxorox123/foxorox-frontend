@@ -5,6 +5,8 @@ import { auth, provider } from "./firebase-config";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Tips from "./pages/Tips";
 import Login from "./pages/Login";
+import PlansPage from "./pages/PlansPage";
+import { Navigate } from "react-router-dom";
 
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
   const navigate = useNavigate();
@@ -138,18 +140,37 @@ function App() {
     });
   };
 
-  return (
+    return (
     <Routes>
-      <Route path="/" element={
-        <MainPage
-          user={user}
-          loginWithGoogle={loginWithGoogle}
-          logout={logout}
-          subscribe={subscribe}
-        />
-      } />
-      <Route path="/login" element={<Login onSuccess={() => navigate("/")} />} />
-      <Route path="/tips" element={<Tips user={user} logout={logout} />} />
+      <Route
+        path="/"
+        element={
+          <MainPage
+            user={user}
+            loginWithGoogle={loginWithGoogle}
+            logout={logout}
+            subscribe={subscribe}
+          />
+        }
+      />
+      <Route
+        path="/login"
+        element={<Login onSuccess={() => navigate("/plans")} />}
+      />
+      <Route
+        path="/tips"
+        element={<Tips user={user} logout={logout} />}
+      />
+      <Route
+        path="/plans"
+        element={
+          user ? (
+            <PlansPage user={user} logout={logout} subscribe={subscribe} />
+          ) : (
+            <Navigate to="/" />
+          )
+        }
+      />
     </Routes>
   );
 }

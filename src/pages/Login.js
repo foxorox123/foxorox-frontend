@@ -56,7 +56,7 @@ function Login({ onSuccess }) {
           return;
         }
         alert("Login successful!");
-        onSuccess();
+        navigate("/plans");
       } catch (err) {
         if (err.code === "auth/user-not-found") {
           alert("No account found with that email.");
