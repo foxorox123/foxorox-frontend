@@ -6,10 +6,6 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Tips from "./pages/Tips";
 import Login from "./pages/Login";
 
-// src/MainPage.js
-import React from "react";
-import { useNavigate } from "react-router-dom";
-
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
   const navigate = useNavigate();
 
@@ -99,10 +95,6 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
     </div>
   );
 }
-
-
-export default MainPage;
-
 
 function App() {
   const [user, setUser] = useState(null);
