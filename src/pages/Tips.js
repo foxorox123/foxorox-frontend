@@ -1,15 +1,25 @@
 // src/pages/Tips.js
 import React from "react";
-import { signInWithPopup, GoogleAuthProvider, getAuth } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider, getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
-function Tips({ user, logout }) {
+function Tips({ user }) {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
+  const navigate = useNavigate();
 
   const login = () => {
     signInWithPopup(auth, provider).catch((err) =>
       alert("Login error: " + err.message)
     );
+  };
+
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/"); // ⬅️ po wylogowaniu wraca do /
+      })
+      .catch((err) => alert("Logout error: " + err.message));
   };
 
   return (
@@ -18,7 +28,7 @@ function Tips({ user, logout }) {
         {user ? (
           <>
             <p>👤 Logged in as: <strong>{user.email}</strong></p>
-            <button onClick={logout}>Sign out</button>
+            <button onClick={handleLogout}>Sign out</button>
           </>
         ) : (
           <>
