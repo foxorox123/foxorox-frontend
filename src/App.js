@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, provider } from "./firebase-config";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Tips from "./pages/Tips";
 
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
@@ -91,23 +91,22 @@ function App() {
   };
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <MainPage
-              user={user}
-              loginWithGoogle={loginWithGoogle}
-              logout={logout}
-              subscribe={subscribe}
-            />
-          }
+  <Routes>
+    <Route
+      path="/"
+      element={
+        <MainPage
+          user={user}
+          loginWithGoogle={loginWithGoogle}
+          logout={logout}
+          subscribe={subscribe}
         />
-        <Route path="/tips" element={<Tips />} />
-      </Routes>
-    </Router>
-  );
+      }
+    />
+    <Route path="/tips" element={<Tips />} />
+  </Routes>
+);
+
 }
 
 export default App;
