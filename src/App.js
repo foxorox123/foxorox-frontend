@@ -12,24 +12,25 @@ import Dashboard from .pages/Dashboard;
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
   const navigate = useNavigate();
 
-  const handleSubscribe = (plan) => {
+  const handleSubscribe = async (plan) => {
     if (!user) {
       localStorage.setItem("selectedPlan", plan);
       navigate("/login");
       return;
     }
+
     const isSubscribed = await checkSubscription(user.email);
-  if (isSubscribed) {
-    navigate("/dashboard");
-  } else if (user.emailVerified) {
-    subscribe(plan); // Stripe checkout
-  } else {
-    alert("Please verify your email before subscribing.");
-  }
-};
-    subscribe(plan);
+
+    if (isSubscribed) {
+      navigate("/dashboard");
+    } else if (user.emailVerified) {
+      subscribe(plan); // Stripe checkout
+    } else {
+      alert("Please verify your email before subscribing.");
+    }
   };
-   const checkSubscription = async (email) => {
+
+  const checkSubscription = async (email) => {
     const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
