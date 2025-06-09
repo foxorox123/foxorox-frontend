@@ -40,30 +40,32 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
 
         <div className="button-group">
           <h3 style={{ color: "#fff" }}>Choose your plan:</h3>
-          <button onClick={() => subscribe("basic_monthly")}>
-            🟢 Basic Monthly – $79.99
-          </button>
-          <button onClick={() => subscribe("basic_yearly")}>
-            🔵 Basic Yearly – $790.00
-          </button>
-          <button onClick={() => subscribe("global_monthly")}>
-            🟠 Global Monthly – $129.99
-          </button>
-          <button onClick={() => subscribe("global_yearly")}>
-            🔴 Global Yearly – $1290.00
-          </button>
 
-          {user && (
-            <button onClick={() => navigate("/tips")}>
-              📈 Go to Trading Tips
-            </button>
+          {user ? (
+            <>
+              <button onClick={() => subscribe("basic_monthly")}>
+                🟢 Basic Monthly – $79.99
+              </button>
+              <button onClick={() => subscribe("basic_yearly")}>
+                🔵 Basic Yearly – $790.00
+              </button>
+              <button onClick={() => subscribe("global_monthly")}>
+                🟠 Global Monthly – $129.99
+              </button>
+              <button onClick={() => subscribe("global_yearly")}>
+                🔴 Global Yearly – $1290.00
+              </button>
+            </>
+          ) : (
+            <p style={{ color: "#f58220" }}>
+              🔒 Please log in to view subscription plans.
+            </p>
           )}
         </div>
       </header>
     </div>
   );
 }
-
 
 function App() {
   const [user, setUser] = useState(null);
@@ -74,6 +76,11 @@ function App() {
   }, []);
 
   const subscribe = (plan) => {
+    if (!user) {
+      alert("Please log in before subscribing.");
+      return;
+    }
+
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -103,22 +110,21 @@ function App() {
   };
 
   return (
-  <Routes>
-    <Route
-      path="/"
-      element={
-        <MainPage
-          user={user}
-          loginWithGoogle={loginWithGoogle}
-          logout={logout}
-          subscribe={subscribe}
-        />
-      }
-    />
-    <Route path="/tips" element={<Tips user={user} logout={logout} />} />
-  </Routes>
-);
-
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <MainPage
+            user={user}
+            loginWithGoogle={loginWithGoogle}
+            logout={logout}
+            subscribe={subscribe}
+          />
+        }
+      />
+      <Route path="/tips" element={<Tips user={user} logout={logout} />} />
+    </Routes>
+  );
 }
 
 export default App;
