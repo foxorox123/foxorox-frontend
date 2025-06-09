@@ -81,7 +81,10 @@ function Dashboard({ user, logout }) {
     <div className="dashboard-container">
       <header className="dashboard-header">
         <div className="left">
-          <h1>📊 Foxorox Dashboard</h1>
+          <<h1 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <img src="/logo-foxorox.png" alt="Foxorox Icon" style={{ height: "30px" }} />
+          Foxorox Dashboard
+        </h1>
         </div>
         <div className="right">
           <div style={{ textAlign: "right" }}>
