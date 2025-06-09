@@ -1,19 +1,22 @@
-// src/App.js
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, provider } from "./firebase-config";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Tips from "./pages/Tips";
+import Login from "./pages/Login";
 
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user) {
-      navigate("/tips");
+  const handleSubscribe = (plan) => {
+    if (!user) {
+      localStorage.setItem("selectedPlan", plan);
+      navigate("/login");
+      return;
     }
-  }, [user, navigate]);
+    subscribe(plan);
+  };
 
   return (
     <div className="main-container">
@@ -38,29 +41,55 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
           AI-powered stock insights. Driven by 40+ years of trading experience.
         </p>
 
-        <div className="button-group">
-          <h3 style={{ color: "#fff" }}>Choose your plan:</h3>
+        <div className="plans-grid">
+          <h3 style={{ color: "#fff", fontSize: "1.5em", marginBottom: "30px" }}>
+            Choose your plan:
+          </h3>
 
-          {user ? (
-            <>
-              <button onClick={() => subscribe("basic_monthly")}>
-                🟢 Basic Monthly – $79.99
-              </button>
-              <button onClick={() => subscribe("basic_yearly")}>
-                🔵 Basic Yearly – $790.00
-              </button>
-              <button onClick={() => subscribe("global_monthly")}>
-                🟠 Global Monthly – $129.99
-              </button>
-              <button onClick={() => subscribe("global_yearly")}>
-                🔴 Global Yearly – $1290.00
-              </button>
-            </>
-          ) : (
-            <p style={{ color: "#f58220" }}>
-              🔒 Please log in to view subscription plans.
+          <div className="plan-card">
+            <h2>🟢 Basic Monthly</h2>
+            <p>
+              AI-powered candle pattern prediction for <strong>NASDAQ</strong> and <strong>S&P 500</strong>.
+              Ideal for starting with algorithmic insights.
             </p>
-          )}
+            <button onClick={() => handleSubscribe("basic_monthly")}>
+              Subscribe – $79.99
+            </button>
+          </div>
+
+          <div className="plan-card">
+            <h2>🔵 Basic Yearly</h2>
+            <p>
+              Full year of AI predictions at a discounted price.
+              Covers <strong>NASDAQ</strong> and <strong>S&P 500</strong>.
+            </p>
+            <button onClick={() => handleSubscribe("basic_yearly")}>
+              Subscribe – $790.00
+            </button>
+          </div>
+
+          <div className="plan-card">
+            <h2>🟠 Global Monthly</h2>
+            <p>
+              Includes <strong>Markov process modeling</strong> and AI insights for:
+              <br />
+              <em>NASDAQ, S&P 500, DAX 40, WIG20, CAC 40, FTSE 100, Nikkei 225</em>.
+            </p>
+            <button onClick={() => handleSubscribe("global_monthly")}>
+              Subscribe – $129.99
+            </button>
+          </div>
+
+          <div className="plan-card">
+            <h2>🔴 Global Yearly</h2>
+            <p>
+              All premium features for one year. Advanced AI + cross-market analytics.
+              Best value for professionals and funds.
+            </p>
+            <button onClick={() => handleSubscribe("global_yearly")}>
+              Subscribe – $1290.00
+            </button>
+          </div>
         </div>
       </header>
     </div>
@@ -69,18 +98,22 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
 
 function App() {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, setUser);
+    const unsubscribe = onAuthStateChanged(auth, (usr) => {
+      setUser(usr);
+
+      const plan = localStorage.getItem("selectedPlan");
+      if (usr && plan) {
+        localStorage.removeItem("selectedPlan");
+        subscribe(plan);
+      }
+    });
     return () => unsubscribe();
   }, []);
 
   const subscribe = (plan) => {
-    if (!user) {
-      alert("Please log in before subscribing.");
-      return;
-    }
-
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -95,33 +128,27 @@ function App() {
 
   const loginWithGoogle = () => {
     signInWithPopup(auth, provider)
-      .then((result) => {
-        alert("Logged in as: " + result.user.email);
-      })
-      .catch((error) => {
-        alert("Login error: " + error.message);
-      });
+      .then(() => {})
+      .catch((error) => alert("Login error: " + error.message));
   };
 
   const logout = () => {
     signOut(auth).then(() => {
-      alert("Logged out");
+      navigate("/");
     });
   };
 
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <MainPage
-            user={user}
-            loginWithGoogle={loginWithGoogle}
-            logout={logout}
-            subscribe={subscribe}
-          />
-        }
-      />
+      <Route path="/" element={
+        <MainPage
+          user={user}
+          loginWithGoogle={loginWithGoogle}
+          logout={logout}
+          subscribe={subscribe}
+        />
+      } />
+      <Route path="/login" element={<Login onSuccess={() => navigate("/")} />} />
       <Route path="/tips" element={<Tips user={user} logout={logout} />} />
     </Routes>
   );
