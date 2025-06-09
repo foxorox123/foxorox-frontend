@@ -37,14 +37,25 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
         <p className="subtitle">
           AI-powered stock insights. Driven by 40+ years of trading experience.
         </p>
+
         <div className="button-group">
+          <h3 style={{ color: "#fff" }}>Choose your plan:</h3>
           <button onClick={() => subscribe("basic_monthly")}>
-            Subscribe – $79.99/month
+            🟢 Basic Monthly – $79.99
+          </button>
+          <button onClick={() => subscribe("basic_yearly")}>
+            🔵 Basic Yearly – $499.99
+          </button>
+          <button onClick={() => subscribe("global_monthly")}>
+            🟠 Global Monthly – $149.99
+          </button>
+          <button onClick={() => subscribe("global_yearly")}>
+            🔴 Global Yearly – $999.99
           </button>
 
           {user && (
             <button onClick={() => navigate("/tips")}>
-              Go to Trading Tips
+              📈 Go to Trading Tips
             </button>
           )}
         </div>
@@ -52,6 +63,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
     </div>
   );
 }
+
 
 function App() {
   const [user, setUser] = useState(null);
