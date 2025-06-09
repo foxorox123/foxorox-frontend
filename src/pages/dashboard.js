@@ -3,7 +3,7 @@ import "./Dashboard.css";
 
 function Dashboard({ user, logout }) {
   const logs = [
-    { time: "2025-06-08 10:21", action: "Subscription activated (Global Yearly)" },
+    { time: "2025-06-08 10:21", action: "Subscriptions activated (Global Yearly)" },
     { time: "2025-06-05 08:10", action: "Logged in from Warsaw, Poland" },
   ];
 

@@ -9,6 +9,7 @@ import PlansPage from "./pages/PlansPage";
 import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 
+
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
   const navigate = useNavigate();
 
