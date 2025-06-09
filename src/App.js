@@ -47,7 +47,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
 
         <div className="plans-grid">
           <div className="plan-card">
-            <h2>🟢 Basic Monthly</h2>
+            <h2>🟢 Basic US Monthly</h2>
             <p>
               AI-powered candle pattern prediction for <strong>NASDAQ</strong> and <strong>S&P 500</strong>.
               Ideal for starting with algorithmic insights.
@@ -58,7 +58,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
           </div>
 
           <div className="plan-card">
-            <h2>🔵 Basic Yearly</h2>
+            <h2>🔵 Basic US Yearly</h2>
             <p>
               Full year of AI predictions at a discounted price.
               Covers <strong>NASDAQ</strong> and <strong>S&P 500</strong>.
@@ -69,7 +69,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
           </div>
 
           <div className="plan-card">
-            <h2>🟠 Global Monthly</h2>
+            <h2>🟠 Global Markets Monthly</h2>
             <p>
               Includes <strong>Markov process modeling</strong> and AI insights for:
               <br />
@@ -81,7 +81,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
           </div>
 
           <div className="plan-card">
-            <h2>🔴 Global Yearly</h2>
+            <h2>🔴 Global Markets Yearly</h2>
             <p>
               All premium features for one year. Advanced AI + cross-market analytics.
               Best value for professionals and funds.

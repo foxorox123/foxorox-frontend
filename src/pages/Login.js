@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
+  sendEmailVerification,
   GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebase-config";
@@ -13,6 +14,7 @@ function Login({ onSuccess }) {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
+  const [resendAvailable, setResendAvailable] = useState(false);
   const navigate = useNavigate();
 
   const isValidEmail = (email) =>
@@ -34,9 +36,10 @@ function Login({ onSuccess }) {
         return;
       }
       try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        alert("Account created successfully!");
-        onSuccess();
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await sendEmailVerification(userCredential.user);
+        alert("Account created. Please check your inbox and verify your email.");
+        setResendAvailable(true);
       } catch (err) {
         if (err.code === "auth/email-already-in-use") {
           alert("This email is already registered.");
@@ -46,7 +49,12 @@ function Login({ onSuccess }) {
       }
     } else {
       try {
-        await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        if (!userCredential.user.emailVerified) {
+          alert("Email not verified. Please check your inbox.");
+          setResendAvailable(true);
+          return;
+        }
         alert("Login successful!");
         onSuccess();
       } catch (err) {
@@ -68,6 +76,20 @@ function Login({ onSuccess }) {
       onSuccess();
     } catch (err) {
       alert("Google login failed: " + err.message);
+    }
+  };
+
+  const handleResendEmail = async () => {
+    try {
+      const user = auth.currentUser;
+      if (user && !user.emailVerified) {
+        await sendEmailVerification(user);
+        alert("Verification email resent. Please check your inbox.");
+      } else {
+        alert("You're already verified or not logged in.");
+      }
+    } catch (err) {
+      alert("Resend failed: " + err.message);
     }
   };
 
@@ -104,6 +126,12 @@ function Login({ onSuccess }) {
         {isRegistering ? "📝 Register" : "🔓 Login"}
       </button>
 
+      {resendAvailable && !isRegistering && (
+        <div style={{ marginTop: "10px" }}>
+          <button onClick={handleResendEmail}>📩 Resend verification email</button>
+        </div>
+      )}
+
       <div style={{ margin: "15px 0" }}>
         <button className="google-btn" onClick={handleGoogleLogin}>
           🔐 Sign in with Google
@@ -113,7 +141,10 @@ function Login({ onSuccess }) {
       <p style={{ color: "#aaa", fontSize: "0.9em" }}>
         {isRegistering ? "Already have an account?" : "Don't have an account?"}{" "}
         <button
-          onClick={() => setIsRegistering(!isRegistering)}
+          onClick={() => {
+            setIsRegistering(!isRegistering);
+            setResendAvailable(false);
+          }}
           style={{
             background: "none",
             border: "none",
