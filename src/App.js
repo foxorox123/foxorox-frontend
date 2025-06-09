@@ -7,7 +7,7 @@ import Tips from "./pages/Tips";
 import Login from "./pages/Login";
 import PlansPage from "./pages/PlansPage";
 import { Navigate } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard";
 
 
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
