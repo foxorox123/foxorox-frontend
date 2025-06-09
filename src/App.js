@@ -4,14 +4,14 @@ import "./App.css";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, provider } from "./firebase-config";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
-import Tips from "./Tips";
+import Tips from "./pages/Tips";
 
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
-      navigate("/tips");
+      navigate("/pages/tips");
     }
   }, [user, navigate]);
 
@@ -43,7 +43,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
           </button>
 
           {user && (
-            <button onClick={() => navigate("/tips")}>
+            <button onClick={() => navigate("/pages/tips")}>
               Go to Trading Tips
             </button>
           )}
@@ -104,7 +104,7 @@ function App() {
             />
           }
         />
-        <Route path="/tips" element={<Tips />} />
+        <Route path="/pages/tips" element={<Tips />} />
       </Routes>
     </Router>
   );
