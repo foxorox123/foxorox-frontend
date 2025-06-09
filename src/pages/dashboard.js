@@ -81,10 +81,10 @@ function Dashboard({ user, logout }) {
     <div className="dashboard-container">
       <header className="dashboard-header">
         <div className="left">
-          <<h1 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <img src="/logo-foxorox.png" alt="Foxorox Icon" style={{ height: "30px" }} />
-          Foxorox Dashboard
-        </h1>
+          <h1 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <img src="/foxorox-icon.png" alt="Foxorox Icon" style={{ height: "30px" }} />
+            Foxorox Dashboard
+          </h1>
         </div>
         <div className="right">
           <div style={{ textAlign: "right" }}>
@@ -93,7 +93,9 @@ function Dashboard({ user, logout }) {
               Subscription: {subscriptionType}
             </div>
           </div>
-          <button onClick={logout} className="logout-btn">Sign out</button>
+          <button onClick={logout} className="logout-btn">
+            Sign out
+          </button>
         </div>
       </header>
 
@@ -103,8 +105,8 @@ function Dashboard({ user, logout }) {
           <div id="tradingview-widget" />
         </section>
 
-        <div className="ai-tips-wrapper">
-          <section className="ai-tips">
+        <div className="ai-tips-wrapper" style={{ display: "flex", gap: "20px", marginTop: "40px", flexWrap: "wrap" }}>
+          <section className="ai-tips" style={{ flex: 1, minWidth: "300px" }}>
             <h2>📗 AI Tips for Bulls</h2>
             <ul>
               {bullTips.map((tip, index) => (
@@ -113,7 +115,7 @@ function Dashboard({ user, logout }) {
             </ul>
           </section>
 
-          <section className="ai-tips">
+          <section className="ai-tips" style={{ flex: 1, minWidth: "300px" }}>
             <h2>📕 AI Tips for Bears</h2>
             <ul>
               {bearTips.map((tip, index) => (
