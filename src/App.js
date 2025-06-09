@@ -104,7 +104,7 @@ function App() {
             />
           }
         />
-        <Route path="/pages/tips" element={<Tips />} />
+        <Route path="/tips" element={<Tips />} />
       </Routes>
     </Router>
   );
