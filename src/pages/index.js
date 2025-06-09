@@ -11,14 +11,33 @@ import { Navigate } from "react-router-dom";
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
   const navigate = useNavigate();
 
-  const handleSubscribe = (plan) => {
+  const checkSubscription = async (email) => {
+    const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    return data.active;
+  };
+
+  const handleSubscribe = async (plan) => {
     if (!user) {
       localStorage.setItem("selectedPlan", plan);
       navigate("/login");
       return;
     }
-    subscribe(plan);
+
+    const isSubscribed = await checkSubscription(user.email);
+    if (isSubscribed) {
+      navigate("/tips"); // lub /dashboard – jak wolisz
+    } else if (user.emailVerified) {
+      subscribe(plan);
+    } else {
+      alert("Please verify your email before subscribing.");
+    }
   };
+
 
   return (
     <div className="main-container">
