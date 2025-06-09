@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./Dashboard.css";
 
 function Dashboard({ user, logout }) {
-  const subscriptionType = "Global Yearly"; // Możesz też dynamicznie pobierać z backendu
+  const subscriptionType = "Global Yearly";
 
   const bullTips = [
     "📈 AI suggests upward momentum in S&P 500.",
@@ -16,6 +16,32 @@ function Dashboard({ user, logout }) {
     "🔻 Bear divergence on FTSE 100 hourly chart.",
   ];
 
+  // ▶ Ticker Tape: Futures and Key Indexes
+  useEffect(() => {
+    const tickerScript = document.createElement("script");
+    tickerScript.src = "https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js";
+    tickerScript.async = true;
+    tickerScript.innerHTML = JSON.stringify({
+      symbols: [
+        { proName: "CME_MINI:ES1!", title: "S&P 500 Futures" },
+        { proName: "CME_MINI:NQ1!", title: "Nasdaq Futures" },
+        { proName: "EUREX:FDAX1!", title: "DAX Futures" },
+        { proName: "GPW:FW20M2025", title: "WIG20 Futures" },
+        { proName: "BET:BSE", title: "BUX Index (proxy)" },
+        { proName: "OSE:NK1!", title: "Nikkei Futures" },
+      ],
+      colorTheme: "dark",
+      isTransparent: false,
+      displayMode: "adaptive",
+      locale: "en",
+    });
+
+    const tickerContainer = document.getElementById("ticker-tape");
+    if (tickerContainer) tickerContainer.innerHTML = "";
+    tickerContainer.appendChild(tickerScript);
+  }, []);
+
+  // ▶ Market Overview
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
@@ -29,13 +55,6 @@ function Dashboard({ user, logout }) {
       height: "600",
       isTransparent: false,
       showSymbolLogo: true,
-      plotLineColorGrowing: "rgba(0, 255, 0, 1)",
-      plotLineColorFalling: "rgba(255, 0, 0, 1)",
-      gridLineColor: "rgba(42, 46, 57, 0.5)",
-      scaleFontColor: "rgba(120, 123, 134, 1)",
-      belowLineFillColorGrowing: "rgba(0, 255, 0, 0.05)",
-      belowLineFillColorFalling: "rgba(255, 0, 0, 0.05)",
-      symbolActiveColor: "rgba(0, 255, 0, 0.15)",
       tabs: [
         {
           title: "America",
@@ -79,10 +98,14 @@ function Dashboard({ user, logout }) {
 
   return (
     <div className="dashboard-container">
+      {/* ▶ Ticker Tape Widget */}
+      <div id="ticker-tape" style={{ marginBottom: "20px" }}></div>
+
+      {/* ▶ Header */}
       <header className="dashboard-header">
         <div className="left">
           <h1 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <img src="/logo-foxorox.png" alt="Foxorox Icon" style={{ height: "30px" }} />
+            <img src="/foxorox-logo.png" alt="Foxorox Icon" style={{ height: "45px" }} />
             Foxorox Dashboard
           </h1>
         </div>
@@ -93,20 +116,19 @@ function Dashboard({ user, logout }) {
               Subscription: {subscriptionType}
             </div>
           </div>
-          <button onClick={logout} className="logout-btn">
-            Sign out
-          </button>
+          <button onClick={logout} className="logout-btn">Sign out</button>
         </div>
       </header>
 
+      {/* ▶ Main */}
       <main className="dashboard-content">
         <section className="market-overview">
           <h2>🌍 Market Overview – Global Indexes</h2>
           <div id="tradingview-widget" />
         </section>
 
-        <div className="ai-tips-wrapper" style={{ display: "flex", gap: "20px", marginTop: "40px", flexWrap: "wrap" }}>
-          <section className="ai-tips" style={{ flex: 1, minWidth: "300px" }}>
+        <div className="ai-tips-wrapper">
+          <section className="ai-tips">
             <h2>📗 AI Tips for Bulls</h2>
             <ul>
               {bullTips.map((tip, index) => (
@@ -115,7 +137,7 @@ function Dashboard({ user, logout }) {
             </ul>
           </section>
 
-          <section className="ai-tips" style={{ flex: 1, minWidth: "300px" }}>
+          <section className="ai-tips">
             <h2>📕 AI Tips for Bears</h2>
             <ul>
               {bearTips.map((tip, index) => (
