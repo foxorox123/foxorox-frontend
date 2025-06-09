@@ -43,7 +43,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
           </button>
 
           {user && (
-            <button onClick={() => navigate("/pages/tips")}>
+            <button onClick={() => navigate("/tips")}>
               Go to Trading Tips
             </button>
           )}
