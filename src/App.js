@@ -41,11 +41,11 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
           AI-powered stock insights. Driven by 40+ years of trading experience.
         </p>
 
-        <div className="plans-grid">
-          <h3 style={{ color: "#fff", fontSize: "1.5em", marginBottom: "30px" }}>
-            Choose your plan:
-          </h3>
+        <h3 style={{ color: "#fff", fontSize: "1.5em", marginBottom: "30px" }}>
+          Choose your plan:
+        </h3>
 
+        <div className="plans-grid">
           <div className="plan-card">
             <h2>🟢 Basic Monthly</h2>
             <p>
