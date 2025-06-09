@@ -7,6 +7,7 @@ import Tips from "./pages/Tips";
 import Login from "./pages/Login";
 import PlansPage from "./pages/PlansPage";
 import { Navigate } from "react-router-dom";
+import { AuthProvider } from "./AuthContext";
 
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
   const navigate = useNavigate();
