@@ -115,7 +115,7 @@ function App() {
         />
       }
     />
-    <Route path="/tips" element={<Tips />} />
+    <Route path="/tips" element={<Tips user={user} logout={logout} />} />
   </Routes>
 );
 
