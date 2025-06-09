@@ -105,7 +105,7 @@ function Dashboard({ user, logout }) {
       <header className="dashboard-header">
         <div className="left">
           <h1 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <img src="/foxorox-logo.png" alt="Foxorox Icon" style={{ height: "45px" }} />
+            <img src="/logo-foxorox.png" alt="Foxorox Icon" style={{ height: "55px" }} />
             Foxorox Dashboard
           </h1>
         </div>
