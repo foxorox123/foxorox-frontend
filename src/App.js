@@ -7,7 +7,7 @@ import Tips from "./pages/Tips";
 import Login from "./pages/Login";
 import PlansPage from "./pages/PlansPage";
 import { Navigate } from "react-router-dom";
-import Dashboard from .pages/Dashboard;
+import Dashboard from "./pages/Dashboard";
 
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
   const navigate = useNavigate();
@@ -122,6 +122,19 @@ function App() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  const subscribe = (plan) => {
+    fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ plan }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.url) window.location.href = data.url;
+        else alert("Error: No Stripe URL returned.");
+      });
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
       setUser(usr);
@@ -139,19 +152,6 @@ function App() {
 
     return () => unsubscribe();
   }, []);
-
-  const subscribe = (plan) => {
-    fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.url) window.location.href = data.url;
-        else alert("Error: No Stripe URL returned.");
-      });
-  };
 
   const loginWithGoogle = () => {
     signInWithPopup(auth, provider)
