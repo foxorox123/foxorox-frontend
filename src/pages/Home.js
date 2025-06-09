@@ -6,6 +6,7 @@ import logo from "../assets/logo-foxorox.png";
 
 function Home() {
   const [user, setUser] = useState(null);
+  const [selectedPlan, setSelectedPlan] = useState("basic_monthly");
   const navigate = useNavigate();
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
@@ -55,13 +56,28 @@ function Home() {
         <p className="subtitle">
           AI-powered stock insights. Driven by 40+ years of trading experience.
         </p>
+
         <div className="button-group">
-          <button onClick={() => subscribe("basic_monthly")}>
-            Subscribe – $79.99/month
+          <h3 style={{ color: "#fff" }}>Choose your plan:</h3>
+
+          <select
+            value={selectedPlan}
+            onChange={(e) => setSelectedPlan(e.target.value)}
+            style={{ padding: "10px", fontSize: "16px", marginBottom: "12px" }}
+          >
+            <option value="basic_monthly">🟢 Basic Monthly – $79.99</option>
+            <option value="basic_yearly">🔵 Basic Yearly – $499.99</option>
+            <option value="global_monthly">🟠 Global Monthly – $149.99</option>
+            <option value="global_yearly">🔴 Global Yearly – $999.99</option>
+          </select>
+
+          <button onClick={() => subscribe(selectedPlan)} className="auth-button">
+            💳 Subscribe
           </button>
+
           {user && (
-            <button onClick={() => navigate("/tips")}>
-              Go to Trading Tips
+            <button onClick={() => navigate("/tips")} className="auth-button">
+              📈 Go to Trading Tips
             </button>
           )}
         </div>
