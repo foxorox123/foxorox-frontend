@@ -1,124 +1,37 @@
-// src/App.js
-import React, { useEffect, useState } from "react";
-import "./App.css";
-import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
-import { auth, provider } from "./firebase-config";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import Tips from "./pages/Tips";
+// src/pages/Tips.js
+import React from "react";
+import { signInWithPopup, GoogleAuthProvider, getAuth } from "firebase/auth";
 
-function MainPage({ user, loginWithGoogle, logout, subscribe }) {
-  const navigate = useNavigate();
+function Tips({ user, logout }) {
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
 
-  useEffect(() => {
-    if (user) {
-      navigate("/tips");
-    }
-  }, [user, navigate]);
+  const login = () => {
+    signInWithPopup(auth, provider).catch((err) =>
+      alert("Login error: " + err.message)
+    );
+  };
 
   return (
-    <div className="main-container">
-      <header className="hero">
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          {user ? (
-            <button className="google-btn" onClick={logout}>
-              Sign out
-            </button>
-          ) : (
-            <button className="google-btn" onClick={loginWithGoogle}>
-              Sign in with Google
-            </button>
-          )}
-        </div>
+    <div style={{ padding: "40px", color: "#fff" }}>
+      <div style={{ textAlign: "right", marginBottom: "20px" }}>
+        {user ? (
+          <>
+            <p>👤 Logged in as: <strong>{user.email}</strong></p>
+            <button onClick={logout}>Sign out</button>
+          </>
+        ) : (
+          <>
+            <p>🔒 You are not logged in.</p>
+            <button onClick={login}>Sign in with Google</button>
+          </>
+        )}
+      </div>
 
-        <img src="/logo-foxorox.png" alt="Foxorox Logo" className="logo" />
-        <h1>
-          Welcome to <span className="highlight">Foxorox</span>
-        </h1>
-        <p className="subtitle">
-          AI-powered stock insights. Driven by 40+ years of trading experience.
-        </p>
-
-        <div className="button-group">
-          <h3 style={{ color: "#fff" }}>Choose your plan:</h3>
-          <button onClick={() => subscribe("basic_monthly")}>
-            🟢 Basic Monthly – $79.99
-          </button>
-          <button onClick={() => subscribe("basic_yearly")}>
-            🔵 Basic Yearly – $790.00
-          </button>
-          <button onClick={() => subscribe("global_monthly")}>
-            🟠 Global Monthly – $129.99
-          </button>
-          <button onClick={() => subscribe("global_yearly")}>
-            🔴 Global Yearly – $1290.00
-          </button>
-
-          {user && (
-            <button onClick={() => navigate("/tips")}>
-              📈 Go to Trading Tips
-            </button>
-          )}
-        </div>
-      </header>
+      <h1>📈 Trading Tips</h1>
+      <p>✅ Tip: Always manage your risk!</p>
     </div>
   );
 }
 
-
-function App() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, setUser);
-    return () => unsubscribe();
-  }, []);
-
-  const subscribe = (plan) => {
-    fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.url) window.location.href = data.url;
-        else alert("Error: No Stripe URL returned.");
-      });
-  };
-
-  const loginWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        alert("Logged in as: " + result.user.email);
-      })
-      .catch((error) => {
-        alert("Login error: " + error.message);
-      });
-  };
-
-  const logout = () => {
-    signOut(auth).then(() => {
-      alert("Logged out");
-    });
-  };
-
-  return (
-  <Routes>
-    <Route
-      path="/"
-      element={
-        <MainPage
-          user={user}
-          loginWithGoogle={loginWithGoogle}
-          logout={logout}
-          subscribe={subscribe}
-        />
-      }
-    />
-    <Route path="/tips" element={<Tips user={user} logout={logout} />} />
-  </Routes>
-);
-
-}
-
-export default App;
+export default Tips;
