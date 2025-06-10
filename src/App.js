@@ -123,6 +123,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
 }
 
 function App() {
+  if (user === undefined) return <div>Loading...</div>;
   const [user, setUser] = useState(undefined); // ważne: undefined = ładowanie
   const navigate = useNavigate();
 
@@ -142,24 +143,7 @@ function App() {
       });
   };
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (usr) => {
-      setUser(usr);
-
-      const plan = localStorage.getItem("selectedPlan");
-      if (usr && plan) {
-        if (usr.emailVerified) {
-          localStorage.removeItem("selectedPlan");
-          subscribe(plan);
-        } else {
-          alert("Please verify your email before proceeding to checkout.");
-        }
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
+  
   if (user === undefined) return <div>Loading...</div>;
 
   const loginWithGoogle = () => {
@@ -186,5 +170,23 @@ function App() {
     </Routes>
   );
 }
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (usr) => {
+    setUser(usr);
+
+    const plan = localStorage.getItem("selectedPlan");
+    if (usr && plan) {
+      if (usr.emailVerified) {
+        localStorage.removeItem("selectedPlan");
+        subscribe(plan);
+      } else {
+        alert("Please verify your email before proceeding to checkout.");
+        navigate("/plans"); // 🔁 wracaj na plany
+      }
+    }
+  });
+
+  return () => unsubscribe();
+}, []);
 
 export default App;
