@@ -22,11 +22,11 @@ function DownloadsPremium({ user }) {
             window.location.href = response.url;
           }
         } else {
-          alert("Brak aktywnej subskrypcji Premium.");
+          alert("Download failed or subscription inactive.");
           navigate("/plans");
         }
       } catch (err) {
-        console.error("Błąd subskrypcji:", err);
+        console.error("Error in verification of your subscription:", err);
         alert("Błąd serwera. Spróbuj ponownie.");
       }
     };

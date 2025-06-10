@@ -23,11 +23,11 @@ function DownloadsBasic({ user }) {
             window.location.href = response.url;
           }
         } else {
-          alert("Brak aktywnej subskrypcji. Przejdź do planów.");
+          alert("Download failed or subscription inactive.");
           navigate("/plans");
         }
       } catch (err) {
-        console.error("Błąd weryfikacji subskrypcji:", err);
+        console.error("Error in verification of your subscription:", err);
         alert("Błąd serwera. Spróbuj ponownie później.");
       }
     };
