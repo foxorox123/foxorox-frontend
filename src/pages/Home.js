@@ -76,7 +76,7 @@ function Home() {
           </button>
 
           {user && (
-            <button onClick={() => navigate("/tips")} className="auth-button">
+            <button onClick={() => navigate("/DownloadsBasic")} className="auth-button">
               📈 Go to Trading Tips
             </button>
           )}
