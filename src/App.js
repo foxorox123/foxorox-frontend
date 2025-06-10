@@ -68,20 +68,37 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
         </h3>
 
         <div className="plans-grid">
-          {[
-            { id: "basic_monthly", label: "🟢 Basic US Monthly", price: "$79.99" },
-            { id: "basic_yearly", label: "🔵 Basic US Yearly", price: "$790.00" },
-            { id: "global_monthly", label: "🟠 Global Monthly", price: "$129.99" },
-            { id: "global_yearly", label: "🔴 Global Yearly", price: "$1290.00" },
-          ].map(({ id, label, price }) => (
-            <div className="plan-card" key={id}>
-              <h2>{label}</h2>
-              <p>
-                Access advanced AI prediction models for global and US markets.
-              </p>
-              <button onClick={() => handleSubscribe(id)}>Subscribe – {price}</button>
-            </div>
-          ))}
+          <div className="plan-card">
+            <h2>🟢 Basic US Monthly</h2>
+            <p>Basic AI predictions for NASDAQ & S&P 500.</p>
+            <button onClick={() => handleSubscribe("basic_monthly")}>
+              Subscribe – $79.99
+            </button>
+          </div>
+
+          <div className="plan-card">
+            <h2>🔵 Basic US Yearly</h2>
+            <p>One year of access to US market predictions.</p>
+            <button onClick={() => handleSubscribe("basic_yearly")}>
+              Subscribe – $790.00
+            </button>
+          </div>
+
+          <div className="plan-card">
+            <h2>🟠 Global Monthly</h2>
+            <p>Global markets with Markov models + AI.</p>
+            <button onClick={() => handleSubscribe("global_monthly")}>
+              Subscribe – $129.99
+            </button>
+          </div>
+
+          <div className="plan-card">
+            <h2>🔴 Global Yearly</h2>
+            <p>Full year premium insights worldwide.</p>
+            <button onClick={() => handleSubscribe("global_yearly")}>
+              Subscribe – $1290.00
+            </button>
+          </div>
         </div>
       </header>
     </div>
@@ -89,11 +106,16 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
 }
 
 function App() {
-  const [user, setUser] = useState(undefined); // undefined = loading
+  const [user, setUser] = useState(undefined); // loading state
   const navigate = useNavigate();
 
   const subscribe = (plan) => {
-    if (!user?.email) return alert("No user email found.");
+    if (!user || !user.email) {
+      console.warn("User not ready yet. Retrying...");
+      setTimeout(() => subscribe(plan), 500);
+      return;
+    }
+
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -111,6 +133,7 @@ function App() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
+      console.log("👤 Firebase auth:", usr);
       setUser(usr);
 
       const plan = localStorage.getItem("selectedPlan");
@@ -119,7 +142,7 @@ function App() {
           localStorage.removeItem("selectedPlan");
           subscribe(plan);
         } else {
-          alert("Please verify your email before proceeding to checkout.");
+          alert("Please verify your email before subscribing.");
           navigate("/plans");
         }
       }
@@ -135,12 +158,10 @@ function App() {
   };
 
   const logout = () => {
-    signOut(auth).then(() => {
-      navigate("/");
-    });
+    signOut(auth).then(() => navigate("/"));
   };
 
-  if (user === undefined) return <div style={{ color: "#fff" }}>Loading...</div>;
+  if (user === undefined) return <div style={{ color: "white" }}>Loading...</div>;
 
   return (
     <Routes>
@@ -156,29 +177,21 @@ function App() {
         }
       />
 
-      <Route
-        path="/login"
-        element={<Login onSuccess={() => navigate("/plans")} />}
-      />
+      <Route path="/login" element={<Login onSuccess={() => navigate("/plans")} />} />
 
       <Route
         path="/dashboard"
-        element={
-          user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />
-        }
+        element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />}
       />
 
       <Route
         path="/downloads/basic"
-        element={
-          user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />
-        }
+        element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />}
       />
+
       <Route
         path="/downloads/premium"
-        element={
-          user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />
-        }
+        element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />}
       />
 
       <Route
