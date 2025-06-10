@@ -41,7 +41,7 @@ function Dashboard({ user, logout }) {
     tickerContainer.appendChild(tickerScript);
   }, []);
 
-  // ▶ Market Overview
+  // ▶ Market Overview Widget
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
@@ -95,6 +95,36 @@ function Dashboard({ user, logout }) {
     if (container) container.innerHTML = "";
     container.appendChild(script);
   }, []);
+
+  // ▶ Check subscription and trigger download
+  useEffect(() => {
+    const checkSubscriptionAndDownload = async () => {
+      try {
+        const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user.email }),
+        });
+
+        const data = await res.json();
+
+        if (data.active) {
+          const response = await fetch(`https://foxorox-backend.onrender.com/download?email=${user.email}`);
+          if (response.redirected) {
+            window.location.href = response.url;
+          }
+        } else {
+          console.warn("No active subscription");
+        }
+      } catch (err) {
+        console.error("Subscription check failed:", err);
+      }
+    };
+
+    if (user && user.emailVerified) {
+      checkSubscriptionAndDownload();
+    }
+  }, [user]);
 
   return (
     <div className="dashboard-container">
