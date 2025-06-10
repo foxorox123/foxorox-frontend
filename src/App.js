@@ -8,6 +8,9 @@ import Login from "./pages/Login";
 import PlansPage from "./pages/PlansPage";
 import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/dashboard";
+import DownloadsBasic from "./pages/DownloadsBasic";
+import DownloadsPremium from "./pages/DownloadsPremium";
+
 
 
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
@@ -125,15 +128,19 @@ function App() {
 
   const subscribe = (plan) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.url) window.location.href = data.url;
-        else alert("Error: No Stripe URL returned.");
-      });
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ plan }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.url) {
+        // 🔁 Redirect od razu do Stripe Checkout
+        window.location.href = data.url;
+      } else {
+        alert("Error: No Stripe URL returned.");
+      }
+    });
   };
 
   useEffect(() => {
