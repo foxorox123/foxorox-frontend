@@ -52,12 +52,14 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
           ) : (
             <button
               className="google-btn"
-              onClick={() => window.location.href = "https://foxorox-frontend.vercel.app/login"}
-             >
+              onClick={() =>
+                (window.location.href = "https://foxorox-frontend.vercel.app/login")
+              }
+            >
               Sign in
-             </button>
+            </button>
           )}
-
+        </div>
 
         <img src="/logo-foxorox.png" alt="Foxorox Logo" className="logo" />
         <h1>
