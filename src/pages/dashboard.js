@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 
 function Dashboard({ user, logout }) {
+  const navigate = useNavigate();
   const subscriptionType = "Global Yearly";
 
   const bullTips = [
@@ -16,7 +18,7 @@ function Dashboard({ user, logout }) {
     "🔻 Bear divergence on FTSE 100 hourly chart.",
   ];
 
-  // ▶ Ticker Tape: Futures and Key Indexes
+  // ▶ Ticker Tape
   useEffect(() => {
     const tickerScript = document.createElement("script");
     tickerScript.src = "https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js";
@@ -41,7 +43,7 @@ function Dashboard({ user, logout }) {
     tickerContainer.appendChild(tickerScript);
   }, []);
 
-  // ▶ Market Overview Widget
+  // ▶ TradingView Market Overview
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
@@ -96,9 +98,9 @@ function Dashboard({ user, logout }) {
     container.appendChild(script);
   }, []);
 
-  // ▶ Check subscription and trigger download
+  // ▶ Check subscription and navigate to /downloads
   useEffect(() => {
-    const checkSubscriptionAndDownload = async () => {
+    const checkSubscriptionAndRedirect = async () => {
       try {
         const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
           method: "POST",
@@ -109,10 +111,7 @@ function Dashboard({ user, logout }) {
         const data = await res.json();
 
         if (data.active) {
-          const response = await fetch(`https://foxorox-backend.onrender.com/download?email=${user.email}`);
-          if (response.redirected) {
-            window.location.href = response.url;
-          }
+          navigate("/downloads"); // ✅ Przekierowanie zamiast pobierania
         } else {
           console.warn("No active subscription");
         }
@@ -122,9 +121,9 @@ function Dashboard({ user, logout }) {
     };
 
     if (user && user.emailVerified) {
-      checkSubscriptionAndDownload();
+      checkSubscriptionAndRedirect();
     }
-  }, [user]);
+  }, [user, navigate]);
 
   return (
     <div className="dashboard-container">

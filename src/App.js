@@ -197,6 +197,15 @@ function App() {
     />
 
     <Route
+      path="/downloads/basic"
+      element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />}
+    />
+    <Route
+      path="/downloads/premium"
+      element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />}
+    />
+
+    <Route
       path="/plans"
       element={
         user ? (

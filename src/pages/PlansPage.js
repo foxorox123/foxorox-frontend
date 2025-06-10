@@ -13,7 +13,7 @@ function PlansPage({ user, logout, subscribe }) {
           alignItems: "center",
         }}
       >
-        <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 50 }} />
+        <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 100 }} />
         <div>
           <span style={{ marginRight: 15, fontWeight: "bold" }}>
             {user?.email}
