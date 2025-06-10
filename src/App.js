@@ -36,6 +36,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
     });
+
     const data = await res.json();
     return data.active;
   };
@@ -106,13 +107,12 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
 }
 
 function App() {
-  const [user, setUser] = useState(undefined); // loading state
+  const [user, setUser] = useState(undefined);
   const navigate = useNavigate();
 
   const subscribe = (plan) => {
     if (!user || !user.email) {
-      console.warn("User not ready yet. Retrying...");
-      setTimeout(() => subscribe(plan), 500);
+      alert("Error: No user email found.");
       return;
     }
 
@@ -127,16 +127,20 @@ function App() {
           window.location.href = data.url;
         } else {
           alert("Error: No Stripe URL returned.");
+          console.error("Stripe response:", data);
         }
+      })
+      .catch((err) => {
+        alert("Server error during subscription.");
+        console.error("Stripe error:", err);
       });
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
-      console.log("👤 Firebase auth:", usr);
       setUser(usr);
-
       const plan = localStorage.getItem("selectedPlan");
+
       if (usr && plan) {
         if (usr.emailVerified) {
           localStorage.removeItem("selectedPlan");
