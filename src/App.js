@@ -50,18 +50,21 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
               Sign out
             </button>
           ) : (
-            <button className="google-btn" onClick={loginWithGoogle}>
-              Sign in with Google
-            </button>
+            <button
+              className="google-btn"
+              onClick={() => window.location.href = "https://foxorox-frontend.vercel.app/login"}
+             >
+              Sign in
+             </button>
           )}
-        </div>
+
 
         <img src="/logo-foxorox.png" alt="Foxorox Logo" className="logo" />
         <h1>
           Welcome to <span className="highlight">Foxorox</span>
         </h1>
         <p className="subtitle">
-          AI-powered stock insights. Driven by 40+ years of trading experience.
+          AI-powered stock insights. Driven by 35+ years of trading experience.
         </p>
 
         <h3 style={{ color: "#fff", fontSize: "1.5em", marginBottom: "30px" }}>
