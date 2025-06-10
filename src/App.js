@@ -70,7 +70,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
         <div className="plans-grid">
           <div className="plan-card">
             <h2>🟢 Basic US Monthly</h2>
-            <p>Basic AI predictions for NASDAQ & S&P 500.</p>
+            <p>Basic AI predictions for NASDAQ100 & S&P 500.</p>
             <button onClick={() => handleSubscribe("basic_monthly")}>
               Subscribe – $79.99
             </button>
