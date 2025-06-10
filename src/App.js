@@ -1,8 +1,10 @@
+// ✅ FRONTEND (App.js)
+
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, provider } from "./firebase-config";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Tips from "./pages/Tips";
 import Login from "./pages/Login";
 import PlansPage from "./pages/PlansPage";
@@ -10,8 +12,6 @@ import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/dashboard";
 import DownloadsBasic from "./pages/DownloadsBasic";
 import DownloadsPremium from "./pages/DownloadsPremium";
-
-
 
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
   const navigate = useNavigate();
@@ -75,7 +75,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
           <div className="plan-card">
             <h2>🟢 Basic US Monthly</h2>
             <p>
-              AI-powered candle pattern prediction for <strong>NASDAQ</strong> and <strong>S&P 500</strong>.
+              AI-powered candle pattern prediction for <strong>NASDAQ</strong> and <strong>S&amp;P 500</strong>.
               Ideal for starting with algorithmic insights.
             </p>
             <button onClick={() => handleSubscribe("basic_monthly")}>
@@ -87,7 +87,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
             <h2>🔵 Basic US Yearly</h2>
             <p>
               Full year of AI predictions at a discounted price.
-              Covers <strong>NASDAQ</strong> and <strong>S&P 500</strong>.
+              Covers <strong>NASDAQ</strong> and <strong>S&amp;P 500</strong>.
             </p>
             <button onClick={() => handleSubscribe("basic_yearly")}>
               Subscribe – $790.00
@@ -99,7 +99,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
             <p>
               Includes <strong>Markov process modeling</strong> and AI insights for:
               <br />
-              <em>NASDAQ, S&P 500, DAX 40, WIG20, CAC 40, FTSE 100, Nikkei 225</em>.
+              <em>NASDAQ, S&amp;P 500, DAX 40, WIG20, CAC 40, FTSE 100, Nikkei 225</em>.
             </p>
             <button onClick={() => handleSubscribe("global_monthly")}>
               Subscribe – $129.99
@@ -123,24 +123,23 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
 }
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(undefined); // ważne: undefined = ładowanie
   const navigate = useNavigate();
 
   const subscribe = (plan) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ plan }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.url) {
-        // 🔁 Redirect od razu do Stripe Checkout
-        window.location.href = data.url;
-      } else {
-        alert("Error: No Stripe URL returned.");
-      }
-    });
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ plan, email: user.email })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          alert("Error: No Stripe URL returned.");
+        }
+      });
   };
 
   useEffect(() => {
@@ -161,10 +160,10 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  if (user === undefined) return <div>Loading...</div>;
+
   const loginWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then(() => {})
-      .catch((error) => alert("Login error: " + error.message));
+    signInWithPopup(auth, provider).catch((error) => alert("Login error: " + error.message));
   };
 
   const logout = () => {
@@ -174,57 +173,18 @@ function App() {
   };
 
   return (
-  <Routes>
-    <Route
-      path="/"
-      element={
-        <MainPage
-          user={user}
-          loginWithGoogle={loginWithGoogle}
-          logout={logout}
-          subscribe={subscribe}
-        />
-      }
-    />
-
-    <Route
-      path="/login"
-      element={<Login onSuccess={() => navigate("/dashboard")} />}
-    />
-
-    <Route
-      path="/dashboard"
-      element={
-        user ? (
-          <Dashboard user={user} logout={logout} />
-        ) : (
-          <Navigate to="/login" />
-        )
-      }
-    />
-
-    <Route
-      path="/downloads/basic"
-      element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />}
-    />
-    <Route
-      path="/downloads/premium"
-      element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />}
-    />
-
-    <Route
-      path="/plans"
-      element={
-        user ? (
-          <PlansPage user={user} logout={logout} subscribe={subscribe} />
-        ) : (
-          <Navigate to="/login" />
-        )
-      }
-    />
-  </Routes>
-);
-
+    <Routes>
+      <Route
+        path="/"
+        element={<MainPage user={user} loginWithGoogle={loginWithGoogle} logout={logout} subscribe={subscribe} />}
+      />
+      <Route path="/login" element={<Login onSuccess={() => navigate("/dashboard")} />} />
+      <Route path="/dashboard" element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />} />
+      <Route path="/downloads/basic" element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />} />
+      <Route path="/downloads/premium" element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />} />
+      <Route path="/plans" element={user ? <PlansPage user={user} logout={logout} subscribe={subscribe} /> : <Navigate to="/login" />} />
+    </Routes>
+  );
 }
 
 export default App;

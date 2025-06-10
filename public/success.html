@@ -1,19 +1,51 @@
+<!-- ✅ success.html / thank-you.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Thank You!</title>
+  <style>
+    body {
+      text-align: center;
+      margin-top: 50px;
+      font-family: Arial, sans-serif;
+    }
+    a.download-link {
+      font-size: 18px;
+      display: inline-block;
+      margin-top: 20px;
+    }
+  </style>
 </head>
-<body style="text-align: center; margin-top: 50px;">
+<body>
   <h2>Thank you for subscribing to Foxorox!</h2>
   <p>Your payment was successful. You can now download the desktop application:</p>
 
-  <!-- 🟢 Link do pobrania pliku EXE -->
-  <a href="https://yourdomain.com/download/FoxoroxInstaller.exe" download style="font-size: 18px;">
-    ⬇️ Download Foxorox for Windows (.exe)
-  </a>
+  <div id="download-container">
+    <p>Loading download link...</p>
+  </div>
 
-  <br /><br />
+  <br />
   <a href="/">🔙 Back to Home</a>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const email = params.get("email");
+
+    if (email) {
+      const link = document.createElement("a");
+      link.href = `https://foxorox-backend.onrender.com/download?email=${encodeURIComponent(email)}`;
+      link.download = true;
+      link.textContent = "⬇️ Download Foxorox for Windows (.exe)";
+      link.className = "download-link";
+
+      const container = document.getElementById("download-container");
+      container.innerHTML = "";
+      container.appendChild(link);
+    } else {
+      document.getElementById("download-container").innerHTML =
+        "<p style='color:red;'>Missing email parameter. Please contact support.</p>";
+    }
+  </script>
 </body>
 </html>
