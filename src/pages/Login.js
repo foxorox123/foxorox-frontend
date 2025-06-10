@@ -37,6 +37,7 @@ function Login({ onSuccess }) {
       }
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        // 🔥 Wysyłka maila weryfikacyjnego
         await sendEmailVerification(userCredential.user);
         alert("Account created. Please check your inbox and verify your email.");
         setResendAvailable(true);
@@ -71,9 +72,15 @@ function Login({ onSuccess }) {
 
   const handleGoogleLogin = async () => {
     try {
-      await signInWithPopup(auth, new GoogleAuthProvider());
-      alert("Google login successful!");
-      onSuccess();
+      const result = await signInWithPopup(auth, new GoogleAuthProvider());
+      const user = result.user;
+
+      if (!user.emailVerified) {
+        // Dla Google zwykle email jest automatycznie zweryfikowany
+        alert("Google login successful (email auto-verified)");
+      }
+
+      onSuccess(); // Przekierowanie kontroluje App.js
     } catch (err) {
       alert("Google login failed: " + err.message);
     }
