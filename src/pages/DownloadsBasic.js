@@ -1,64 +1,56 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Dashboard.css"; // Użyj wspólnego stylu
 
-function DownloadsBasic({ user }) {
+function DownloadsPremium({ user }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const verifyAndDownload = async () => {
+    const downloadFile = async () => {
       try {
-        const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: user.email }),
-        });
-
-        const data = await res.json();
-
-        if (data.active) {
-          // Pobierz wersję Basic
-          const response = await fetch(`https://foxorox-backend.onrender.com/download/basic?email=${user.email}`);
-          if (response.redirected) {
-            window.location.href = response.url;
-          }
+        const response = await fetch("https://foxorox-backend.onrender.com/download?email=" + encodeURIComponent(user.email));
+        if (response.status === 200) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "FoxoroxApp.exe";
+          a.click();
         } else {
-          alert("Download failed or subscription inactive.");
-          navigate("/plans");
+          alert("No active subscription or download failed.");
         }
-      } catch (err) {
-        console.error("Error in verification of your subscription:", err);
-        alert("Błąd serwera. Spróbuj ponownie później.");
+      } catch (error) {
+        console.error("Error downloading:", error);
+        alert("Download error.");
       }
     };
 
-    if (user?.emailVerified) verifyAndDownload();
-  }, [user, navigate]);
+    if (user?.email) {
+      downloadFile();
+    }
+  }, [user]);
 
   return (
-    <div className="dashboard-container">
-      <header className="dashboard-header">
-        <div className="left">
-          <h1 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <img src="/logo-foxorox.png" alt="Foxorox Logo" style={{ height: "50px" }} />
-            Foxorox Basic Download
-          </h1>
-        </div>
-      </header>
-      <main className="dashboard-content">
-        <p style={{ color: "#ccc", marginTop: "30px" }}>
-          Jeżeli pobieranie się nie rozpoczęło, kliknij poniżej:
-        </p>
-        <a
-          href={`https://foxorox-backend.onrender.com/download/basic?email=${user?.email}`}
-          className="google-btn"
-          download
-        >
-          ⬇️ Pobierz Foxorox Basic (.exe)
-        </a>
-      </main>
+    <div className="main-container">
+      <h1>Your download is starting...</h1>
+      <p>If nothing happens, check your subscription or contact support.</p>
+
+      <button
+        style={{
+          marginTop: "30px",
+          padding: "10px 20px",
+          backgroundColor: "#f58220",
+          color: "white",
+          border: "none",
+          borderRadius: "6px",
+          fontWeight: "bold",
+          cursor: "pointer"
+        }}
+        onClick={() => navigate("/dashboard")}
+      >
+        Go to Dashboard
+      </button>
     </div>
   );
 }
 
-export default DownloadsBasic;
+export default DownloadsPremium;
