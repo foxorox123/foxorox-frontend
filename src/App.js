@@ -108,6 +108,43 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
         </div>
       </header>
     </div>
+</div> {/* <-- plans-grid koniec */}
+
+
+<footer style={{ backgroundColor: "#111", color: "#ccc", padding: "40px 20px", marginTop: 60 }}>
+  <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", flexWrap: "wrap", justifyContent: "space-between" }}>
+    <div style={{ marginBottom: 20 }}>
+      <h3 style={{ color: "#fff" }}>Foxorox</h3>
+      <p style={{ maxWidth: 300 }}>
+        AI-powered stock market predictions. Backed by decades of real trading experience.
+      </p>
+    </div>
+
+    <div>
+      <h4 style={{ color: "#fff" }}>Company</h4>
+      <ul style={{ listStyle: "none", padding: 0 }}>
+        <li><a href="/about" style={{ color: "#ccc", textDecoration: "none" }}>About</a></li>
+        <li><a href="/faq" style={{ color: "#ccc", textDecoration: "none" }}>FAQ</a></li>
+        <li><a href="/contact" style={{ color: "#ccc", textDecoration: "none" }}>Contact</a></li>
+        <li><a href="/terms" style={{ color: "#ccc", textDecoration: "none" }}>Terms of Use</a></li>
+        <li><a href="/privacy" style={{ color: "#ccc", textDecoration: "none" }}>Privacy Policy</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 style={{ color: "#fff" }}>Contact Us</h4>
+      <p>Email: <a href="mailto:support@foxorox.ai" style={{ color: "#ccc" }}>support@foxorox.ai</a></p>
+      <p>Support hours: Mon–Fri, 9AM–5PM (CET)</p>
+    </div>
+  </div>
+
+  <div style={{ textAlign: "center", marginTop: 40, fontSize: 14 }}>
+    &copy; {new Date().getFullYear()} Foxorox. All rights reserved.
+  </div>
+</footer>
+
+</div>  {/* ← to już było wcześniej */}
+
   );
 }
 
