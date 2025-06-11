@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 
 function Dashboard({ user, logout }) {
   const navigate = useNavigate();
-  const subscriptionType = "Global Yearly";
+  const [subscriptionType, setSubscriptionType] = useState("");
 
   const bullTips = [
     "📈 AI suggests upward momentum in S&P 500.",
@@ -18,7 +18,7 @@ function Dashboard({ user, logout }) {
     "🔻 Bear divergence on FTSE 100 hourly chart.",
   ];
 
-  // ▶ Ticker Tape
+  // ▶ Ticker Tape Widget
   useEffect(() => {
     const tickerScript = document.createElement("script");
     tickerScript.src = "https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js";
@@ -43,7 +43,7 @@ function Dashboard({ user, logout }) {
     tickerContainer.appendChild(tickerScript);
   }, []);
 
-  // ▶ TradingView Market Overview
+  // ▶ Market Overview Widget
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
@@ -98,9 +98,9 @@ function Dashboard({ user, logout }) {
     container.appendChild(script);
   }, []);
 
-  // ▶ Check subscription and navigate to /downloads
+  // ▶ Check subscription and set type
   useEffect(() => {
-    const checkSubscriptionAndRedirect = async () => {
+    const checkSubscription = async () => {
       try {
         const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
           method: "POST",
@@ -110,20 +110,27 @@ function Dashboard({ user, logout }) {
 
         const data = await res.json();
 
-       // if (data.active) {
-       //   navigate("/downloads"); // ✅ Przekierowanie zamiast pobierania
-       // } else {
-       //   console.warn("No active subscription");
-       // }
+        if (data.active && data.plan) {
+          const planMap = {
+            basic_monthly: "Basic Monthly",
+            basic_yearly: "Basic Yearly",
+            global_monthly: "Global Monthly",
+            global_yearly: "Global Yearly",
+          };
+          setSubscriptionType(planMap[data.plan] || "Active");
+        } else {
+          setSubscriptionType("Inactive");
+        }
       } catch (err) {
         console.error("Subscription check failed:", err);
+        setSubscriptionType("Error");
       }
     };
 
     if (user && user.emailVerified) {
-      checkSubscriptionAndRedirect();
+      checkSubscription();
     }
-  }, [user, navigate]);
+  }, [user]);
 
   return (
     <div className="dashboard-container">
