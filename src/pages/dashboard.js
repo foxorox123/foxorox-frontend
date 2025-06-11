@@ -110,11 +110,11 @@ function Dashboard({ user, logout }) {
 
         const data = await res.json();
 
-        if (data.active) {
-          navigate("/downloads"); // ✅ Przekierowanie zamiast pobierania
-        } else {
-          console.warn("No active subscription");
-        }
+       // if (data.active) {
+       //   navigate("/downloads"); // ✅ Przekierowanie zamiast pobierania
+       // } else {
+       //   console.warn("No active subscription");
+       // }
       } catch (err) {
         console.error("Subscription check failed:", err);
       }
