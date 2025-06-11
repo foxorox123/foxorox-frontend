@@ -68,6 +68,8 @@ function DownloadsPremium({ user }) {
             cursor: "pointer"
           }}
         >
+          Przejdź do Dashboard
+        </button>
       </main>
     </div>
   );

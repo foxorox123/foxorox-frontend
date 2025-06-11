@@ -56,7 +56,7 @@ function DownloadsBasic({ user }) {
         >
           ⬇️ Pobierz Foxorox Basic (.exe)
         </a>
-       <button
+        <button
           onClick={() => navigate("/dashboard")}
           style={{
             marginTop: "40px",
@@ -69,6 +69,8 @@ function DownloadsBasic({ user }) {
             cursor: "pointer"
           }}
         >
+          Przejdź do Dashboard
+        </button>
       </main>
     </div>
   );
