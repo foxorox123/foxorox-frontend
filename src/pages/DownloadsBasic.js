@@ -9,6 +9,7 @@ function DownloadsPremium({ user }) {
       try {
         const response = await fetch("https://foxorox-backend.onrender.com/download?email=" + encodeURIComponent(user.email));
         if (response.status === 200) {
+          // pobieranie pliku
           const blob = await response.blob();
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement("a");
@@ -33,19 +34,18 @@ function DownloadsPremium({ user }) {
     <div className="main-container">
       <h1>Your download is starting...</h1>
       <p>If nothing happens, check your subscription or contact support.</p>
-
       <button
+        onClick={() => navigate("/dashboard")}
         style={{
           marginTop: "30px",
           padding: "10px 20px",
-          backgroundColor: "#f58220",
+          fontSize: "16px",
+          backgroundColor: "#4CAF50",
           color: "white",
           border: "none",
-          borderRadius: "6px",
-          fontWeight: "bold",
+          borderRadius: "5px",
           cursor: "pointer"
         }}
-        onClick={() => navigate("/dashboard")}
       >
         Go to Dashboard
       </button>

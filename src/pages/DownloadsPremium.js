@@ -44,29 +44,31 @@ function DownloadsPremium({ user }) {
           </h1>
         </div>
       </header>
-
       <main className="dashboard-content">
         <p style={{ color: "#ccc", marginTop: "30px" }}>
           Jeżeli pobieranie się nie rozpoczęło, kliknij poniżej:
         </p>
-
         <a
           href={`https://foxorox-backend.onrender.com/download/premium?email=${user?.email}`}
           className="google-btn"
           download
-          style={{ marginBottom: "20px", display: "inline-block" }}
         >
           ⬇️ Pobierz Foxorox Premium (.exe)
         </a>
-
-        <br />
-
         <button
-          className="google-btn"
-          style={{ marginTop: "20px" }}
           onClick={() => navigate("/dashboard")}
+          style={{
+            marginTop: "40px",
+            padding: "10px 20px",
+            fontSize: "16px",
+            backgroundColor: "#4CAF50",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer"
+          }}
         >
-          🔙 Go to Dashboard
+          Go to Dashboard
         </button>
       </main>
     </div>
