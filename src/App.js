@@ -10,8 +10,8 @@ import Dashboard from "./pages/dashboard";
 import DownloadsBasic from "./pages/DownloadsBasic";
 import DownloadsPremium from "./pages/DownloadsPremium";
 import About from "./pages/About";
-import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
+import FAQ from "./pages/FAQ";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 
@@ -250,6 +250,11 @@ function App() {
       />
 
       <Route path="/tips" element={<Tips />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/faq" element={<FAQ />} />
+      <Route path="/terms" element={<Terms />} />
+      <Route path="/privacy" element={<Privacy />} /> 
     </Routes>
   );
 }
