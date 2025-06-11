@@ -9,6 +9,11 @@ import PlansPage from "./pages/PlansPage";
 import Dashboard from "./pages/dashboard";
 import DownloadsBasic from "./pages/DownloadsBasic";
 import DownloadsPremium from "./pages/DownloadsPremium";
+import About from "./pages/About";
+import About from "./pages/FAQ";
+import About from "./pages/Contact";
+import About from "./pages/Terms";
+import About from "./pages/Privacy";
 
 function MainPage({ user, loginWithGoogle, logout, subscribe }) {
   const navigate = useNavigate();
