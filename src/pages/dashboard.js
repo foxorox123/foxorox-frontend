@@ -98,46 +98,39 @@ function Dashboard({ user, logout }) {
     container.appendChild(script);
   }, []);
 
-  // ▶ Check subscription and navigate to /dashboard
   // ▶ Check subscription and set plan type
- useEffect(() => {
-  const checkSubscription = async () => {
-    try {
-      const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user.email }),
-      });
+  useEffect(() => {
+    const checkSubscription = async () => {
+      try {
+        const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user.email }),
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (data.active && data.plan) {
-        const planMap = {
-          basic_monthly: "Basic Monthly",
-          basic_yearly: "Basic Yearly",
-          global_monthly: "Global Monthly",
-          global_yearly: "Global Yearly",
-        };
-        setSubscriptionType(planMap[data.plan] || "Active");
-      } else {
-        setSubscriptionType("Inactive");
+        if (data.active && data.plan) {
+          const planMap = {
+            basic_monthly: "Basic Monthly",
+            basic_yearly: "Basic Yearly",
+            global_monthly: "Global Monthly",
+            global_yearly: "Global Yearly",
+          };
+          setSubscriptionType(planMap[data.plan] || "Active");
+        } else {
+          setSubscriptionType("Inactive");
+        }
+      } catch (err) {
+        console.error("Subscription check failed:", err);
+        setSubscriptionType("Error");
       }
-    } catch (err) {
-      console.error("Subscription check failed:", err);
-      setSubscriptionType("Error");
-    }
-  };
-
-  if (user && user.emailVerified) {
-    checkSubscription();
-  }
-}, [user]);
-
+    };
 
     if (user && user.emailVerified) {
-      checkSubscriptionAndRedirect();
+      checkSubscription();
     }
-  }, [user, navigate]);
+  }, [user]);
 
   return (
     <div className="dashboard-container">
