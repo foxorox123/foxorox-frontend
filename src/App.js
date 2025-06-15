@@ -3,6 +3,7 @@ import "./App.css";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, provider } from "./firebase-config";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
+
 import Tips from "./pages/Tips";
 import Login from "./pages/Login";
 import PlansPage from "./pages/PlansPage";
@@ -51,9 +52,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
       <header className="hero">
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           {user ? (
-            <button className="google-btn" onClick={logout}>
-              Sign out
-            </button>
+            <button className="google-btn" onClick={logout}>Sign out</button>
           ) : (
             <button
               className="google-btn"
@@ -68,9 +67,7 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
         <h1>
           Welcome to <span className="highlight">Foxorox</span>
         </h1>
-        <p className="subtitle">
-          AI-powered stock insights. Driven by 35+ years of trading experience.
-        </p>
+        <p className="subtitle">AI-powered stock insights. Driven by 35+ years of trading experience.</p>
 
         <h3 style={{ color: "#fff", fontSize: "1.5em", marginBottom: "30px" }}>
           Choose your plan:
@@ -112,7 +109,13 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
       </header>
 
       <footer style={{ backgroundColor: "#111", color: "#ccc", padding: "40px 20px", marginTop: 60 }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", flexWrap: "wrap", justifyContent: "space-between" }}>
+        <div style={{
+          maxWidth: 1200,
+          margin: "0 auto",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between"
+        }}>
           <div style={{ marginBottom: 20 }}>
             <h3 style={{ color: "#fff" }}>Foxorox</h3>
             <p style={{ maxWidth: 300 }}>
@@ -123,17 +126,17 @@ function MainPage({ user, loginWithGoogle, logout, subscribe }) {
           <div>
             <h4 style={{ color: "#fff" }}>Company</h4>
             <ul style={{ listStyle: "none", padding: 0 }}>
-              <li><a href="/about" style={{ color: "#ccc", textDecoration: "none" }}>About</a></li>
-              <li><a href="/faq" style={{ color: "#ccc", textDecoration: "none" }}>FAQ</a></li>
-              <li><a href="/contact" style={{ color: "#ccc", textDecoration: "none" }}>Contact</a></li>
-              <li><a href="/terms" style={{ color: "#ccc", textDecoration: "none" }}>Terms of Use</a></li>
-              <li><a href="/privacy" style={{ color: "#ccc", textDecoration: "none" }}>Privacy Policy</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/faq">FAQ</a></li>
+              <li><a href="/contact">Contact</a></li>
+              <li><a href="/terms">Terms of Use</a></li>
+              <li><a href="/privacy">Privacy Policy</a></li>
             </ul>
           </div>
 
           <div>
             <h4 style={{ color: "#fff" }}>Contact Us</h4>
-            <p>Email: <a href="mailto:support@foxorox.ai" style={{ color: "#ccc" }}>support@foxorox.ai</a></p>
+            <p>Email: <a href="mailto:support@foxorox.ai">support@foxorox.ai</a></p>
             <p>Support hours: Mon–Fri, 9AM–5PM (CET)</p>
           </div>
         </div>
@@ -164,10 +167,11 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         if (data.url) {
+          localStorage.setItem("postPaymentPlan", plan);
+          localStorage.setItem("postPaymentEmail", user.email);
           window.location.href = data.url;
         } else {
           alert("Error: No Stripe URL returned.");
-          console.error("Stripe response:", data);
         }
       })
       .catch((err) => {
@@ -179,15 +183,24 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
       setUser(usr);
-      const plan = localStorage.getItem("selectedPlan");
 
-      if (usr && plan) {
-        if (usr.emailVerified) {
+      if (usr) {
+        const selectedPlan = localStorage.getItem("selectedPlan");
+        const postPaymentPlan = localStorage.getItem("postPaymentPlan");
+        const postPaymentEmail = localStorage.getItem("postPaymentEmail");
+
+        if (selectedPlan && usr.emailVerified) {
           localStorage.removeItem("selectedPlan");
-          subscribe(plan);
-        } else {
-          alert("Please verify your email before subscribing.");
-          navigate("/plans");
+          subscribe(selectedPlan);
+        } else if (postPaymentPlan && postPaymentEmail === usr.email) {
+          localStorage.removeItem("postPaymentPlan");
+          localStorage.removeItem("postPaymentEmail");
+
+          if (postPaymentPlan.startsWith("basic")) {
+            navigate("/downloads/basic");
+          } else {
+            navigate("/downloads/premium");
+          }
         }
       }
     });
@@ -220,41 +233,17 @@ function App() {
           />
         }
       />
-
       <Route path="/login" element={<Login onSuccess={() => navigate("/plans")} />} />
-
-      <Route
-        path="/dashboard"
-        element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />}
-      />
-
-      <Route
-        path="/downloads/basic"
-        element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />}
-      />
-
-      <Route
-        path="/downloads/premium"
-        element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />}
-      />
-
-      <Route
-        path="/plans"
-        element={
-          user ? (
-            <PlansPage user={user} logout={logout} subscribe={subscribe} />
-          ) : (
-            <Navigate to="/login" />
-          )
-        }
-      />
-
+      <Route path="/dashboard" element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />} />
+      <Route path="/downloads/basic" element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />} />
+      <Route path="/downloads/premium" element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />} />
+      <Route path="/plans" element={user ? <PlansPage user={user} logout={logout} subscribe={subscribe} /> : <Navigate to="/login" />} />
       <Route path="/tips" element={<Tips />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/faq" element={<FAQ />} />
       <Route path="/terms" element={<Terms />} />
-      <Route path="/privacy" element={<Privacy />} /> 
+      <Route path="/privacy" element={<Privacy />} />
     </Routes>
   );
 }

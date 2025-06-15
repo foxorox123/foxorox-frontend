@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 
 function Dashboard({ user, logout }) {
   const navigate = useNavigate();
-  const [subscriptionType, setSubscriptionType] = useState("");
+  const [subscriptionType, setSubscriptionType] = React.useState("");
 
   const bullTips = [
     "📈 AI suggests upward momentum in S&P 500.",
@@ -18,7 +18,7 @@ function Dashboard({ user, logout }) {
     "🔻 Bear divergence on FTSE 100 hourly chart.",
   ];
 
-  // ▶ Ticker Tape Widget
+  // ▶ Ticker Tape
   useEffect(() => {
     const tickerScript = document.createElement("script");
     tickerScript.src = "https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js";
@@ -43,7 +43,7 @@ function Dashboard({ user, logout }) {
     tickerContainer.appendChild(tickerScript);
   }, []);
 
-  // ▶ Market Overview Widget
+  // ▶ TradingView Market Overview
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
@@ -98,39 +98,46 @@ function Dashboard({ user, logout }) {
     container.appendChild(script);
   }, []);
 
-  // ▶ Check subscription and set type
-  useEffect(() => {
-    const checkSubscription = async () => {
-      try {
-        const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: user.email }),
-        });
+  // ▶ Check subscription and navigate to /dashboard
+  // ▶ Check subscription and set plan type
+ useEffect(() => {
+  const checkSubscription = async () => {
+    try {
+      const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: user.email }),
+      });
 
-        const data = await res.json();
+      const data = await res.json();
 
-        if (data.active && data.plan) {
-          const planMap = {
-            basic_monthly: "Basic Monthly",
-            basic_yearly: "Basic Yearly",
-            global_monthly: "Global Monthly",
-            global_yearly: "Global Yearly",
-          };
-          setSubscriptionType(planMap[data.plan] || "Active");
-        } else {
-          setSubscriptionType("Inactive");
-        }
-      } catch (err) {
-        console.error("Subscription check failed:", err);
-        setSubscriptionType("Error");
+      if (data.active && data.plan) {
+        const planMap = {
+          basic_monthly: "Basic Monthly",
+          basic_yearly: "Basic Yearly",
+          global_monthly: "Global Monthly",
+          global_yearly: "Global Yearly",
+        };
+        setSubscriptionType(planMap[data.plan] || "Active");
+      } else {
+        setSubscriptionType("Inactive");
       }
-    };
+    } catch (err) {
+      console.error("Subscription check failed:", err);
+      setSubscriptionType("Error");
+    }
+  };
+
+  if (user && user.emailVerified) {
+    checkSubscription();
+  }
+}, [user]);
+
 
     if (user && user.emailVerified) {
-      checkSubscription();
+      checkSubscriptionAndRedirect();
     }
-  }, [user]);
+  }, [user, navigate]);
 
   return (
     <div className="dashboard-container">
