@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Dashboard.css"; // Użyj wspólnego stylu
+import "./Dashboard.css";
 
 function DownloadsBasic({ user }) {
   const navigate = useNavigate();
@@ -8,31 +8,44 @@ function DownloadsBasic({ user }) {
   useEffect(() => {
     const verifyAndDownload = async () => {
       try {
+        const deviceId =
+          localStorage.getItem("deviceId") || crypto.randomUUID();
+        localStorage.setItem("deviceId", deviceId);
+
         const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: user.email }),
+          body: JSON.stringify({
+            email: user.email,
+            device_id: deviceId,
+          }),
         });
 
         const data = await res.json();
 
         if (data.active) {
-          // Pobierz wersję Basic
-          const response = await fetch(`https://foxorox-backend.onrender.com/download/basic?email=${user.email}`);
-          if (response.redirected) {
-            window.location.href = response.url;
+          const downloadUrl = `https://foxorox-backend.onrender.com/download/basic?email=${encodeURIComponent(user.email)}`;
+          const response = await fetch(downloadUrl);
+
+          if (response.ok && response.headers.get("content-disposition")) {
+            // start download
+            window.location.href = downloadUrl;
+          } else {
+            alert("Download failed. Try again.");
           }
         } else {
           alert("Download failed or subscription inactive.");
           navigate("/plans");
         }
       } catch (err) {
-        console.error("Error in verification of your subscription:", err);
+        console.error("Error verifying subscription:", err);
         alert("Błąd serwera. Spróbuj ponownie później.");
       }
     };
 
-    if (user?.emailVerified) verifyAndDownload();
+    if (user?.emailVerified) {
+      verifyAndDownload();
+    }
   }, [user, navigate]);
 
   return (
@@ -45,17 +58,19 @@ function DownloadsBasic({ user }) {
           </h1>
         </div>
       </header>
+
       <main className="dashboard-content">
         <p style={{ color: "#ccc", marginTop: "30px" }}>
           Jeżeli pobieranie się nie rozpoczęło, kliknij poniżej:
         </p>
+
         <a
-          href={`https://foxorox-backend.onrender.com/download/basic?email=${user?.email}`}
+          href={`https://foxorox-backend.onrender.com/download/basic?email=${encodeURIComponent(user?.email)}`}
           className="google-btn"
-          download
         >
           ⬇️ Pobierz Foxorox Basic (.exe)
         </a>
+
         <button
           onClick={() => navigate("/dashboard")}
           style={{
@@ -66,7 +81,7 @@ function DownloadsBasic({ user }) {
             color: "white",
             border: "none",
             borderRadius: "5px",
-            cursor: "pointer"
+            cursor: "pointer",
           }}
         >
           Przejdź do Dashboard
