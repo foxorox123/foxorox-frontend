@@ -1,7 +1,8 @@
+// ✅ App.js
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { signOut, onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase-config";
+import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { auth, provider } from "./firebase-config";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 
 import Tips from "./pages/Tips";
@@ -21,17 +22,22 @@ function App() {
   const [user, setUser] = useState(undefined);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (usr) => {
+      setUser(usr);
+    });
+    return () => unsubscribe();
+  }, []);
+
   const subscribeToStripe = (plan, email) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan, email }),
+      body: JSON.stringify({ plan, email })
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.url) {
-          localStorage.setItem("postPaymentPlan", plan);
-          localStorage.setItem("postPaymentEmail", email);
           window.location.href = data.url;
         } else {
           alert("Error: No Stripe URL returned.");
@@ -49,37 +55,6 @@ function App() {
       navigate("/");
     });
   };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (usr) => {
-      setUser(usr);
-
-      const selectedPlan = localStorage.getItem("selectedPlan");
-      const postPaymentPlan = localStorage.getItem("postPaymentPlan");
-      const postPaymentEmail = localStorage.getItem("postPaymentEmail");
-
-      // Jeśli użytkownik wraca po opłaceniu Stripe i jest zalogowany
-      if (usr && usr.email === postPaymentEmail) {
-        localStorage.removeItem("postPaymentPlan");
-        localStorage.removeItem("postPaymentEmail");
-
-        if (postPaymentPlan && postPaymentPlan.startsWith("basic")) {
-          navigate("/downloads/basic");
-        } else if (postPaymentPlan) {
-          navigate("/downloads/premium");
-        }
-        return;
-      }
-
-      // Jeśli dopiero się loguje do subskrypcji
-      if (usr && usr.emailVerified && selectedPlan) {
-        localStorage.removeItem("selectedPlan");
-        subscribeToStripe(selectedPlan, usr.email);
-      }
-    });
-
-    return () => unsubscribe();
-  }, [navigate]);
 
   if (user === undefined) return <div style={{ color: "white" }}>Loading...</div>;
 

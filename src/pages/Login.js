@@ -1,3 +1,4 @@
+// src/pages/Login.js
 import React, { useState } from "react";
 import {
   signInWithEmailAndPassword,
@@ -21,32 +22,47 @@ function Login({ onSuccess }) {
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const handleEmailAuth = async () => {
-    if (!isValidEmail(email)) return alert("Invalid email");
-    if (password.length < 6) return alert("Password too short");
+    if (!isValidEmail(email)) return alert("Invalid email.");
+    if (password.length < 6) return alert("Password too short.");
 
     if (isRegistering) {
-      if (password !== repeatPassword) return alert("Passwords do not match");
-
+      if (password !== repeatPassword) return alert("Passwords do not match.");
       try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        await sendEmailVerification(userCredential.user);
-        alert("Check your inbox to verify email.");
+        const { user } = await createUserWithEmailAndPassword(auth, email, password);
+        await sendEmailVerification(user);
+        alert("Account created. Check your inbox.");
         setResendAvailable(true);
       } catch (err) {
-        alert("Registration error: " + err.message);
+        alert(err.message);
       }
     } else {
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        if (!userCredential.user.emailVerified) {
-          alert("Verify your email first.");
-          setResendAvailable(true);
+        const { user } = await signInWithEmailAndPassword(auth, email, password);
+        if (!user.emailVerified) {
+          alert("Please verify your email first.");
           return;
         }
-        alert("Login successful!");
-        onSuccess();
+        const plan = localStorage.getItem("selectedPlan");
+        if (plan) {
+          localStorage.removeItem("selectedPlan");
+          fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ plan, email: user.email }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.url) {
+                window.location.href = data.url;
+              } else {
+                alert("Error during redirect.");
+              }
+            });
+        } else {
+          onSuccess();
+        }
       } catch (err) {
-        alert("Login error: " + err.message);
+        alert(err.message);
       }
     }
   };
@@ -54,39 +70,43 @@ function Login({ onSuccess }) {
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
-      alert("Google login successful.");
-      onSuccess();
+      const user = result.user;
+
+      const plan = localStorage.getItem("selectedPlan");
+      if (plan) {
+        localStorage.removeItem("selectedPlan");
+        fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ plan, email: user.email }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.url) window.location.href = data.url;
+          });
+      } else {
+        onSuccess();
+      }
     } catch (err) {
       alert("Google login failed: " + err.message);
-    }
-  };
-
-  const handleResendEmail = async () => {
-    const user = auth.currentUser;
-    if (user && !user.emailVerified) {
-      await sendEmailVerification(user);
-      alert("Verification email sent again.");
     }
   };
 
   return (
     <div className="login-container">
       <h2>{isRegistering ? "Register" : "Login"} to Foxorox</h2>
-
       <input
         type="email"
-        placeholder="Email"
+        placeholder="Email address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       /><br />
-
       <input
         type="password"
-        placeholder="Password (min. 6)"
+        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       /><br />
-
       {isRegistering && (
         <input
           type="password"
@@ -95,34 +115,22 @@ function Login({ onSuccess }) {
           onChange={(e) => setRepeatPassword(e.target.value)}
         />
       )}<br />
-
       <button onClick={handleEmailAuth}>
-        {isRegistering ? "📝 Register" : "🔓 Login"}
+        {isRegistering ? "Register" : "Login"}
       </button>
-
-      {resendAvailable && !isRegistering && (
-        <button onClick={handleResendEmail}>📩 Resend verification email</button>
-      )}
-
-      <div style={{ margin: "15px 0" }}>
-        <button className="google-btn" onClick={handleGoogleLogin}>
-          🔐 Sign in with Google
-        </button>
-      </div>
-
-      <p>
-        {isRegistering ? "Already have an account?" : "No account?"}{" "}
-        <button onClick={() => {
-          setIsRegistering(!isRegistering);
-          setResendAvailable(false);
-        }} style={{
+      <button className="google-btn" onClick={handleGoogleLogin}>
+        Sign in with Google
+      </button>
+      <p style={{ color: "#aaa", fontSize: "0.9em" }}>
+        {isRegistering ? "Already have an account?" : "Don't have an account?"}{" "}
+        <button onClick={() => setIsRegistering(!isRegistering)} style={{
           background: "none",
           border: "none",
           color: "#f58220",
           textDecoration: "underline",
           cursor: "pointer",
         }}>
-          {isRegistering ? "Login" : "Register"}
+          {isRegistering ? "Login here" : "Register here"}
         </button>
       </p>
     </div>

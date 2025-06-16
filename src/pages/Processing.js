@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { auth } from "../firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Processing = () => {
   const navigate = useNavigate();
@@ -10,75 +10,78 @@ const Processing = () => {
   const plan = params.get("plan");
   const email = params.get("email");
 
+  const [status, setStatus] = useState("processing"); // 'processing' | 'error'
   const [secondsLeft, setSecondsLeft] = useState(30);
-  const [message, setMessage] = useState("⏳ Processing your transaction...");
 
   useEffect(() => {
-    if (plan && email) {
-      localStorage.setItem("postPaymentPlan", plan);
-      localStorage.setItem("postPaymentEmail", email);
-    }
+    let interval;
+    let attempts = 0;
 
-    let resolved = false;
-    let elapsed = 0;
-    const maxWait = 30;
+    const tryConfirm = () => {
+      const user = auth.currentUser;
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && user.email === email && !resolved) {
-        resolved = true;
-        localStorage.removeItem("postPaymentPlan");
-        localStorage.removeItem("postPaymentEmail");
-
-        if (plan.startsWith("basic")) {
-          navigate("/downloads/basic");
-        } else {
-          navigate("/downloads/premium");
-        }
-      }
-    });
-
-    const fallbackInterval = setInterval(() => {
-      elapsed++;
-      setSecondsLeft(maxWait - elapsed);
-
-      const currentUser = getAuth().currentUser;
-      if (
-        currentUser &&
-        currentUser.email === email &&
-        !resolved
-      ) {
-        resolved = true;
-        clearInterval(fallbackInterval);
-        unsubscribe();
-        localStorage.removeItem("postPaymentPlan");
-        localStorage.removeItem("postPaymentEmail");
-
-        if (plan.startsWith("basic")) {
-          navigate("/downloads/basic");
-        } else {
-          navigate("/downloads/premium");
-        }
+      if (!user || user.email !== email) {
+        console.warn("⏳ Waiting for user to be available...");
+        return;
       }
 
-      if (elapsed >= maxWait && !resolved) {
-        clearInterval(fallbackInterval);
-        unsubscribe();
-        setMessage("⚠️ Could not confirm your login. Please log in again.");
-        setTimeout(() => navigate("/login"), 3000);
+      // 🧠 Wywołanie backendu
+      fetch("https://foxorox-backend.onrender.com/check-subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, device_id: "web" }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.active) {
+            // ✅ Sukces
+            localStorage.removeItem("postPaymentPlan");
+            localStorage.removeItem("postPaymentEmail");
+
+            if (data.plan.startsWith("basic")) {
+              navigate("/downloads/basic");
+            } else {
+              navigate("/downloads/premium");
+            }
+          } else {
+            console.warn("⏳ Subskrypcja jeszcze nieaktywna...");
+          }
+        })
+        .catch((err) => {
+          console.error("❌ Błąd połączenia:", err);
+          setStatus("error");
+        });
+    };
+
+    const intervalId = setInterval(() => {
+      attempts++;
+      setSecondsLeft((s) => s - 1);
+
+      if (attempts >= 30) {
+        clearInterval(intervalId);
+        setStatus("error");
+        setTimeout(() => navigate("/login"), 4000);
+      } else {
+        tryConfirm();
       }
     }, 1000);
 
-    return () => {
-      clearInterval(fallbackInterval);
-      unsubscribe();
-    };
+    return () => clearInterval(intervalId);
   }, [navigate, plan, email]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
-      <h1>{message}</h1>
-      {message.includes("Processing") && (
-        <p>Please wait ({secondsLeft}s)...</p>
+      {status === "processing" ? (
+        <>
+          <h1>⏳ Processing your transaction...</h1>
+          <p>Please wait while we verify your subscription.</p>
+          <p>Time remaining: {secondsLeft}s</p>
+        </>
+      ) : (
+        <>
+          <h1>⚠️ Could not confirm your subscription</h1>
+          <p>Redirecting to login...</p>
+        </>
       )}
     </div>
   );
