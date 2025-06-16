@@ -27,18 +27,35 @@ function App() {
       setUser(usr);
 
       const selectedPlan = localStorage.getItem("selectedPlan");
+      const postPaymentPlan = localStorage.getItem("postPaymentPlan") || sessionStorage.getItem("postPaymentPlan");
+      const postPaymentEmail = localStorage.getItem("postPaymentEmail") || sessionStorage.getItem("postPaymentEmail");
 
-      // Jeśli użytkownik się zalogował po wybraniu planu
-      if (usr && usr.emailVerified && selectedPlan) {
-        localStorage.removeItem("selectedPlan");
-        redirectToStripe(selectedPlan, usr.email);
+      if (usr && usr.emailVerified) {
+        // 💳 Wraca po Stripe lub po zalogowaniu po płatności
+        if (postPaymentPlan && postPaymentEmail === usr.email) {
+          navigate("/processing");
+          return;
+        }
+
+        // 🧾 Świeżo zalogowany po wybraniu planu
+        if (selectedPlan) {
+          localStorage.removeItem("selectedPlan");
+          sessionStorage.setItem("postPaymentPlan", selectedPlan);
+          sessionStorage.setItem("postPaymentEmail", usr.email);
+          subscribeToStripe(selectedPlan, usr.email);
+        }
       }
     });
 
     return () => unsubscribe();
   }, [navigate]);
 
-  const redirectToStripe = (plan, email) => {
+  const subscribeToStripe = (plan, email) => {
+    localStorage.setItem("postPaymentPlan", plan);
+    localStorage.setItem("postPaymentEmail", email);
+    sessionStorage.setItem("postPaymentPlan", plan);
+    sessionStorage.setItem("postPaymentEmail", email);
+
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -49,12 +66,12 @@ function App() {
         if (data.url) {
           window.location.href = data.url;
         } else {
-          alert("Error: Stripe checkout session URL missing.");
+          alert("Error: No Stripe URL returned.");
         }
       })
       .catch((err) => {
+        alert("Server error during subscription.");
         console.error("Stripe error:", err);
-        alert("Subscription failed. Try again.");
       });
   };
 
@@ -63,12 +80,6 @@ function App() {
       setUser(null);
       navigate("/");
     });
-  };
-
-  const loginWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then(() => {})
-      .catch((error) => alert("Login error: " + error.message));
   };
 
   if (user === undefined) return <div style={{ color: "white" }}>Loading...</div>;
@@ -86,7 +97,7 @@ function App() {
                 localStorage.setItem("selectedPlan", plan);
                 navigate("/login");
               } else {
-                redirectToStripe(plan, user.email);
+                subscribeToStripe(plan, user.email);
               }
             }}
           />
