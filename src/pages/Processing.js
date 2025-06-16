@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { auth } from "./firebase-config";
+import { auth } from "../firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
 
 const Processing = () => {
