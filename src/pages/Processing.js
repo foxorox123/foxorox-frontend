@@ -1,53 +1,34 @@
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
 
 function Processing() {
   const navigate = useNavigate();
   const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const plan = params.get("plan");
+  const email = params.get("email");
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const plan = urlParams.get("plan");
-    const email = urlParams.get("email");
-
-    // Zapisz do localStorage na wypadek odświeżenia
-    if (plan && email) {
-      localStorage.setItem("postPaymentPlan", plan);
-      localStorage.setItem("postPaymentEmail", email);
-    }
-
-    const localPlan = localStorage.getItem("postPaymentPlan");
-    const localEmail = localStorage.getItem("postPaymentEmail");
-
-    if (!localPlan || !localEmail) {
-      navigate("/plans");
-      return;
-    }
-
-    const timer = setTimeout(() => {
+    const waitForUser = () => {
       onAuthStateChanged(auth, (user) => {
-        if (user && user.email === localEmail) {
-          localStorage.removeItem("postPaymentPlan");
-          localStorage.removeItem("postPaymentEmail");
+        if (!user || user.email !== email) return;
 
-          if (localPlan.startsWith("basic")) {
-            navigate("/downloads/basic");
-          } else {
-            navigate("/downloads/premium");
-          }
+        if (plan.startsWith("basic")) {
+          navigate("/downloads/basic");
         } else {
-          navigate("/login");
+          navigate("/downloads/premium");
         }
       });
-    }, 2000); // symulacja czasu przetwarzania
+    };
 
+    const timer = setTimeout(waitForUser, 3000); // wait 3s to simulate Stripe response
     return () => clearTimeout(timer);
-  }, [navigate, location]);
+  }, [navigate, plan, email]);
 
   return (
-    <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
+    <div style={{ color: "white", textAlign: "center", marginTop: 100 }}>
       <h1>⏳ Processing your transaction...</h1>
       <p>Please wait while we verify your subscription and prepare your download.</p>
     </div>

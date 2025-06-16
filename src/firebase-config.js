@@ -1,7 +1,8 @@
-
+// src/firebase-config.js
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
+// 🔐 Dane konfiguracyjne Firebase projektu
 const firebaseConfig = {
   apiKey: "AIzaSyDD8dWivFZ-5k21Dzu550PzBe3nk7ygTa8",
   authDomain: "foxorox-firebase.firebaseapp.com",
@@ -12,7 +13,10 @@ const firebaseConfig = {
   measurementId: "G-8X56DX0V0T"
 };
 
+// ✅ Inicjalizacja Firebase
 const app = initializeApp(firebaseConfig);
+
+// 🔐 Inicjalizacja autoryzacji + Google Provider
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 

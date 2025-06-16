@@ -26,30 +26,16 @@ function App() {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
       setUser(usr);
 
-      const postPaymentPlan = localStorage.getItem("postPaymentPlan");
-      const postPaymentEmail = localStorage.getItem("postPaymentEmail");
       const selectedPlan = localStorage.getItem("selectedPlan");
 
-      const urlParams = new URLSearchParams(location.search);
-      const fromStripe = urlParams.get("fromStripe");
-
-      if (usr && usr.emailVerified) {
-        // 🔁 Jeśli wrócił z Stripe
-        if (fromStripe === "true" && postPaymentPlan && postPaymentEmail === usr.email) {
-          navigate("/processing");
-          return;
-        }
-
-        // 🔁 Jeśli wybrał plan i dopiero co się zalogował
-        if (selectedPlan) {
-          localStorage.removeItem("selectedPlan");
-          subscribeToStripe(selectedPlan, usr.email);
-        }
+      if (usr && usr.emailVerified && selectedPlan) {
+        localStorage.removeItem("selectedPlan");
+        subscribeToStripe(selectedPlan, usr.email);
       }
     });
 
     return () => unsubscribe();
-  }, [navigate, location]);
+  }, [navigate]);
 
   const subscribeToStripe = (plan, email) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
@@ -60,8 +46,6 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         if (data.url) {
-          localStorage.setItem("postPaymentPlan", plan);
-          localStorage.setItem("postPaymentEmail", email);
           window.location.href = data.url;
         } else {
           alert("Error: No Stripe URL returned.");
@@ -71,12 +55,6 @@ function App() {
         alert("Server error during subscription.");
         console.error("Stripe error:", err);
       });
-  };
-
-  const loginWithGoogle = () => {
-    signInWithPopup(auth, provider).catch((error) =>
-      alert("Login error: " + error.message)
-    );
   };
 
   const logout = () => {
@@ -107,22 +85,10 @@ function App() {
           />
         }
       />
-      <Route
-        path="/login"
-        element={<Login onSuccess={() => navigate("/")} />}
-      />
-      <Route
-        path="/dashboard"
-        element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />}
-      />
-      <Route
-        path="/downloads/basic"
-        element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />}
-      />
-      <Route
-        path="/downloads/premium"
-        element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />}
-      />
+      <Route path="/login" element={<Login onSuccess={() => navigate("/")} />} />
+      <Route path="/dashboard" element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />} />
+      <Route path="/downloads/basic" element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />} />
+      <Route path="/downloads/premium" element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />} />
       <Route path="/processing" element={<Processing />} />
       <Route path="/tips" element={<Tips />} />
       <Route path="/about" element={<About />} />
