@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase-config";
@@ -7,31 +7,41 @@ const Processing = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
+  const plan = params.get("plan");
+  const email = params.get("email");
 
-  const planFromUrl = params.get("plan");
-  const emailFromUrl = params.get("email");
+  const [message, setMessage] = useState("⏳ Processing your transaction...");
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    let retries = 0;
+    const maxRetries = 10;
+
+    const interval = setInterval(() => {
       onAuthStateChanged(auth, (user) => {
-        if (user && user.email === emailFromUrl) {
-          if (planFromUrl?.startsWith("basic")) {
+        if (user && user.email === email) {
+          clearInterval(interval);
+          if (plan.startsWith("basic")) {
             navigate("/downloads/basic");
           } else {
             navigate("/downloads/premium");
           }
         } else {
-          navigate("/login");
+          retries++;
+          if (retries >= maxRetries) {
+            clearInterval(interval);
+            setMessage("⚠️ Unable to confirm your login. Redirecting...");
+            setTimeout(() => navigate("/login"), 2000);
+          }
         }
       });
-    }, 3000); // czas symulowanego "processing"
+    }, 1000); // check every 1s
 
-    return () => clearTimeout(timer);
-  }, [navigate, planFromUrl, emailFromUrl]);
+    return () => clearInterval(interval);
+  }, [navigate, email, plan]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
-      <h1>⏳ Processing your transaction...</h1>
+      <h1>{message}</h1>
       <p>Please wait while we verify your subscription and prepare your download.</p>
     </div>
   );
