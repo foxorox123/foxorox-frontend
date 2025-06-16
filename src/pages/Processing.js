@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, getAuth } from "firebase/auth";
 import { auth } from "../firebase-config";
 
 const Processing = () => {
@@ -14,7 +14,6 @@ const Processing = () => {
   const [message, setMessage] = useState("⏳ Processing your transaction...");
 
   useEffect(() => {
-    // Zapisz dane lokalnie
     if (plan && email) {
       localStorage.setItem("postPaymentPlan", plan);
       localStorage.setItem("postPaymentEmail", email);
@@ -38,11 +37,31 @@ const Processing = () => {
       }
     });
 
-    const interval = setInterval(() => {
+    const fallbackInterval = setInterval(() => {
       elapsed++;
       setSecondsLeft(maxWait - elapsed);
+
+      const currentUser = getAuth().currentUser;
+      if (
+        currentUser &&
+        currentUser.email === email &&
+        !resolved
+      ) {
+        resolved = true;
+        clearInterval(fallbackInterval);
+        unsubscribe();
+        localStorage.removeItem("postPaymentPlan");
+        localStorage.removeItem("postPaymentEmail");
+
+        if (plan.startsWith("basic")) {
+          navigate("/downloads/basic");
+        } else {
+          navigate("/downloads/premium");
+        }
+      }
+
       if (elapsed >= maxWait && !resolved) {
-        clearInterval(interval);
+        clearInterval(fallbackInterval);
         unsubscribe();
         setMessage("⚠️ Could not confirm your login. Please log in again.");
         setTimeout(() => navigate("/login"), 3000);
@@ -50,7 +69,7 @@ const Processing = () => {
     }, 1000);
 
     return () => {
-      clearInterval(interval);
+      clearInterval(fallbackInterval);
       unsubscribe();
     };
   }, [navigate, plan, email]);
