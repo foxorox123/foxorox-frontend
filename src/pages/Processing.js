@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase-config";
 
 const Processing = () => {
@@ -14,30 +13,32 @@ const Processing = () => {
 
   useEffect(() => {
     let retries = 0;
-    const maxRetries = 20;
+    const maxRetries = 15;
 
     const interval = setInterval(() => {
-      onAuthStateChanged(auth, (user) => {
-        if (user && user.email === email) {
-          clearInterval(interval);
-          if (plan.startsWith("basic")) {
-            navigate("/downloads/basic");
-          } else {
-            navigate("/downloads/premium");
-          }
+      const user = auth.currentUser;
+
+      if (user && user.email === email) {
+        clearInterval(interval);
+
+        // ✅ Użytkownik się zgadza — przekieruj do odpowiednich plików
+        if (plan.startsWith("basic")) {
+          navigate("/downloads/basic");
         } else {
-          retries++;
-          if (retries >= maxRetries) {
-            clearInterval(interval);
-            setMessage("⚠️ Unable to confirm your login. Redirecting...");
-            setTimeout(() => navigate("/login"), 2000);
-          }
+          navigate("/downloads/premium");
         }
-      });
-    }, 1000); // check every 1s
+      } else {
+        retries++;
+        if (retries >= maxRetries) {
+          clearInterval(interval);
+          setMessage("⚠️ Could not confirm your login. Please log in again.");
+          setTimeout(() => navigate("/login"), 3000);
+        }
+      }
+    }, 1000); // Co 1s sprawdza czy user już załadowany
 
     return () => clearInterval(interval);
-  }, [navigate, email, plan]);
+  }, [navigate, plan, email]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
