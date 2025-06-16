@@ -16,7 +16,6 @@ const Processing = () => {
   useEffect(() => {
     let retries = 0;
     const maxRetries = 30;
-
     const interval = setInterval(() => setSecondsLeft(s => s - 3), 3000);
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -30,8 +29,11 @@ const Processing = () => {
           .then((res) => res.json())
           .then((data) => {
             if (data.active) {
-              localStorage.removeItem("postPaymentPlan");
-              localStorage.removeItem("postPaymentEmail");
+              // 🔄 Delayed clearing of localStorage
+              setTimeout(() => {
+                localStorage.removeItem("postPaymentPlan");
+                localStorage.removeItem("postPaymentEmail");
+              }, 5000);
 
               if (data.plan.startsWith("basic")) {
                 navigate("/downloads/basic");

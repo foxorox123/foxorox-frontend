@@ -1,4 +1,4 @@
-// ✅ App.js
+// ✅ App.js – wersja poprawiona
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
@@ -128,9 +128,8 @@ function App() {
       <Route path="/contact" element={<Contact />} />
       <Route path="/faq" element={<FAQ />} />
       <Route path="/terms" element={<Terms />} />
-      <Route path="/privacy" element={<Privacy  />} />
+      <Route path="/privacy" element={<Privacy />} />
       <Route path="/returning" element={<Returning />} />
-
     </Routes>
   );
 }
