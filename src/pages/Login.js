@@ -89,12 +89,14 @@ function Login({ onSuccess }) {
       /><br />
 
       {isRegistering && (
-        <input
-          type="password"
-          placeholder="Repeat password"
-          value={repeatPassword}
-          onChange={(e) => setRepeatPassword(e.target.value)}
-        /><br />
+        <>
+          <input
+            type="password"
+            placeholder="Repeat password"
+            value={repeatPassword}
+            onChange={(e) => setRepeatPassword(e.target.value)}
+          /><br />
+        </>
       )}
 
       <button onClick={handleEmailAuth}>
@@ -113,7 +115,7 @@ function Login({ onSuccess }) {
         </button>
       </div>
 
-      <p style={{ color: "#aaa", fontSize: "0.9em" }}>
+      <div style={{ color: "#aaa", fontSize: "0.9em" }}>
         {isRegistering ? "Already have an account?" : "Don't have an account?"}{" "}
         <button
           onClick={() => {
@@ -130,7 +132,7 @@ function Login({ onSuccess }) {
         >
           {isRegistering ? "Login here" : "Register here"}
         </button>
-      </p>
+      </div>
     </div>
   );
 }
