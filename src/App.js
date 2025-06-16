@@ -18,26 +18,44 @@ import Privacy from "./pages/Privacy";
 import Processing from "./pages/Processing";
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [authChecked, setAuthChecked] = useState(false);
+  const [user, setUser] = useState(undefined);
   const navigate = useNavigate();
 
-  const subscribe = (plan) => {
-    if (!user || !user.email) {
-      alert("Error: No user email found.");
-      return;
-    }
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (usr) => {
+      const postPaymentPlan = localStorage.getItem("postPaymentPlan");
+      const postPaymentEmail = localStorage.getItem("postPaymentEmail");
+      const selectedPlan = localStorage.getItem("selectedPlan");
 
+      setUser(usr);
+
+      // Jeśli użytkownik wrócił z płatności Stripe i wszystko się zgadza
+      if (usr && usr.emailVerified && postPaymentPlan && postPaymentEmail === usr.email) {
+        navigate("/processing");
+        return;
+      }
+
+      // Jeśli użytkownik dopiero co wybrał plan i się zalogował
+      if (usr && usr.emailVerified && selectedPlan) {
+        localStorage.removeItem("selectedPlan");
+        subscribeToStripe(selectedPlan, usr.email);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
+
+  const subscribeToStripe = (plan, email) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan, email: user.email }),
+      body: JSON.stringify({ plan, email }),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.url) {
           localStorage.setItem("postPaymentPlan", plan);
-          localStorage.setItem("postPaymentEmail", user.email);
+          localStorage.setItem("postPaymentEmail", email);
           window.location.href = data.url;
         } else {
           alert("Error: No Stripe URL returned.");
@@ -49,22 +67,6 @@ function App() {
       });
   };
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (usr) => {
-      setUser(usr || null);
-      setAuthChecked(true);
-
-      const selectedPlan = localStorage.getItem("selectedPlan");
-
-      if (usr && selectedPlan && usr.emailVerified) {
-        localStorage.removeItem("selectedPlan");
-        subscribe(selectedPlan);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
   const loginWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then(() => {})
@@ -72,14 +74,13 @@ function App() {
   };
 
   const logout = () => {
-    localStorage.clear();
     signOut(auth).then(() => {
       setUser(null);
       navigate("/");
     });
   };
 
-  if (!authChecked) return <div style={{ color: "white" }}>Loading...</div>;
+  if (user === undefined) return <div style={{ color: "white" }}>Loading...</div>;
 
   return (
     <Routes>
@@ -88,17 +89,22 @@ function App() {
         element={
           <PlansPage
             user={user}
-            loginWithGoogle={loginWithGoogle}
             logout={logout}
-            subscribe={subscribe}
+            subscribe={(plan) => {
+              if (!user) {
+                localStorage.setItem("selectedPlan", plan);
+                navigate("/login");
+              } else {
+                subscribeToStripe(plan, user.email);
+              }
+            }}
           />
         }
       />
-      <Route path="/login" element={<Login onSuccess={() => navigate("/plans")} />} />
+      <Route path="/login" element={<Login onSuccess={() => navigate("/")} />} />
       <Route path="/dashboard" element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />} />
       <Route path="/downloads/basic" element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />} />
       <Route path="/downloads/premium" element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />} />
-      <Route path="/plans" element={user ? <PlansPage user={user} logout={logout} subscribe={subscribe} /> : <Navigate to="/login" />} />
       <Route path="/processing" element={<Processing />} />
       <Route path="/tips" element={<Tips />} />
       <Route path="/about" element={<About />} />
