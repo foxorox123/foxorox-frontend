@@ -14,67 +14,46 @@ const Processing = () => {
   const [message, setMessage] = useState("⏳ Processing your transaction...");
 
   useEffect(() => {
+    // Zapisz dane lokalnie
+    if (plan && email) {
+      localStorage.setItem("postPaymentPlan", plan);
+      localStorage.setItem("postPaymentEmail", email);
+    }
+
     let resolved = false;
-    const device_id = localStorage.getItem("device_id") || generateDeviceId();
-    localStorage.setItem("device_id", device_id);
-
-    const checkSubscription = () => {
-      console.log("🔍 Checking subscription with:", email, device_id);
-
-      fetch("https://foxorox-backend.onrender.com/check-subscription", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, device_id }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.active && !resolved) {
-            resolved = true;
-            localStorage.removeItem("postPaymentPlan");
-            localStorage.removeItem("postPaymentEmail");
-            sessionStorage.removeItem("postPaymentPlan");
-            sessionStorage.removeItem("postPaymentEmail");
-
-            if (data.plan.startsWith("basic")) {
-              navigate("/downloads/basic");
-            } else {
-              navigate("/downloads/premium");
-            }
-          }
-        })
-        .catch((err) => {
-          console.error("❌ Subscription check failed:", err);
-        });
-    };
-
-    const interval = setInterval(() => {
-      setSecondsLeft((prev) => {
-        const next = prev - 1;
-        if (next <= 0 && !resolved) {
-          setMessage("⚠️ Could not confirm your subscription. Please log in again.");
-          setTimeout(() => navigate("/login"), 3000);
-        }
-        return next;
-      });
-    }, 1000);
+    let elapsed = 0;
+    const maxWait = 30;
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && user.email === email) {
-        checkSubscription();
+      if (user && user.email === email && !resolved) {
+        resolved = true;
+        localStorage.removeItem("postPaymentPlan");
+        localStorage.removeItem("postPaymentEmail");
+
+        if (plan.startsWith("basic")) {
+          navigate("/downloads/basic");
+        } else {
+          navigate("/downloads/premium");
+        }
       }
     });
 
-    checkSubscription(); // try immediately once
+    const interval = setInterval(() => {
+      elapsed++;
+      setSecondsLeft(maxWait - elapsed);
+      if (elapsed >= maxWait && !resolved) {
+        clearInterval(interval);
+        unsubscribe();
+        setMessage("⚠️ Could not confirm your login. Please log in again.");
+        setTimeout(() => navigate("/login"), 3000);
+      }
+    }, 1000);
 
     return () => {
       clearInterval(interval);
       unsubscribe();
     };
-  }, [navigate, email, plan]);
-
-  const generateDeviceId = () => {
-    return "dev-" + Math.random().toString(36).substring(2, 15);
-  };
+  }, [navigate, plan, email]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>

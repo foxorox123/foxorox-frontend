@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
-import { auth, provider } from "./firebase-config";
-import { Routes, Route, useNavigate, Navigate, useLocation } from "react-router-dom";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase-config";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 
 import Tips from "./pages/Tips";
 import Login from "./pages/Login";
@@ -20,25 +20,8 @@ import Processing from "./pages/Processing";
 function App() {
   const [user, setUser] = useState(undefined);
   const navigate = useNavigate();
-  const location = useLocation();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (usr) => {
-      setUser(usr);
-
-      const selectedPlan = localStorage.getItem("selectedPlan");
-
-      // Jeśli użytkownik się zalogował po wybraniu planu
-      if (usr && usr.emailVerified && selectedPlan) {
-        localStorage.removeItem("selectedPlan");
-        redirectToStripe(selectedPlan, usr.email);
-      }
-    });
-
-    return () => unsubscribe();
-  }, [navigate]);
-
-  const redirectToStripe = (plan, email) => {
+  const subscribeToStripe = (plan, email) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -47,14 +30,16 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         if (data.url) {
+          localStorage.setItem("postPaymentPlan", plan);
+          localStorage.setItem("postPaymentEmail", email);
           window.location.href = data.url;
         } else {
-          alert("Error: Stripe checkout session URL missing.");
+          alert("Error: No Stripe URL returned.");
         }
       })
       .catch((err) => {
+        alert("Server error during subscription.");
         console.error("Stripe error:", err);
-        alert("Subscription failed. Try again.");
       });
   };
 
@@ -65,11 +50,36 @@ function App() {
     });
   };
 
-  const loginWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then(() => {})
-      .catch((error) => alert("Login error: " + error.message));
-  };
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (usr) => {
+      setUser(usr);
+
+      const selectedPlan = localStorage.getItem("selectedPlan");
+      const postPaymentPlan = localStorage.getItem("postPaymentPlan");
+      const postPaymentEmail = localStorage.getItem("postPaymentEmail");
+
+      // Jeśli użytkownik wraca po opłaceniu Stripe i jest zalogowany
+      if (usr && usr.email === postPaymentEmail) {
+        localStorage.removeItem("postPaymentPlan");
+        localStorage.removeItem("postPaymentEmail");
+
+        if (postPaymentPlan && postPaymentPlan.startsWith("basic")) {
+          navigate("/downloads/basic");
+        } else if (postPaymentPlan) {
+          navigate("/downloads/premium");
+        }
+        return;
+      }
+
+      // Jeśli dopiero się loguje do subskrypcji
+      if (usr && usr.emailVerified && selectedPlan) {
+        localStorage.removeItem("selectedPlan");
+        subscribeToStripe(selectedPlan, usr.email);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
 
   if (user === undefined) return <div style={{ color: "white" }}>Loading...</div>;
 
@@ -86,7 +96,7 @@ function App() {
                 localStorage.setItem("selectedPlan", plan);
                 navigate("/login");
               } else {
-                redirectToStripe(plan, user.email);
+                subscribeToStripe(plan, user.email);
               }
             }}
           />

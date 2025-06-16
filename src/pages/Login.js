@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signInWithPopup,
   sendEmailVerification,
+  signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebase-config";
@@ -21,100 +21,51 @@ function Login({ onSuccess }) {
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const handleEmailAuth = async () => {
-    if (!isValidEmail(email)) {
-      alert("Please enter a valid email address.");
-      return;
-    }
-    if (password.length < 6) {
-      alert("Password must be at least 6 characters.");
-      return;
-    }
+    if (!isValidEmail(email)) return alert("Invalid email");
+    if (password.length < 6) return alert("Password too short");
 
-    try {
-      if (isRegistering) {
-        if (password !== repeatPassword) {
-          alert("Passwords do not match.");
-          return;
-        }
+    if (isRegistering) {
+      if (password !== repeatPassword) return alert("Passwords do not match");
 
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await sendEmailVerification(userCredential.user);
-        alert("Account created. Please verify your email.");
+        alert("Check your inbox to verify email.");
         setResendAvailable(true);
-      } else {
-        const userCredential = await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-
+      } catch (err) {
+        alert("Registration error: " + err.message);
+      }
+    } else {
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
         if (!userCredential.user.emailVerified) {
-          alert("Email not verified. Please check your inbox.");
+          alert("Verify your email first.");
           setResendAvailable(true);
           return;
         }
-
         alert("Login successful!");
-
-        const postPlan =
-          localStorage.getItem("postPaymentPlan") ||
-          sessionStorage.getItem("postPaymentPlan");
-        const postEmail =
-          localStorage.getItem("postPaymentEmail") ||
-          sessionStorage.getItem("postPaymentEmail");
-
-        if (postPlan && postEmail === userCredential.user.email) {
-          navigate(
-            `/processing?plan=${postPlan}&email=${encodeURIComponent(
-              postEmail
-            )}`
-          );
-        } else {
-          navigate("/");
-        }
+        onSuccess();
+      } catch (err) {
+        alert("Login error: " + err.message);
       }
-    } catch (err) {
-      alert("Auth error: " + err.message);
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
-      const user = result.user;
-
-      const postPlan =
-        localStorage.getItem("postPaymentPlan") ||
-        sessionStorage.getItem("postPaymentPlan");
-      const postEmail =
-        localStorage.getItem("postPaymentEmail") ||
-        sessionStorage.getItem("postPaymentEmail");
-
-      if (postPlan && postEmail === user.email) {
-        navigate(
-          `/processing?plan=${postPlan}&email=${encodeURIComponent(postEmail)}`
-        );
-      } else {
-        onSuccess();
-      }
+      alert("Google login successful.");
+      onSuccess();
     } catch (err) {
       alert("Google login failed: " + err.message);
     }
   };
 
   const handleResendEmail = async () => {
-    try {
-      const user = auth.currentUser;
-      if (user && !user.emailVerified) {
-        await sendEmailVerification(user);
-        alert("Verification email resent.");
-      }
-    } catch (err) {
-      alert("Resend failed: " + err.message);
+    const user = auth.currentUser;
+    if (user && !user.emailVerified) {
+      await sendEmailVerification(user);
+      alert("Verification email sent again.");
     }
   };
 
@@ -124,42 +75,33 @@ function Login({ onSuccess }) {
 
       <input
         type="email"
-        placeholder="Email address"
+        placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-      />
-      <br />
+      /><br />
 
       <input
         type="password"
-        placeholder="Password (min. 6 chars)"
+        placeholder="Password (min. 6)"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-      />
-      <br />
+      /><br />
 
       {isRegistering && (
-        <>
-          <input
-            type="password"
-            placeholder="Repeat password"
-            value={repeatPassword}
-            onChange={(e) => setRepeatPassword(e.target.value)}
-          />
-          <br />
-        </>
-      )}
+        <input
+          type="password"
+          placeholder="Repeat password"
+          value={repeatPassword}
+          onChange={(e) => setRepeatPassword(e.target.value)}
+        />
+      )}<br />
 
       <button onClick={handleEmailAuth}>
         {isRegistering ? "📝 Register" : "🔓 Login"}
       </button>
 
       {resendAvailable && !isRegistering && (
-        <div style={{ marginTop: "10px" }}>
-          <button onClick={handleResendEmail}>
-            📩 Resend verification email
-          </button>
-        </div>
+        <button onClick={handleResendEmail}>📩 Resend verification email</button>
       )}
 
       <div style={{ margin: "15px 0" }}>
@@ -168,22 +110,19 @@ function Login({ onSuccess }) {
         </button>
       </div>
 
-      <p style={{ color: "#aaa", fontSize: "0.9em" }}>
-        {isRegistering ? "Already have an account?" : "Don't have an account?"}{" "}
-        <button
-          onClick={() => {
-            setIsRegistering(!isRegistering);
-            setResendAvailable(false);
-          }}
-          style={{
-            background: "none",
-            border: "none",
-            color: "#f58220",
-            textDecoration: "underline",
-            cursor: "pointer",
-          }}
-        >
-          {isRegistering ? "Login here" : "Register here"}
+      <p>
+        {isRegistering ? "Already have an account?" : "No account?"}{" "}
+        <button onClick={() => {
+          setIsRegistering(!isRegistering);
+          setResendAvailable(false);
+        }} style={{
+          background: "none",
+          border: "none",
+          color: "#f58220",
+          textDecoration: "underline",
+          cursor: "pointer",
+        }}>
+          {isRegistering ? "Login" : "Register"}
         </button>
       </p>
     </div>
