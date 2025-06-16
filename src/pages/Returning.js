@@ -9,6 +9,7 @@ const Returning = () => {
   const params = new URLSearchParams(location.search);
   const plan = params.get("plan");
   const email = params.get("email");
+
   const [status, setStatus] = useState("checking");
 
   useEffect(() => {
@@ -20,37 +21,38 @@ const Returning = () => {
     }
 
     let retries = 0;
-    const maxRetries = 30;
+    const maxRetries = 60; // 60 sekund
+    const retryDelay = 1000;
 
-    const interval = setInterval(() => {
-      const user = auth.currentUser;
-      if (user && user.email && user.email.toLowerCase() === email.toLowerCase() && user.emailVerified) {
-        clearInterval(interval);
-        setStatus("redirecting");
+    const unsubscribe = onAuthStateChanged(auth, (usr) => {
+      if (usr && usr.email?.toLowerCase() === email.toLowerCase() && usr.emailVerified) {
+        setStatus("success");
         navigate(`/processing?plan=${encodeURIComponent(plan)}&email=${encodeURIComponent(email)}`);
-      } else {
-        retries++;
-        console.log("⌛ Oczekiwanie na użytkownika...", user?.email);
-        if (retries >= maxRetries) {
-          clearInterval(interval);
-          setStatus("timeout");
-        }
       }
-    }, 1000);
+    });
 
-    return () => clearInterval(interval);
+    const timeout = setInterval(() => {
+      retries++;
+      if (retries >= maxRetries) {
+        clearInterval(timeout);
+        unsubscribe();
+        setStatus("timeout");
+      }
+    }, retryDelay);
+
+    return () => {
+      unsubscribe();
+      clearInterval(timeout);
+    };
   }, [navigate, plan, email]);
 
   return (
-    <div style={{ color: "white", textAlign: "center", marginTop: "80px" }}>
+    <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
       {status === "checking" && (
         <>
           <h2>🔄 Wracamy z Stripe...</h2>
           <p>Sprawdzanie sesji logowania...</p>
         </>
-      )}
-      {status === "redirecting" && (
-        <h2>✅ Przekierowuję do pobierania...</h2>
       )}
       {status === "timeout" && (
         <>
