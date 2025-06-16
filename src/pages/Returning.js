@@ -31,10 +31,8 @@ const Returning = () => {
       }
     };
 
-    // ✅ Obsługa przypadku, gdy user już zalogowany
     checkAndRedirect(auth.currentUser);
 
-    // ✅ Nasłuch Firebase
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
       checkAndRedirect(usr);
     });
@@ -59,13 +57,28 @@ const Returning = () => {
       {status === "checking" && (
         <>
           <h2>🔄 Wracamy z Stripe.</h2>
-          <p>Sprawdzanie sesji logowania.</p>
+          <p>Sprawdzanie sesji logowania...</p>
         </>
       )}
       {status === "timeout" && (
         <>
           <h2>❌ Nie można potwierdzić logowania</h2>
-          <p>Spróbuj zalogować się ponownie.</p>
+          <p>Spróbuj zalogować się ponownie tym samym adresem email: <strong>{email}</strong></p>
+          <button
+            onClick={() => navigate("/login")}
+            style={{
+              marginTop: "20px",
+              padding: "10px 20px",
+              backgroundColor: "#f58220",
+              border: "none",
+              borderRadius: "6px",
+              color: "white",
+              cursor: "pointer",
+              fontSize: "1rem"
+            }}
+          >
+            🔐 Zaloguj się ponownie
+          </button>
         </>
       )}
     </div>
