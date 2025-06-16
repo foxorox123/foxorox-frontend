@@ -15,45 +15,7 @@ import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
-import Processing from "./pages/Processing";
-
-function MainPage({ user, loginWithGoogle, logout, subscribe }) {
-  const navigate = useNavigate();
-
-  const handleSubscribe = async (plan) => {
-    if (!user) {
-      localStorage.setItem("selectedPlan", plan);
-      navigate("/login");
-      return;
-    }
-
-    const isSubscribed = await checkSubscription(user.email);
-    if (isSubscribed) {
-      navigate("/dashboard");
-    } else if (user.emailVerified) {
-      subscribe(plan);
-    } else {
-      alert("Please verify your email before subscribing.");
-    }
-  };
-
-  const checkSubscription = async (email) => {
-    const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-
-    const data = await res.json();
-    return data.active;
-  };
-
-  return (
-    <div className="main-container">
-      {/* ... (rest of the MainPage content remains the same) */}
-    </div>
-  );
-}
+import Processing from "./pages/Processing"; // 🆕 Dodano
 
 function App() {
   const [user, setUser] = useState(undefined);
@@ -75,7 +37,7 @@ function App() {
         if (data.url) {
           localStorage.setItem("postPaymentPlan", plan);
           localStorage.setItem("postPaymentEmail", user.email);
-          window.location.href = data.url;
+          navigate("/processing"); // 🧠 Zamiast window.location.href
         } else {
           alert("Error: No Stripe URL returned.");
         }
@@ -90,26 +52,11 @@ function App() {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
       setUser(usr);
 
-      if (usr) {
-        const selectedPlan = localStorage.getItem("selectedPlan");
-        const postPaymentPlan = localStorage.getItem("postPaymentPlan");
-        const postPaymentEmail = localStorage.getItem("postPaymentEmail");
+      const selectedPlan = localStorage.getItem("selectedPlan");
 
-        if (selectedPlan && usr.emailVerified) {
-          localStorage.removeItem("selectedPlan");
-          subscribe(selectedPlan);
-        } else if (postPaymentPlan && postPaymentEmail === usr.email) {
-          localStorage.removeItem("postPaymentPlan");
-          localStorage.removeItem("postPaymentEmail");
-          navigate("/processing");
-          setTimeout(() => {
-            if (postPaymentPlan.startsWith("basic")) {
-              navigate("/downloads/basic");
-            } else {
-              navigate("/downloads/premium");
-            }
-          }, 3000);
-        }
+      if (usr && selectedPlan && usr.emailVerified) {
+        localStorage.removeItem("selectedPlan");
+        subscribe(selectedPlan);
       }
     });
 
@@ -132,20 +79,27 @@ function App() {
     <Routes>
       <Route
         path="/"
-        element={<MainPage user={user} loginWithGoogle={loginWithGoogle} logout={logout} subscribe={subscribe} />}
+        element={
+          <PlansPage
+            user={user}
+            loginWithGoogle={loginWithGoogle}
+            logout={logout}
+            subscribe={subscribe}
+          />
+        }
       />
       <Route path="/login" element={<Login onSuccess={() => navigate("/plans")} />} />
       <Route path="/dashboard" element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />} />
       <Route path="/downloads/basic" element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />} />
       <Route path="/downloads/premium" element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />} />
       <Route path="/plans" element={user ? <PlansPage user={user} logout={logout} subscribe={subscribe} /> : <Navigate to="/login" />} />
+      <Route path="/processing" element={<Processing />} />
       <Route path="/tips" element={<Tips />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/faq" element={<FAQ />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/privacy" element={<Privacy />} />
-      <Route path="/processing" element={<Processing />} />
     </Routes>
   );
 }
