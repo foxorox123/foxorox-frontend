@@ -29,11 +29,7 @@ function App() {
       const postPaymentEmail = localStorage.getItem("postPaymentEmail");
 
       if (usr && usr.emailVerified) {
-        if (postPaymentPlan && postPaymentEmail === usr.email) {
-          navigate("/processing");
-          return;
-        }
-
+        
         const selectedPlan = localStorage.getItem("selectedPlan");
         if (selectedPlan) {
           localStorage.removeItem("selectedPlan");

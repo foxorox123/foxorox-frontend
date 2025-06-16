@@ -3,6 +3,14 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase-config";
+import { useLocation } from "react-router-dom";
+
+const Processing = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const plan = params.get("plan");
+  const email = params.get("email");
 
 function Processing() {
   const navigate = useNavigate();
