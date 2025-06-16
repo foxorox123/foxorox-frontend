@@ -10,7 +10,7 @@ const Returning = () => {
   const plan = params.get("plan");
   const email = params.get("email");
 
-  const [status, setStatus] = useState("checking");
+  const [message, setMessage] = useState("🔄 Wracamy z Stripe...");
 
   useEffect(() => {
     if (plan && email) {
@@ -20,46 +20,43 @@ const Returning = () => {
       sessionStorage.setItem("postPaymentEmail", email);
     }
 
-    let retries = 0;
-    const maxRetries = 60; // 60 sekund
-    const retryDelay = 1000;
+    let attempts = 0;
+    const maxAttempts = 20;
 
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
-      if (usr && usr.email?.toLowerCase() === email.toLowerCase() && usr.emailVerified) {
-        setStatus("success");
+      if (usr && usr.email === email && usr.emailVerified) {
         navigate(`/processing?plan=${encodeURIComponent(plan)}&email=${encodeURIComponent(email)}`);
       }
     });
 
-    const timeout = setInterval(() => {
-      retries++;
-      if (retries >= maxRetries) {
-        clearInterval(timeout);
+    const interval = setInterval(() => {
+      const user = auth.currentUser;
+      attempts++;
+
+      if (user && user.email === email && user.emailVerified) {
+        clearInterval(interval);
         unsubscribe();
-        setStatus("timeout");
+        navigate(`/processing?plan=${encodeURIComponent(plan)}&email=${encodeURIComponent(email)}`);
       }
-    }, retryDelay);
+
+      if (attempts >= maxAttempts) {
+        clearInterval(interval);
+        unsubscribe();
+        setMessage("❌ Nie można potwierdzić logowania");
+        setTimeout(() => navigate("/login"), 5000);
+      }
+    }, 1500);
 
     return () => {
+      clearInterval(interval);
       unsubscribe();
-      clearInterval(timeout);
     };
   }, [navigate, plan, email]);
 
   return (
-    <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
-      {status === "checking" && (
-        <>
-          <h2>🔄 Wracamy z Stripe...</h2>
-          <p>Sprawdzanie sesji logowania...</p>
-        </>
-      )}
-      {status === "timeout" && (
-        <>
-          <h2>❌ Nie można potwierdzić logowania</h2>
-          <p>Spróbuj zalogować się ponownie.</p>
-        </>
-      )}
+    <div style={{ color: "white", textAlign: "center", marginTop: "80px" }}>
+      <h2>{message}</h2>
+      {message.startsWith("🔄") && <p>Sprawdzanie sesji logowania...</p>}
     </div>
   );
 };
