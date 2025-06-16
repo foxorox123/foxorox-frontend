@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  sendEmailVerification,
   signInWithPopup,
+  sendEmailVerification,
   GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebase-config";
@@ -17,34 +17,63 @@ function Login({ onSuccess }) {
   const [resendAvailable, setResendAvailable] = useState(false);
   const navigate = useNavigate();
 
-  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const isValidEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const handleEmailAuth = async () => {
-    if (!isValidEmail(email)) return alert("Enter a valid email.");
-    if (password.length < 6) return alert("Password must be at least 6 characters.");
+    if (!isValidEmail(email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters.");
+      return;
+    }
 
     if (isRegistering) {
-      if (password !== repeatPassword) return alert("Passwords do not match.");
+      if (password !== repeatPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await sendEmailVerification(userCredential.user);
-        alert("Account created. Verify your email.");
+        alert("Account created. Please check your inbox and verify your email.");
         setResendAvailable(true);
       } catch (err) {
-        alert("Registration error: " + err.message);
+        if (err.code === "auth/email-already-in-use") {
+          alert("This email is already registered.");
+        } else {
+          alert("Registration error: " + err.message);
+        }
       }
     } else {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         if (!userCredential.user.emailVerified) {
-          alert("Verify your email.");
+          alert("Email not verified. Please check your inbox.");
           setResendAvailable(true);
           return;
         }
-        alert("Login successful");
-        onSuccess();
+
+        alert("Login successful!");
+
+        const postPlan = localStorage.getItem("postPaymentPlan");
+        const postEmail = localStorage.getItem("postPaymentEmail");
+
+        if (postPlan && postEmail && postEmail === userCredential.user.email) {
+          navigate(`/processing?plan=${encodeURIComponent(postPlan)}&email=${encodeURIComponent(postEmail)}`);
+        } else {
+          navigate("/plans");
+        }
       } catch (err) {
-        alert("Login error: " + err.message);
+        if (err.code === "auth/user-not-found") {
+          alert("No account found with that email.");
+        } else if (err.code === "auth/wrong-password") {
+          alert("Incorrect password.");
+        } else {
+          alert("Login error: " + err.message);
+        }
       }
     }
   };
@@ -53,20 +82,31 @@ function Login({ onSuccess }) {
     try {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
       const user = result.user;
-      alert("Google login successful");
-      onSuccess();
+
+      const postPlan = localStorage.getItem("postPaymentPlan");
+      const postEmail = localStorage.getItem("postPaymentEmail");
+
+      if (postPlan && postEmail && postEmail === user.email) {
+        navigate(`/processing?plan=${encodeURIComponent(postPlan)}&email=${encodeURIComponent(postEmail)}`);
+      } else {
+        navigate("/plans");
+      }
     } catch (err) {
       alert("Google login failed: " + err.message);
     }
   };
 
   const handleResendEmail = async () => {
-    const user = auth.currentUser;
-    if (user && !user.emailVerified) {
-      await sendEmailVerification(user);
-      alert("Verification email resent.");
-    } else {
-      alert("You're already verified or not logged in.");
+    try {
+      const user = auth.currentUser;
+      if (user && !user.emailVerified) {
+        await sendEmailVerification(user);
+        alert("Verification email resent. Please check your inbox.");
+      } else {
+        alert("You're already verified or not logged in.");
+      }
+    } catch (err) {
+      alert("Resend failed: " + err.message);
     }
   };
 
@@ -74,12 +114,28 @@ function Login({ onSuccess }) {
     <div className="login-container">
       <h2>{isRegistering ? "Register" : "Login"} to Foxorox</h2>
 
-      <input type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} /><br />
-      <input type="password" placeholder="Password (min. 6 chars)" value={password} onChange={(e) => setPassword(e.target.value)} /><br />
+      <input
+        type="email"
+        placeholder="Email address"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      /><br />
+
+      <input
+        type="password"
+        placeholder="Password (min. 6 chars)"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      /><br />
 
       {isRegistering && (
         <>
-          <input type="password" placeholder="Repeat password" value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} /><br />
+          <input
+            type="password"
+            placeholder="Repeat password"
+            value={repeatPassword}
+            onChange={(e) => setRepeatPassword(e.target.value)}
+          /><br />
         </>
       )}
 

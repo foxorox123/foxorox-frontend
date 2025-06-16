@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase-config";
 
 const Processing = () => {
   const navigate = useNavigate();
@@ -11,88 +9,68 @@ const Processing = () => {
   const email = params.get("email");
 
   const [secondsLeft, setSecondsLeft] = useState(30);
-  const [message, setMessage] = useState("⏳ Processing your transaction...");
+  const [message, setMessage] = useState("⏳ Verifying your subscription...");
 
   useEffect(() => {
-    let resolved = false;
-    const maxWait = 30;
-    let elapsed = 0;
-
-    // Użyj localStorage fallback jeśli email/plan z URL są niedostępne
-    const safeEmail = email || localStorage.getItem("postPaymentEmail");
-    const safePlan = plan || localStorage.getItem("postPaymentPlan");
-
-    const interval = setInterval(() => {
-      elapsed++;
-      setSecondsLeft(maxWait - elapsed);
-      if (elapsed >= maxWait && !resolved) {
-        clearInterval(interval);
-        setMessage("⚠️ Could not confirm your login. Please log in again.");
-        setTimeout(() => navigate("/login"), 3000);
-      }
-    }, 1000);
+    if (!email || !plan) {
+      setMessage("❌ Missing plan or email. Redirecting...");
+      setTimeout(() => navigate("/login"), 3000);
+      return;
+    }
 
     const device_id = localStorage.getItem("device_id") || generateDeviceId();
     localStorage.setItem("device_id", device_id);
 
-    const checkSubscription = async () => {
-      console.log("⏳ Sprawdzanie subskrypcji dla:", safeEmail);
-
-      const user = auth.currentUser;
-
-      if (!user || user.email !== safeEmail) {
-        console.warn("⚠️ Nie można potwierdzić tożsamości użytkownika.");
-        return;
-      }
-
-      try {
-        const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: safeEmail, device_id }),
-        });
-
-        const data = await res.json();
-
-        if (data.active) {
-          resolved = true;
-          clearInterval(interval);
-          localStorage.removeItem("postPaymentPlan");
-          localStorage.removeItem("postPaymentEmail");
-
-          if (data.plan.startsWith("basic")) {
-            navigate("/downloads/basic");
-          } else {
-            navigate("/downloads/premium");
-          }
-        } else {
-          console.warn("❌ Subskrypcja nieaktywna:", data);
+    const timer = setInterval(() => {
+      setSecondsLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setMessage("❌ Could not verify subscription. Try logging in again.");
+          setTimeout(() => navigate("/login"), 4000);
         }
-      } catch (err) {
-        console.error("❌ Błąd połączenia z backendem:", err);
-      }
-    };
+        return prev - 1;
+      });
+    }, 1000);
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && user.email === safeEmail && !resolved) {
-        checkSubscription();
-      }
-    });
+    // Główna logika sprawdzania subskrypcji
+    fetch("https://foxorox-backend.onrender.com/check-subscription", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, device_id }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.active) {
+          clearInterval(timer);
+          setMessage("✅ Subscription confirmed! Preparing download...");
+          setTimeout(() => {
+            if (data.plan.startsWith("basic")) {
+              navigate("/downloads/basic");
+            } else {
+              navigate("/downloads/premium");
+            }
+          }, 2000);
+        }
+      })
+      .catch((err) => {
+        console.error("❌ Error checking subscription:", err);
+        clearInterval(timer);
+        setMessage("❌ Server error. Try again later.");
+        setTimeout(() => navigate("/login"), 4000);
+      });
 
-    return () => {
-      clearInterval(interval);
-      unsubscribe();
-    };
-  }, [navigate, plan, email]);
+    return () => clearInterval(timer);
+  }, [email, plan, navigate]);
 
-  const generateDeviceId = () => {
-    return "device-" + Math.random().toString(36).substr(2, 10);
-  };
+  const generateDeviceId = () =>
+    "dev-" + Math.random().toString(36).substring(2, 10);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
       <h1>{message}</h1>
-      {message.includes("Processing") && <p>Please wait ({secondsLeft}s)...</p>}
+      {message.includes("Verifying") && (
+        <p>Please wait... {secondsLeft}s</p>
+      )}
     </div>
   );
 };
