@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, provider } from "./firebase-config";
-import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate, useLocation } from "react-router-dom";
 
 import Tips from "./pages/Tips";
 import Login from "./pages/Login";
@@ -20,22 +20,25 @@ import Processing from "./pages/Processing";
 function App() {
   const [user, setUser] = useState(undefined);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
       setUser(usr);
 
       const selectedPlan = localStorage.getItem("selectedPlan");
+
+      // Jeśli użytkownik się zalogował po wybraniu planu
       if (usr && usr.emailVerified && selectedPlan) {
         localStorage.removeItem("selectedPlan");
-        subscribeToStripe(selectedPlan, usr.email);
+        redirectToStripe(selectedPlan, usr.email);
       }
     });
 
     return () => unsubscribe();
   }, [navigate]);
 
-  const subscribeToStripe = (plan, email) => {
+  const redirectToStripe = (plan, email) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -44,22 +47,15 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         if (data.url) {
-          // Nie przekierowujemy do /processing ręcznie – Stripe zrobi to po opłacie
           window.location.href = data.url;
         } else {
-          alert("Error: No Stripe URL returned.");
+          alert("Error: Stripe checkout session URL missing.");
         }
       })
       .catch((err) => {
-        alert("Server error during subscription.");
         console.error("Stripe error:", err);
+        alert("Subscription failed. Try again.");
       });
-  };
-
-  const loginWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then(() => {})
-      .catch((error) => alert("Login error: " + error.message));
   };
 
   const logout = () => {
@@ -67,6 +63,12 @@ function App() {
       setUser(null);
       navigate("/");
     });
+  };
+
+  const loginWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then(() => {})
+      .catch((error) => alert("Login error: " + error.message));
   };
 
   if (user === undefined) return <div style={{ color: "white" }}>Loading...</div>;
@@ -84,7 +86,7 @@ function App() {
                 localStorage.setItem("selectedPlan", plan);
                 navigate("/login");
               } else {
-                subscribeToStripe(plan, user.email);
+                redirectToStripe(plan, user.email);
               }
             }}
           />

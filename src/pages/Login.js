@@ -17,54 +17,34 @@ function Login({ onSuccess }) {
   const [resendAvailable, setResendAvailable] = useState(false);
   const navigate = useNavigate();
 
-  const isValidEmail = (email) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const handleEmailAuth = async () => {
-    if (!isValidEmail(email)) {
-      alert("Please enter a valid email address.");
-      return;
-    }
-    if (password.length < 6) {
-      alert("Password must be at least 6 characters.");
-      return;
-    }
+    if (!isValidEmail(email)) return alert("Enter a valid email.");
+    if (password.length < 6) return alert("Password must be at least 6 characters.");
 
     if (isRegistering) {
-      if (password !== repeatPassword) {
-        alert("Passwords do not match.");
-        return;
-      }
+      if (password !== repeatPassword) return alert("Passwords do not match.");
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await sendEmailVerification(userCredential.user);
-        alert("Account created. Please check your inbox and verify your email.");
+        alert("Account created. Verify your email.");
         setResendAvailable(true);
       } catch (err) {
-        if (err.code === "auth/email-already-in-use") {
-          alert("This email is already registered.");
-        } else {
-          alert("Registration error: " + err.message);
-        }
+        alert("Registration error: " + err.message);
       }
     } else {
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         if (!userCredential.user.emailVerified) {
-          alert("Email not verified. Please check your inbox.");
+          alert("Verify your email.");
           setResendAvailable(true);
           return;
         }
-        alert("Login successful!");
-        onSuccess(); // Przekierowanie kontrolowane w App.js
+        alert("Login successful");
+        onSuccess();
       } catch (err) {
-        if (err.code === "auth/user-not-found") {
-          alert("No account found with that email.");
-        } else if (err.code === "auth/wrong-password") {
-          alert("Incorrect password.");
-        } else {
-          alert("Login error: " + err.message);
-        }
+        alert("Login error: " + err.message);
       }
     }
   };
@@ -73,28 +53,20 @@ function Login({ onSuccess }) {
     try {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
       const user = result.user;
-
-      if (!user.emailVerified) {
-        alert("Google login successful (email auto-verified).");
-      }
-
-      onSuccess(); // Przekierowanie kontrolowane w App.js
+      alert("Google login successful");
+      onSuccess();
     } catch (err) {
       alert("Google login failed: " + err.message);
     }
   };
 
   const handleResendEmail = async () => {
-    try {
-      const user = auth.currentUser;
-      if (user && !user.emailVerified) {
-        await sendEmailVerification(user);
-        alert("Verification email resent. Please check your inbox.");
-      } else {
-        alert("You're already verified or not logged in.");
-      }
-    } catch (err) {
-      alert("Resend failed: " + err.message);
+    const user = auth.currentUser;
+    if (user && !user.emailVerified) {
+      await sendEmailVerification(user);
+      alert("Verification email resent.");
+    } else {
+      alert("You're already verified or not logged in.");
     }
   };
 
@@ -102,28 +74,12 @@ function Login({ onSuccess }) {
     <div className="login-container">
       <h2>{isRegistering ? "Register" : "Login"} to Foxorox</h2>
 
-      <input
-        type="email"
-        placeholder="Email address"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      /><br />
-
-      <input
-        type="password"
-        placeholder="Password (min. 6 chars)"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      /><br />
+      <input type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} /><br />
+      <input type="password" placeholder="Password (min. 6 chars)" value={password} onChange={(e) => setPassword(e.target.value)} /><br />
 
       {isRegistering && (
         <>
-          <input
-            type="password"
-            placeholder="Repeat password"
-            value={repeatPassword}
-            onChange={(e) => setRepeatPassword(e.target.value)}
-          /><br />
+          <input type="password" placeholder="Repeat password" value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} /><br />
         </>
       )}
 
