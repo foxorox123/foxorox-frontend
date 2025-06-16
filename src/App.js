@@ -1,8 +1,7 @@
-// ✅ App.js – wersja poprawiona
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
-import { auth, provider } from "./firebase-config";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase-config";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 
 import Tips from "./pages/Tips";
@@ -34,7 +33,6 @@ function App() {
         localStorage.getItem("postPaymentEmail") ||
         sessionStorage.getItem("postPaymentEmail");
 
-      // ✅ Jeśli wraca ze Stripe i dane się zgadzają — przejdź do /processing
       if (
         usr &&
         usr.emailVerified &&
@@ -42,20 +40,17 @@ function App() {
         postPaymentEmail === usr.email
       ) {
         navigate(
-          `/processing?plan=${encodeURIComponent(
-            postPaymentPlan
-          )}&email=${encodeURIComponent(postPaymentEmail)}`
+          `/processing?plan=${encodeURIComponent(postPaymentPlan)}&email=${encodeURIComponent(postPaymentEmail)}`
         );
         return;
       }
 
-      // ✅ Jeśli to zwykłe logowanie i użytkownik wybrał wcześniej plan
       const selectedPlan = localStorage.getItem("selectedPlan");
       if (
         usr &&
         usr.emailVerified &&
         selectedPlan &&
-        !postPaymentPlan // tylko jeśli nie ma aktywnego procesu opłaty
+        !postPaymentPlan
       ) {
         localStorage.removeItem("selectedPlan");
         subscribeToStripe(selectedPlan, usr.email);
@@ -120,16 +115,30 @@ function App() {
       />
       <Route path="/login" element={<Login onSuccess={() => navigate("/")} />} />
       <Route path="/dashboard" element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />} />
-      <Route path="/downloads/basic" element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />} />
-      <Route path="/downloads/premium" element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />} />
+      <Route
+        path="/downloads/basic"
+        element={
+          user && !localStorage.getItem("postPaymentPlan")
+            ? <DownloadsBasic user={user} />
+            : <Navigate to="/processing" />
+        }
+      />
+      <Route
+        path="/downloads/premium"
+        element={
+          user && !localStorage.getItem("postPaymentPlan")
+            ? <DownloadsPremium user={user} />
+            : <Navigate to="/processing" />
+        }
+      />
       <Route path="/processing" element={<Processing />} />
+      <Route path="/returning" element={<Returning />} />
       <Route path="/tips" element={<Tips />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/faq" element={<FAQ />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/privacy" element={<Privacy />} />
-      <Route path="/returning" element={<Returning />} />
     </Routes>
   );
 }
