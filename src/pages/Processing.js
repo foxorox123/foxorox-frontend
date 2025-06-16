@@ -16,76 +16,58 @@ const Processing = () => {
   useEffect(() => {
     let retries = 0;
     const maxRetries = 30;
-    const retryInterval = 3000;
+    const interval = setInterval(() => setSecondsLeft(s => s - 3), 3000);
 
-    const intervalId = setInterval(() => setSecondsLeft((s) => s - 3), retryInterval);
-
-    const checkSub = () => {
-      const user = auth.currentUser;
-      if (!user || user.email !== email) return;
-
-      fetch("https://foxorox-backend.onrender.com/check-subscription", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, device_id: "web" }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.active) {
-            // 🔄 Clear session data
-            setTimeout(() => {
-              localStorage.removeItem("postPaymentPlan");
-              localStorage.removeItem("postPaymentEmail");
-            }, 1000);
-
-            if (data.plan.startsWith("basic")) {
-              navigate("/downloads/basic");
-            } else {
-              navigate("/downloads/premium");
-            }
-          } else {
-            retries++;
-            if (retries >= maxRetries) {
-              setMessage("⚠️ Subscription still inactive. Please log in again.");
-              setTimeout(() => navigate("/login"), 4000);
-            }
-          }
-        })
-        .catch((err) => {
-          console.error("❌ Error verifying subscription:", err);
-          setMessage("❌ Error verifying subscription.");
-          setTimeout(() => navigate("/login"), 5000);
-        });
-    };
-
-    // 🔁 Próby cykliczne, nie tylko zależne od onAuthStateChanged
-    const attemptInterval = setInterval(() => {
-      retries++;
-      checkSub();
-      if (retries >= maxRetries) {
-        clearInterval(attemptInterval);
-        clearInterval(intervalId);
-      }
-    }, retryInterval);
-
-    // 1. Pierwsza próba: nasłuch na zmianę logowania
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && user.email === email) {
-        checkSub();
+        // ✅ Check subscription on backend
+        fetch("https://foxorox-backend.onrender.com/check-subscription", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, device_id: "web" }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.active) {
+              // 🔄 Delayed clearing of localStorage
+              setTimeout(() => {
+                localStorage.removeItem("postPaymentPlan");
+                localStorage.removeItem("postPaymentEmail");
+              }, 5000);
+
+              if (data.plan.startsWith("basic")) {
+                navigate("/downloads/basic");
+              } else {
+                navigate("/downloads/premium");
+              }
+            } else {
+              retries++;
+              if (retries >= maxRetries) {
+                setMessage("⚠️ Subscription still inactive. Please log in again.");
+                setTimeout(() => navigate("/login"), 4000);
+              }
+            }
+          })
+          .catch((err) => {
+            console.error("Error checking subscription:", err);
+            setMessage("❌ Error verifying subscription.");
+            setTimeout(() => navigate("/login"), 5000);
+          });
       }
     });
 
     return () => {
       unsubscribe();
-      clearInterval(intervalId);
-      clearInterval(attemptInterval);
+      clearInterval(interval);
     };
   }, [navigate, email, plan]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
       <h1>{message}</h1>
-      {message.startsWith("⏳") && <p>Estimated wait: {secondsLeft}s</p>}
+      {message.startsWith("⏳") && (
+        <p>Estimated wait: {secondsLeft}s</p>
+      )}
     </div>
   );
 };
