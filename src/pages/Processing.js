@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase-config";
 
 const Processing = () => {
@@ -10,39 +9,44 @@ const Processing = () => {
   const plan = params.get("plan");
   const email = params.get("email");
 
+  const [secondsLeft, setSecondsLeft] = useState(30);
   const [message, setMessage] = useState("⏳ Processing your transaction...");
 
   useEffect(() => {
     let retries = 0;
-    const maxRetries = 10;
+    const maxRetries = 30;
 
     const interval = setInterval(() => {
-      onAuthStateChanged(auth, (user) => {
-        if (user && user.email === email) {
-          clearInterval(interval);
-          if (plan.startsWith("basic")) {
-            navigate("/downloads/basic");
-          } else {
-            navigate("/downloads/premium");
-          }
+      const user = auth.currentUser;
+
+      if (user && user.email === email) {
+        clearInterval(interval);
+        if (plan.startsWith("basic")) {
+          navigate("/downloads/basic");
         } else {
-          retries++;
-          if (retries >= maxRetries) {
-            clearInterval(interval);
-            setMessage("⚠️ Unable to confirm your login. Redirecting...");
-            setTimeout(() => navigate("/login"), 2000);
-          }
+          navigate("/downloads/premium");
         }
-      });
-    }, 1000); // check every 1s
+      } else {
+        retries++;
+        setSecondsLeft(maxRetries - retries);
+        if (retries >= maxRetries) {
+          clearInterval(interval);
+          setMessage("⚠️ Could not confirm your login. Please log in again.");
+          setTimeout(() => navigate("/login"), 3000);
+        }
+      }
+    }, 1000); // co sekundę
 
     return () => clearInterval(interval);
-  }, [navigate, email, plan]);
+  }, [navigate, plan, email]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
       <h1>{message}</h1>
-      <p>Please wait while we verify your subscription and prepare your download.</p>
+      {message.includes("Processing") && (
+        <p>Please wait ({secondsLeft}s)...</p>
+      )}
+      <p>If nothing happens, you'll be redirected to login.</p>
     </div>
   );
 };
