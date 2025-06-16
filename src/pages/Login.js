@@ -71,68 +71,70 @@ function Login({ onSuccess }) {
   };
 
   return (
-    <div className="login-container">
-      <h2>{isRegistering ? "Register" : "Login"} to Foxorox</h2>
+  <div className="login-container">
+    <h2>{isRegistering ? "Register" : "Login"} to Foxorox</h2>
 
-      <input
-        type="email"
-        placeholder="Email address"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      /><br />
+    <input
+      type="email"
+      placeholder="Email address"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+    /><br />
 
-      <input
-        type="password"
-        placeholder="Password (min. 6 chars)"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      /><br />
+    <input
+      type="password"
+      placeholder="Password (min. 6 chars)"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+    /><br />
 
-      {isRegistering && (
+    {isRegistering && (
+      <>
         <input
           type="password"
           placeholder="Repeat password"
           value={repeatPassword}
           onChange={(e) => setRepeatPassword(e.target.value)}
         /><br />
-      )}
+      </>
+    )}
 
-      <button onClick={handleEmailAuth}>
-        {isRegistering ? "📝 Register" : "🔓 Login"}
-      </button>
+    <button onClick={handleEmailAuth}>
+      {isRegistering ? "📝 Register" : "🔓 Login"}
+    </button>
 
-      {resendAvailable && !isRegistering && (
-        <div style={{ marginTop: "10px" }}>
-          <button onClick={handleResendEmail}>📩 Resend verification email</button>
-        </div>
-      )}
-
-      <div style={{ margin: "15px 0" }}>
-        <button className="google-btn" onClick={handleGoogleLogin}>
-          🔐 Sign in with Google
-        </button>
+    {resendAvailable && !isRegistering && (
+      <div style={{ marginTop: "10px" }}>
+        <button onClick={handleResendEmail}>📩 Resend verification email</button>
       </div>
+    )}
 
-      <p style={{ color: "#aaa", fontSize: "0.9em" }}>
-        {isRegistering ? "Already have an account?" : "Don't have an account?"}{" "}
-        <button
-          onClick={() => {
-            setIsRegistering(!isRegistering);
-            setResendAvailable(false);
-          }}
-          style={{
-            background: "none",
-            border: "none",
-            color: "#f58220",
-            textDecoration: "underline",
-            cursor: "pointer",
-          }}
-        >
-          {isRegistering ? "Login here" : "Register here"}
-        </button>
-      </p>
+    <div style={{ margin: "15px 0" }}>
+      <button className="google-btn" onClick={handleGoogleLogin}>
+        🔐 Sign in with Google
+      </button>
     </div>
-  );
-}
+
+    <div style={{ color: "#aaa", fontSize: "0.9em" }}>
+      {isRegistering ? "Already have an account?" : "Don't have an account?"}{" "}
+      <button
+        onClick={() => {
+          setIsRegistering(!isRegistering);
+          setResendAvailable(false);
+        }}
+        style={{
+          background: "none",
+          border: "none",
+          color: "#f58220",
+          textDecoration: "underline",
+          cursor: "pointer",
+        }}
+      >
+        {isRegistering ? "Login here" : "Register here"}
+      </button>
+    </div>
+  </div>
+);
+
 
 export default Login;
