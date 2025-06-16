@@ -15,10 +15,11 @@ import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
-import Processing from "./pages/Processing"; // 🆕 Dodano
+import Processing from "./pages/Processing";
 
 function App() {
-  const [user, setUser] = useState(undefined);
+  const [user, setUser] = useState(null);
+  const [authChecked, setAuthChecked] = useState(false);
   const navigate = useNavigate();
 
   const subscribe = (plan) => {
@@ -37,7 +38,7 @@ function App() {
         if (data.url) {
           localStorage.setItem("postPaymentPlan", plan);
           localStorage.setItem("postPaymentEmail", user.email);
-          navigate("/processing"); // 🧠 Zamiast window.location.href
+          window.location.href = data.url;
         } else {
           alert("Error: No Stripe URL returned.");
         }
@@ -50,7 +51,8 @@ function App() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
-      setUser(usr);
+      setUser(usr || null);
+      setAuthChecked(true);
 
       const selectedPlan = localStorage.getItem("selectedPlan");
 
@@ -70,10 +72,14 @@ function App() {
   };
 
   const logout = () => {
-    signOut(auth).then(() => navigate("/"));
+    localStorage.clear();
+    signOut(auth).then(() => {
+      setUser(null);
+      navigate("/");
+    });
   };
 
-  if (user === undefined) return <div style={{ color: "white" }}>Loading...</div>;
+  if (!authChecked) return <div style={{ color: "white" }}>Loading...</div>;
 
   return (
     <Routes>

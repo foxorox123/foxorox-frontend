@@ -15,23 +15,42 @@ function PlansPage({ user, logout, subscribe }) {
       >
         <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 100 }} />
         <div>
-          <span style={{ marginRight: 15, fontWeight: "bold" }}>
-            {user?.email}
-          </span>
-          <button
-            style={{ marginRight: 10 }}
-            className="google-btn"
-            onClick={() => navigate("/dashboard")}
-          >
-            Go to Dashboard
-          </button>
-          <button className="google-btn" onClick={logout}>
-            Sign out
-          </button>
+          {user ? (
+            <>
+              <span style={{ marginRight: 15, fontWeight: "bold", color: "#fff" }}>
+                {user.email}
+              </span>
+              <button
+                style={{ marginRight: 10 }}
+                className="google-btn"
+                onClick={() => navigate("/dashboard")}
+              >
+                Go to Dashboard
+              </button>
+              <button className="google-btn" onClick={logout}>
+                Sign out
+              </button>
+            </>
+          ) : (
+            <button
+              className="google-btn"
+              onClick={() => navigate("/login")}
+            >
+              Sign in to Subscribe
+            </button>
+          )}
         </div>
       </div>
 
-      <h2 style={{ marginTop: 40, textAlign: "center" }}>Choose Your Plan</h2>
+      <h2 style={{ marginTop: 40, textAlign: "center", color: "#fff" }}>
+        Choose Your Plan
+      </h2>
+
+      {!user && (
+        <p style={{ textAlign: "center", color: "#ccc", marginBottom: 30 }}>
+          You must sign in before subscribing to a plan.
+        </p>
+      )}
 
       <div
         style={{
