@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
-import { auth, provider } from "./firebase-config";
-import { Routes, Route, useNavigate, Navigate, useLocation } from "react-router-dom";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase-config";
+import {
+  Routes,
+  Route,
+  useNavigate,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 
 import Tips from "./pages/Tips";
 import Login from "./pages/Login";
@@ -26,24 +32,31 @@ function App() {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
       setUser(usr);
 
+      const postPaymentPlan =
+        localStorage.getItem("postPaymentPlan") ||
+        sessionStorage.getItem("postPaymentPlan");
+      const postPaymentEmail =
+        localStorage.getItem("postPaymentEmail") ||
+        sessionStorage.getItem("postPaymentEmail");
+
+      if (
+        usr &&
+        usr.emailVerified &&
+        postPaymentPlan &&
+        postPaymentEmail === usr.email
+      ) {
+        navigate(
+          `/processing?plan=${encodeURIComponent(
+            postPaymentPlan
+          )}&email=${encodeURIComponent(postPaymentEmail)}`
+        );
+        return;
+      }
+
       const selectedPlan = localStorage.getItem("selectedPlan");
-      const postPaymentPlan = localStorage.getItem("postPaymentPlan") || sessionStorage.getItem("postPaymentPlan");
-      const postPaymentEmail = localStorage.getItem("postPaymentEmail") || sessionStorage.getItem("postPaymentEmail");
-
-      if (usr && usr.emailVerified) {
-        // 💳 Wraca po Stripe lub po zalogowaniu po płatności
-        if (postPaymentPlan && postPaymentEmail === usr.email) {
-          navigate("/processing");
-          return;
-        }
-
-        // 🧾 Świeżo zalogowany po wybraniu planu
-        if (selectedPlan) {
-          localStorage.removeItem("selectedPlan");
-          sessionStorage.setItem("postPaymentPlan", selectedPlan);
-          sessionStorage.setItem("postPaymentEmail", usr.email);
-          subscribeToStripe(selectedPlan, usr.email);
-        }
+      if (usr && usr.emailVerified && selectedPlan) {
+        localStorage.removeItem("selectedPlan");
+        subscribeToStripe(selectedPlan, usr.email);
       }
     });
 
@@ -51,11 +64,6 @@ function App() {
   }, [navigate]);
 
   const subscribeToStripe = (plan, email) => {
-    localStorage.setItem("postPaymentPlan", plan);
-    localStorage.setItem("postPaymentEmail", email);
-    sessionStorage.setItem("postPaymentPlan", plan);
-    sessionStorage.setItem("postPaymentEmail", email);
-
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -64,6 +72,10 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         if (data.url) {
+          localStorage.setItem("postPaymentPlan", plan);
+          localStorage.setItem("postPaymentEmail", email);
+          sessionStorage.setItem("postPaymentPlan", plan);
+          sessionStorage.setItem("postPaymentEmail", email);
           window.location.href = data.url;
         } else {
           alert("Error: No Stripe URL returned.");
@@ -82,7 +94,8 @@ function App() {
     });
   };
 
-  if (user === undefined) return <div style={{ color: "white" }}>Loading...</div>;
+  if (user === undefined)
+    return <div style={{ color: "white" }}>Loading...</div>;
 
   return (
     <Routes>
@@ -103,10 +116,32 @@ function App() {
           />
         }
       />
-      <Route path="/login" element={<Login onSuccess={() => navigate("/")} />} />
-      <Route path="/dashboard" element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />} />
-      <Route path="/downloads/basic" element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />} />
-      <Route path="/downloads/premium" element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />} />
+      <Route
+        path="/login"
+        element={<Login onSuccess={() => navigate("/")} />}
+      />
+      <Route
+        path="/dashboard"
+        element={
+          user ? (
+            <Dashboard user={user} logout={logout} />
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+      <Route
+        path="/downloads/basic"
+        element={
+          user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />
+        }
+      />
+      <Route
+        path="/downloads/premium"
+        element={
+          user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />
+        }
+      />
       <Route path="/processing" element={<Processing />} />
       <Route path="/tips" element={<Tips />} />
       <Route path="/about" element={<About />} />
