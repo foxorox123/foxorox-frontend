@@ -10,9 +10,10 @@ const Returning = () => {
   const plan = params.get("plan");
   const email = params.get("email");
 
-  const [status, setStatus] = useState("checking");
+  const [status, setStatus] = useState("loading"); // loading | failed
 
   useEffect(() => {
+    // Zapisz dane do localStorage/sessionStorage
     if (plan && email) {
       localStorage.setItem("postPaymentPlan", plan);
       localStorage.setItem("postPaymentEmail", email);
@@ -20,43 +21,29 @@ const Returning = () => {
       sessionStorage.setItem("postPaymentEmail", email);
     }
 
-    let retries = 0;
-    const maxRetries = 60; // 60 sekund
-    const retryDelay = 1000;
-
+    // Poczekaj aż użytkownik się zaloguje
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
-      if (usr && usr.email?.toLowerCase() === email.toLowerCase() && usr.emailVerified) {
-        setStatus("success");
-        navigate(`/processing?plan=${encodeURIComponent(plan)}&email=${encodeURIComponent(email)}`);
+      if (usr && usr.email === email && usr.emailVerified) {
+        // 🔁 Przekieruj do processing z tymi parametrami
+        navigate(`/processing?plan=${plan}&email=${email}`);
+      } else {
+        setStatus("failed");
       }
     });
 
-    const timeout = setInterval(() => {
-      retries++;
-      if (retries >= maxRetries) {
-        clearInterval(timeout);
-        unsubscribe();
-        setStatus("timeout");
-      }
-    }, retryDelay);
-
-    return () => {
-      unsubscribe();
-      clearInterval(timeout);
-    };
-  }, [navigate, plan, email]);
+    return () => unsubscribe();
+  }, [plan, email, navigate]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
-      {status === "checking" && (
+      {status === "loading" ? (
         <>
-          <h2>🔄 Wracamy z Stripe...</h2>
+          <h1>🔁 Wracamy ze Stripe...</h1>
           <p>Sprawdzanie sesji logowania...</p>
         </>
-      )}
-      {status === "timeout" && (
+      ) : (
         <>
-          <h2>❌ Nie można potwierdzić logowania</h2>
+          <h1>❌ Nie można potwierdzić logowania</h1>
           <p>Spróbuj zalogować się ponownie.</p>
         </>
       )}
