@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase-config";
 
 const Processing = () => {
@@ -10,34 +11,42 @@ const Processing = () => {
   const email = params.get("email");
 
   const [secondsLeft, setSecondsLeft] = useState(30);
-  const [message, setMessage] = useState("⏳ Processing your transaction. Pleas wait 30-40 seconds");
+  const [message, setMessage] = useState("⏳ Processing your transaction...");
 
   useEffect(() => {
-    let retries = 0;
-    const maxRetries = 30;
+    let resolved = false;
+    const maxWait = 30; // seconds
+    let elapsed = 0;
 
-    const interval = setInterval(() => {
-      const user = auth.currentUser;
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user && user.email === email && !resolved) {
+        resolved = true;
+        localStorage.removeItem("postPaymentPlan");
+        localStorage.removeItem("postPaymentEmail");
 
-      if (user && user.email === email) {
-        clearInterval(interval);
-        if (plan.startsWith("basic")) {
+        if (plan && plan.startsWith("basic")) {
           navigate("/downloads/basic");
         } else {
           navigate("/downloads/premium");
         }
-      } else {
-        retries++;
-        setSecondsLeft(maxRetries - retries);
-        if (retries >= maxRetries) {
-          clearInterval(interval);
-          setMessage("⚠️ Could not confirm your login. Please log in again.");
-          setTimeout(() => navigate("/login"), 3000);
-        }
       }
-    }, 1000); // co sekundę
+    });
 
-    return () => clearInterval(interval);
+    const interval = setInterval(() => {
+      elapsed++;
+      setSecondsLeft(maxWait - elapsed);
+      if (elapsed >= maxWait && !resolved) {
+        clearInterval(interval);
+        unsubscribe();
+        setMessage("⚠️ Could not confirm your login. Please log in again.");
+        setTimeout(() => navigate("/login"), 3000);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      unsubscribe();
+    };
   }, [navigate, plan, email]);
 
   return (
@@ -46,7 +55,6 @@ const Processing = () => {
       {message.includes("Processing") && (
         <p>Please wait ({secondsLeft}s)...</p>
       )}
-      <p>If nothing happens, you'll be redirected to login.</p>
     </div>
   );
 };
