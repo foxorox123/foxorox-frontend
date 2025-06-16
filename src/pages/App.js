@@ -7,7 +7,6 @@ import {
   Route,
   useNavigate,
   Navigate,
-  useLocation,
 } from "react-router-dom";
 
 import Tips from "./pages/Tips";
@@ -26,7 +25,6 @@ import Processing from "./pages/Processing";
 function App() {
   const [user, setUser] = useState(undefined);
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
@@ -116,32 +114,10 @@ function App() {
           />
         }
       />
-      <Route
-        path="/login"
-        element={<Login onSuccess={() => navigate("/")} />}
-      />
-      <Route
-        path="/dashboard"
-        element={
-          user ? (
-            <Dashboard user={user} logout={logout} />
-          ) : (
-            <Navigate to="/login" />
-          )
-        }
-      />
-      <Route
-        path="/downloads/basic"
-        element={
-          user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />
-        }
-      />
-      <Route
-        path="/downloads/premium"
-        element={
-          user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />
-        }
-      />
+      <Route path="/login" element={<Login onSuccess={() => navigate("/")} />} />
+      <Route path="/dashboard" element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />} />
+      <Route path="/downloads/basic" element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />} />
+      <Route path="/downloads/premium" element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />} />
       <Route path="/processing" element={<Processing />} />
       <Route path="/tips" element={<Tips />} />
       <Route path="/about" element={<About />} />

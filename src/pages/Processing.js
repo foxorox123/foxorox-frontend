@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../firebase-config";
-import { onAuthStateChanged } from "firebase/auth";
 
 const Processing = () => {
   const navigate = useNavigate();
@@ -10,10 +9,20 @@ const Processing = () => {
   const plan = params.get("plan");
   const email = params.get("email");
 
-  const [status, setStatus] = useState("processing"); // 'processing' | 'error'
+  const [status, setStatus] = useState("processing");
   const [secondsLeft, setSecondsLeft] = useState(30);
 
+  const generateDeviceId = () => {
+    let id = localStorage.getItem("device_id");
+    if (!id) {
+      id = Math.random().toString(36).substring(2);
+      localStorage.setItem("device_id", id);
+    }
+    return id;
+  };
+
   useEffect(() => {
+    const device_id = generateDeviceId();
     let interval;
     let attempts = 0;
 
@@ -25,16 +34,14 @@ const Processing = () => {
         return;
       }
 
-      // 🧠 Wywołanie backendu
       fetch("https://foxorox-backend.onrender.com/check-subscription", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, device_id: "web" }),
+        body: JSON.stringify({ email, device_id }),
       })
         .then((res) => res.json())
         .then((data) => {
           if (data.active) {
-            // ✅ Sukces
             localStorage.removeItem("postPaymentPlan");
             localStorage.removeItem("postPaymentEmail");
 
@@ -43,22 +50,20 @@ const Processing = () => {
             } else {
               navigate("/downloads/premium");
             }
-          } else {
-            console.warn("⏳ Subskrypcja jeszcze nieaktywna...");
           }
         })
         .catch((err) => {
-          console.error("❌ Błąd połączenia:", err);
+          console.error("❌ Error:", err);
           setStatus("error");
         });
     };
 
-    const intervalId = setInterval(() => {
+    interval = setInterval(() => {
       attempts++;
       setSecondsLeft((s) => s - 1);
 
       if (attempts >= 30) {
-        clearInterval(intervalId);
+        clearInterval(interval);
         setStatus("error");
         setTimeout(() => navigate("/login"), 4000);
       } else {
@@ -66,16 +71,15 @@ const Processing = () => {
       }
     }, 1000);
 
-    return () => clearInterval(intervalId);
-  }, [navigate, plan, email]);
+    return () => clearInterval(interval);
+  }, [navigate, email, plan]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
       {status === "processing" ? (
         <>
           <h1>⏳ Processing your transaction...</h1>
-          <p>Please wait while we verify your subscription.</p>
-          <p>Time remaining: {secondsLeft}s</p>
+          <p>Please wait ({secondsLeft}s)</p>
         </>
       ) : (
         <>
