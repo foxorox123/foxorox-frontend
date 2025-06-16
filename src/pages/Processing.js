@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Processing = () => {
   const navigate = useNavigate();
@@ -9,44 +10,78 @@ const Processing = () => {
   const plan = params.get("plan");
   const email = params.get("email");
 
-  const [secondsLeft, setSecondsLeft] = useState(30);
-  const [message, setMessage] = useState("⏳ Processing your transaction...");
+  const [status, setStatus] = useState("processing");
+  const [secondsLeft, setSecondsLeft] = useState(90);
 
   useEffect(() => {
-    let retries = 0;
-    const maxRetries = 30;
+    let interval;
+    let confirmed = false;
 
-    const interval = setInterval(() => {
-      const user = auth.currentUser;
+    const checkSubscription = (currentEmail) => {
+      fetch("https://foxorox-backend.onrender.com/check-subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: currentEmail, device_id: "web" }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.active) {
+            confirmed = true;
+            localStorage.removeItem("postPaymentPlan");
+            localStorage.removeItem("postPaymentEmail");
+            sessionStorage.removeItem("postPaymentPlan");
+            sessionStorage.removeItem("postPaymentEmail");
 
+            if (data.plan.startsWith("basic")) {
+              navigate("/downloads/basic");
+            } else {
+              navigate("/downloads/premium");
+            }
+          }
+        })
+        .catch((err) => {
+          console.error("Błąd backendu:", err);
+          setStatus("error");
+        });
+    };
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && user.email === email) {
-        clearInterval(interval);
-        if (plan.startsWith("basic")) {
-          navigate("/downloads/basic");
-        } else {
-          navigate("/downloads/premium");
-        }
-      } else {
-        retries++;
-        setSecondsLeft(maxRetries - retries);
-        if (retries >= maxRetries) {
-          clearInterval(interval);
-          setMessage("⚠️ Could not confirm your login. Please log in again.");
-          setTimeout(() => navigate("/login"), 3000);
-        }
+        checkSubscription(email);
       }
-    }, 1000); // co sekundę
+    });
 
-    return () => clearInterval(interval);
-  }, [navigate, plan, email]);
+    interval = setInterval(() => {
+      setSecondsLeft((prev) => prev - 1);
+    }, 1000);
+
+    const timeout = setTimeout(() => {
+      if (!confirmed) {
+        setStatus("error");
+        navigate("/login");
+      }
+    }, 90000); // 90 sekund
+
+    return () => {
+      unsubscribe();
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, [navigate, email]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
-      <h1>{message}</h1>
-      {message.includes("Processing") && (
-        <p>Please wait ({secondsLeft}s)...</p>
+      {status === "processing" ? (
+        <>
+          <h1>⏳ Processing your transaction...</h1>
+          <p>Please wait... ({secondsLeft}s remaining)</p>
+        </>
+      ) : (
+        <>
+          <h1>⚠️ Could not confirm your subscription</h1>
+          <p>Redirecting to login...</p>
+        </>
       )}
-      <p>If nothing happens, you'll be redirected to login.</p>
     </div>
   );
 };
