@@ -18,11 +18,9 @@ const Processing = () => {
     const maxRetries = 30;
     const retryInterval = 3000;
 
-    const countdown = setInterval(() => {
-      setSecondsLeft((prev) => prev - 3);
-    }, retryInterval);
+    const intervalId = setInterval(() => setSecondsLeft((s) => s - 3), retryInterval);
 
-    const checkSubscription = () => {
+    const checkSub = () => {
       const user = auth.currentUser;
       if (!user || user.email !== email) return;
 
@@ -34,10 +32,11 @@ const Processing = () => {
         .then((res) => res.json())
         .then((data) => {
           if (data.active) {
-            localStorage.removeItem("postPaymentPlan");
-            localStorage.removeItem("postPaymentEmail");
-            sessionStorage.removeItem("postPaymentPlan");
-            sessionStorage.removeItem("postPaymentEmail");
+            // 🔄 Clear session data
+            setTimeout(() => {
+              localStorage.removeItem("postPaymentPlan");
+              localStorage.removeItem("postPaymentEmail");
+            }, 1000);
 
             if (data.plan.startsWith("basic")) {
               navigate("/downloads/basic");
@@ -47,41 +46,46 @@ const Processing = () => {
           } else {
             retries++;
             if (retries >= maxRetries) {
-              setMessage("❌ Subscription inactive. Please log in again.");
-              setTimeout(() => navigate("/login"), 5000);
+              setMessage("⚠️ Subscription still inactive. Please log in again.");
+              setTimeout(() => navigate("/login"), 4000);
             }
           }
         })
         .catch((err) => {
-          console.error("❌ Subscription check error:", err);
+          console.error("❌ Error verifying subscription:", err);
           setMessage("❌ Error verifying subscription.");
           setTimeout(() => navigate("/login"), 5000);
         });
     };
 
+    // 🔁 Próby cykliczne, nie tylko zależne od onAuthStateChanged
     const attemptInterval = setInterval(() => {
-      checkSubscription();
+      retries++;
+      checkSub();
+      if (retries >= maxRetries) {
+        clearInterval(attemptInterval);
+        clearInterval(intervalId);
+      }
     }, retryInterval);
 
+    // 1. Pierwsza próba: nasłuch na zmianę logowania
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && user.email === email) {
-        checkSubscription();
+        checkSub();
       }
     });
 
     return () => {
       unsubscribe();
+      clearInterval(intervalId);
       clearInterval(attemptInterval);
-      clearInterval(countdown);
     };
   }, [navigate, email, plan]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
       <h1>{message}</h1>
-      {message.startsWith("⏳") && (
-        <p>Estimated wait: {secondsLeft}s</p>
-      )}
+      {message.startsWith("⏳") && <p>Estimated wait: {secondsLeft}s</p>}
     </div>
   );
 };
