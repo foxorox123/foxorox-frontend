@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { auth } from "../firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase-config";
 
 const Returning = () => {
   const navigate = useNavigate();
@@ -20,38 +20,43 @@ const Returning = () => {
       sessionStorage.setItem("postPaymentEmail", email);
     }
 
-    let attempts = 0;
-    const maxAttempts = 15;
+    let retries = 0;
+    const maxRetries = 60; // 60 sekund
+    const retryDelay = 1000;
 
-    const interval = setInterval(() => {
-      const user = auth.currentUser;
-      console.log("🔁 Checking Firebase user...", user?.email);
-
-      if (user && user.email === email && user.emailVerified) {
-        clearInterval(interval);
-        navigate(`/processing?plan=${plan}&email=${email}`);
+    const unsubscribe = onAuthStateChanged(auth, (usr) => {
+      if (usr && usr.email?.toLowerCase() === email.toLowerCase() && usr.emailVerified) {
+        setStatus("success");
+        navigate(`/processing?plan=${encodeURIComponent(plan)}&email=${encodeURIComponent(email)}`);
       }
+    });
 
-      attempts++;
-      if (attempts >= maxAttempts) {
-        clearInterval(interval);
-        setStatus("failed");
+    const timeout = setInterval(() => {
+      retries++;
+      if (retries >= maxRetries) {
+        clearInterval(timeout);
+        unsubscribe();
+        setStatus("timeout");
       }
-    }, 2000);
+    }, retryDelay);
 
-    return () => clearInterval(interval);
-  }, [plan, email, navigate]);
+    return () => {
+      unsubscribe();
+      clearInterval(timeout);
+    };
+  }, [navigate, plan, email]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
-      {status === "checking" ? (
+      {status === "checking" && (
         <>
-          <h1>🔁 Wracamy ze Stripe...</h1>
-          <p>Sprawdzanie logowania... Proszę czekać.</p>
+          <h2>🔄 Wracamy z Stripe...</h2>
+          <p>Sprawdzanie sesji logowania...</p>
         </>
-      ) : (
+      )}
+      {status === "timeout" && (
         <>
-          <h1>❌ Nie można potwierdzić logowania</h1>
+          <h2>❌ Nie można potwierdzić logowania</h2>
           <p>Spróbuj zalogować się ponownie.</p>
         </>
       )}

@@ -27,11 +27,9 @@ function App() {
       setUser(usr);
 
       const postPaymentPlan =
-        localStorage.getItem("postPaymentPlan") ||
-        sessionStorage.getItem("postPaymentPlan");
+        localStorage.getItem("postPaymentPlan") || sessionStorage.getItem("postPaymentPlan");
       const postPaymentEmail =
-        localStorage.getItem("postPaymentEmail") ||
-        sessionStorage.getItem("postPaymentEmail");
+        localStorage.getItem("postPaymentEmail") || sessionStorage.getItem("postPaymentEmail");
 
       if (
         usr &&
@@ -50,13 +48,11 @@ function App() {
         usr &&
         usr.emailVerified &&
         selectedPlan &&
-        !postPaymentPlan &&
-        window.location.pathname === "/"
+        !postPaymentPlan
       ) {
         localStorage.removeItem("selectedPlan");
         subscribeToStripe(selectedPlan, usr.email);
       }
-
     });
 
     return () => unsubscribe();
