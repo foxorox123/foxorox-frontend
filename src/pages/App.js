@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { signOut, onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase-config";
-import {
-  Routes,
-  Route,
-  useNavigate,
-  useLocation,
-  Navigate,
-} from "react-router-dom";
+import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { auth, provider } from "./firebase-config";
+import { Routes, Route, useNavigate, Navigate, useLocation } from "react-router-dom";
 
 import Tips from "./pages/Tips";
 import Login from "./pages/Login";
@@ -34,54 +28,17 @@ function App() {
 
       const selectedPlan = localStorage.getItem("selectedPlan");
 
-      // ✅ Zabezpieczenie – jeśli jesteśmy na processing z query i mamy usera
-      const params = new URLSearchParams(location.search);
-      const planParam = params.get("plan");
-      const emailParam = params.get("email");
-
-      if (
-        location.pathname === "/processing" &&
-        usr &&
-        usr.emailVerified &&
-        emailParam === usr.email
-      ) {
-        // nie rób nic – pozwól Processing.js działać
-        return;
-      }
-
-      // 🔁 Jeśli mamy dane z local/sessionStorage (np. po powrocie ze Stripe)
-      const postPaymentPlan =
-        localStorage.getItem("postPaymentPlan") ||
-        sessionStorage.getItem("postPaymentPlan");
-      const postPaymentEmail =
-        localStorage.getItem("postPaymentEmail") ||
-        sessionStorage.getItem("postPaymentEmail");
-
-      if (
-        usr &&
-        usr.emailVerified &&
-        postPaymentPlan &&
-        postPaymentEmail === usr.email
-      ) {
-        navigate(
-          `/processing?plan=${encodeURIComponent(
-            postPaymentPlan
-          )}&email=${encodeURIComponent(postPaymentEmail)}`
-        );
-        return;
-      }
-
-      // Jeśli użytkownik właśnie się zalogował po kliknięciu Subscribe
+      // Jeśli użytkownik się zalogował po wybraniu planu
       if (usr && usr.emailVerified && selectedPlan) {
         localStorage.removeItem("selectedPlan");
-        subscribeToStripe(selectedPlan, usr.email);
+        redirectToStripe(selectedPlan, usr.email);
       }
     });
 
     return () => unsubscribe();
-  }, [navigate, location]);
+  }, [navigate]);
 
-  const subscribeToStripe = (plan, email) => {
+  const redirectToStripe = (plan, email) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -90,18 +47,14 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         if (data.url) {
-          localStorage.setItem("postPaymentPlan", plan);
-          localStorage.setItem("postPaymentEmail", email);
-          sessionStorage.setItem("postPaymentPlan", plan);
-          sessionStorage.setItem("postPaymentEmail", email);
           window.location.href = data.url;
         } else {
-          alert("Error: No Stripe URL returned.");
+          alert("Error: Stripe checkout session URL missing.");
         }
       })
       .catch((err) => {
-        alert("Server error during subscription.");
         console.error("Stripe error:", err);
+        alert("Subscription failed. Try again.");
       });
   };
 
@@ -112,8 +65,13 @@ function App() {
     });
   };
 
-  if (user === undefined)
-    return <div style={{ color: "white" }}>Loading...</div>;
+  const loginWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then(() => {})
+      .catch((error) => alert("Login error: " + error.message));
+  };
+
+  if (user === undefined) return <div style={{ color: "white" }}>Loading...</div>;
 
   return (
     <Routes>
@@ -128,7 +86,7 @@ function App() {
                 localStorage.setItem("selectedPlan", plan);
                 navigate("/login");
               } else {
-                subscribeToStripe(plan, user.email);
+                redirectToStripe(plan, user.email);
               }
             }}
           />
