@@ -10,7 +10,7 @@ const Returning = () => {
   const plan = params.get("plan");
   const email = params.get("email");
 
-  const [message, setMessage] = useState("🔄 Wracamy z Stripe...");
+  const [status, setStatus] = useState("checking");
 
   useEffect(() => {
     if (plan && email) {
@@ -20,43 +20,54 @@ const Returning = () => {
       sessionStorage.setItem("postPaymentEmail", email);
     }
 
-    let attempts = 0;
-    const maxAttempts = 20;
+    let retries = 0;
+    const maxRetries = 60;
+    const retryDelay = 1000;
 
-    const unsubscribe = onAuthStateChanged(auth, (usr) => {
-      if (usr && usr.email === email && usr.emailVerified) {
+    const checkAndRedirect = (usr) => {
+      if (usr && usr.email?.toLowerCase() === email.toLowerCase() && usr.emailVerified) {
+        setStatus("success");
         navigate(`/processing?plan=${encodeURIComponent(plan)}&email=${encodeURIComponent(email)}`);
       }
+    };
+
+    // ✅ Obsługa przypadku, gdy user już zalogowany
+    checkAndRedirect(auth.currentUser);
+
+    // ✅ Nasłuch Firebase
+    const unsubscribe = onAuthStateChanged(auth, (usr) => {
+      checkAndRedirect(usr);
     });
 
-    const interval = setInterval(() => {
-      const user = auth.currentUser;
-      attempts++;
-
-      if (user && user.email === email && user.emailVerified) {
-        clearInterval(interval);
+    const timeout = setInterval(() => {
+      retries++;
+      if (retries >= maxRetries) {
+        clearInterval(timeout);
         unsubscribe();
-        navigate(`/processing?plan=${encodeURIComponent(plan)}&email=${encodeURIComponent(email)}`);
+        setStatus("timeout");
       }
-
-      if (attempts >= maxAttempts) {
-        clearInterval(interval);
-        unsubscribe();
-        setMessage("❌ Nie można potwierdzić logowania");
-        setTimeout(() => navigate("/login"), 5000);
-      }
-    }, 1500);
+    }, retryDelay);
 
     return () => {
-      clearInterval(interval);
       unsubscribe();
+      clearInterval(timeout);
     };
   }, [navigate, plan, email]);
 
   return (
-    <div style={{ color: "white", textAlign: "center", marginTop: "80px" }}>
-      <h2>{message}</h2>
-      {message.startsWith("🔄") && <p>Sprawdzanie sesji logowania...</p>}
+    <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
+      {status === "checking" && (
+        <>
+          <h2>🔄 Wracamy z Stripe.</h2>
+          <p>Sprawdzanie sesji logowania.</p>
+        </>
+      )}
+      {status === "timeout" && (
+        <>
+          <h2>❌ Nie można potwierdzić logowania</h2>
+          <p>Spróbuj zalogować się ponownie.</p>
+        </>
+      )}
     </div>
   );
 };
