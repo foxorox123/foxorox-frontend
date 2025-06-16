@@ -125,7 +125,7 @@ function App() {
       />
       <Route path="/tips" element={<Tips />} />
       <Route path="/about" element={<About />} />
-      <Route path="/contact" element={<Contact />} />
+      <Route path="/contact" element={<Contact Us />} />
       <Route path="/faq" element={<FAQ />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/privacy" element={<Privacy />} />
