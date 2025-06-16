@@ -50,12 +50,13 @@ function App() {
         usr &&
         usr.emailVerified &&
         selectedPlan &&
-        !postPaymentPlan &&
-        window.location.pathname === "/"
+        !postPaymentPlan
       ) {
-        localStorage.removeItem("selectedPlan");
+        // Zostaw plan w pamięci — przekieruj do Stripe
         subscribeToStripe(selectedPlan, usr.email);
+        return; // 🔄 Ważne: zatrzymaj dalsze przekierowania
       }
+
 
     });
 

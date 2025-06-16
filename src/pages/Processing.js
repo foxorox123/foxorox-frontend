@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Processing = () => {
   const navigate = useNavigate();
@@ -15,23 +16,14 @@ const Processing = () => {
   useEffect(() => {
     let retries = 0;
     const maxRetries = 30;
+    const retryInterval = 3000;
 
-    const interval = setInterval(() => {
-      setSecondsLeft((s) => s - 3);
+    const intervalId = setInterval(() => setSecondsLeft((s) => s - 3), retryInterval);
 
+    const checkSub = () => {
       const user = auth.currentUser;
-      if (!user || user.email !== email) {
-        retries++;
-        console.log("⏳ Waiting for user login sync...", retries);
-        if (retries >= maxRetries) {
-          clearInterval(interval);
-          setMessage("❌ Nie można potwierdzić logowania");
-          setTimeout(() => navigate("/login"), 4000);
-        }
-        return;
-      }
+      if (!user || user.email !== email) return;
 
-      // ✅ Użytkownik jest widoczny — sprawdzamy subskrypcję
       fetch("https://foxorox-backend.onrender.com/check-subscription", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -40,9 +32,12 @@ const Processing = () => {
         .then((res) => res.json())
         .then((data) => {
           if (data.active) {
-            clearInterval(interval);
-            localStorage.removeItem("postPaymentPlan");
-            localStorage.removeItem("postPaymentEmail");
+            // 🔄 Clear session data
+            setTimeout(() => {
+              localStorage.removeItem("postPaymentPlan");
+              localStorage.removeItem("postPaymentEmail");
+            }, 1000);
+
             if (data.plan.startsWith("basic")) {
               navigate("/downloads/basic");
             } else {
@@ -50,31 +45,47 @@ const Processing = () => {
             }
           } else {
             retries++;
-            console.log("❌ Subskrypcja nieaktywna jeszcze...", retries);
             if (retries >= maxRetries) {
-              clearInterval(interval);
-              setMessage("⚠️ Subskrypcja nieaktywna. Zaloguj się ponownie.");
+              setMessage("⚠️ Subscription still inactive. Please log in again.");
               setTimeout(() => navigate("/login"), 4000);
             }
           }
         })
         .catch((err) => {
-          console.error("Błąd sprawdzania subskrypcji:", err);
-          clearInterval(interval);
-          setMessage("❌ Błąd połączenia.");
+          console.error("❌ Error verifying subscription:", err);
+          setMessage("❌ Error verifying subscription.");
           setTimeout(() => navigate("/login"), 5000);
         });
-    }, 3000);
+    };
 
-    return () => clearInterval(interval);
+    // 🔁 Próby cykliczne, nie tylko zależne od onAuthStateChanged
+    const attemptInterval = setInterval(() => {
+      retries++;
+      checkSub();
+      if (retries >= maxRetries) {
+        clearInterval(attemptInterval);
+        clearInterval(intervalId);
+      }
+    }, retryInterval);
+
+    // 1. Pierwsza próba: nasłuch na zmianę logowania
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user && user.email === email) {
+        checkSub();
+      }
+    });
+
+    return () => {
+      unsubscribe();
+      clearInterval(intervalId);
+      clearInterval(attemptInterval);
+    };
   }, [navigate, email, plan]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
       <h1>{message}</h1>
-      {message.startsWith("⏳") && (
-        <p>Estimated wait: {secondsLeft}s</p>
-      )}
+      {message.startsWith("⏳") && <p>Estimated wait: {secondsLeft}s</p>}
     </div>
   );
 };
