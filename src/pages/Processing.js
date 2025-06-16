@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase-config";
 
 const Processing = () => {
   const navigate = useNavigate();
@@ -10,51 +8,49 @@ const Processing = () => {
   const plan = params.get("plan");
   const email = params.get("email");
 
-  const [secondsLeft, setSecondsLeft] = useState(30);
-  const [message, setMessage] = useState("⏳ Processing your transaction...");
+  const [status, setStatus] = useState("⏳ Verifying your subscription...");
 
   useEffect(() => {
-    let resolved = false;
-    const maxWait = 30; // seconds
-    let elapsed = 0;
+    if (!email) {
+      setStatus("❌ Missing email. Redirecting...");
+      setTimeout(() => navigate("/login"), 3000);
+      return;
+    }
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && user.email === email && !resolved) {
-        resolved = true;
-        localStorage.removeItem("postPaymentPlan");
-        localStorage.removeItem("postPaymentEmail");
+    const device_id = window.navigator.userAgent + "_id"; // you can improve this
 
-        if (plan && plan.startsWith("basic")) {
-          navigate("/downloads/basic");
+    fetch("https://foxorox-backend.onrender.com/check-subscription", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, device_id }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.active) {
+          localStorage.removeItem("postPaymentPlan");
+          localStorage.removeItem("postPaymentEmail");
+
+          if (data.plan.startsWith("basic")) {
+            navigate("/downloads/basic");
+          } else {
+            navigate("/downloads/premium");
+          }
         } else {
-          navigate("/downloads/premium");
+          setStatus("⚠️ No active subscription found. Redirecting...");
+          setTimeout(() => navigate("/login"), 4000);
         }
-      }
-    });
-
-    const interval = setInterval(() => {
-      elapsed++;
-      setSecondsLeft(maxWait - elapsed);
-      if (elapsed >= maxWait && !resolved) {
-        clearInterval(interval);
-        unsubscribe();
-        setMessage("⚠️ Could not confirm your login. Please log in again.");
-        setTimeout(() => navigate("/login"), 3000);
-      }
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-      unsubscribe();
-    };
-  }, [navigate, plan, email]);
+      })
+      .catch((err) => {
+        console.error(err);
+        setStatus("❌ Server error. Try again.");
+        setTimeout(() => navigate("/login"), 4000);
+      });
+  }, [navigate, email, plan]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
-      <h1>{message}</h1>
-      {message.includes("Processing") && (
-        <p>Please wait ({secondsLeft}s)...</p>
-      )}
+      <h1>{status}</h1>
+      <p>This may take a few seconds. Please do not refresh the page.</p>
     </div>
   );
 };
