@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Returning = () => {
   const navigate = useNavigate();
@@ -10,10 +10,9 @@ const Returning = () => {
   const plan = params.get("plan");
   const email = params.get("email");
 
-  const [status, setStatus] = useState("loading"); // loading | failed
+  const [status, setStatus] = useState("checking");
 
   useEffect(() => {
-    // Zapisz dane do localStorage/sessionStorage
     if (plan && email) {
       localStorage.setItem("postPaymentPlan", plan);
       localStorage.setItem("postPaymentEmail", email);
@@ -21,25 +20,34 @@ const Returning = () => {
       sessionStorage.setItem("postPaymentEmail", email);
     }
 
-    // Poczekaj aż użytkownik się zaloguje
-    const unsubscribe = onAuthStateChanged(auth, (usr) => {
-      if (usr && usr.email === email && usr.emailVerified) {
-        // 🔁 Przekieruj do processing z tymi parametrami
+    let attempts = 0;
+    const maxAttempts = 15;
+
+    const interval = setInterval(() => {
+      const user = auth.currentUser;
+      console.log("🔁 Checking Firebase user...", user?.email);
+
+      if (user && user.email === email && user.emailVerified) {
+        clearInterval(interval);
         navigate(`/processing?plan=${plan}&email=${email}`);
-      } else {
+      }
+
+      attempts++;
+      if (attempts >= maxAttempts) {
+        clearInterval(interval);
         setStatus("failed");
       }
-    });
+    }, 2000);
 
-    return () => unsubscribe();
+    return () => clearInterval(interval);
   }, [plan, email, navigate]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
-      {status === "loading" ? (
+      {status === "checking" ? (
         <>
           <h1>🔁 Wracamy ze Stripe...</h1>
-          <p>Sprawdzanie sesji logowania...</p>
+          <p>Sprawdzanie logowania... Proszę czekać.</p>
         </>
       ) : (
         <>
