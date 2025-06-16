@@ -42,7 +42,7 @@ function Login({ onSuccess }) {
           return;
         }
         alert("Login successful");
-        onSuccess();
+        if (onSuccess) onSuccess();
       } catch (err) {
         alert("Login error: " + err.message);
       }
@@ -54,7 +54,7 @@ function Login({ onSuccess }) {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
       const user = result.user;
       alert("Google login successful");
-      onSuccess();
+      if (onSuccess) onSuccess();
     } catch (err) {
       alert("Google login failed: " + err.message);
     }
@@ -74,13 +74,27 @@ function Login({ onSuccess }) {
     <div className="login-container">
       <h2>{isRegistering ? "Register" : "Login"} to Foxorox</h2>
 
-      <input type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} /><br />
-      <input type="password" placeholder="Password (min. 6 chars)" value={password} onChange={(e) => setPassword(e.target.value)} /><br />
+      <input
+        type="email"
+        placeholder="Email address"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      /><br />
+
+      <input
+        type="password"
+        placeholder="Password (min. 6 chars)"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      /><br />
 
       {isRegistering && (
-        <>
-          <input type="password" placeholder="Repeat password" value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} /><br />
-        </>
+        <input
+          type="password"
+          placeholder="Repeat password"
+          value={repeatPassword}
+          onChange={(e) => setRepeatPassword(e.target.value)}
+        /><br />
       )}
 
       <button onClick={handleEmailAuth}>

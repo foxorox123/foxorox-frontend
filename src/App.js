@@ -25,19 +25,58 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
       setUser(usr);
+
+      const postPaymentPlan =
+        localStorage.getItem("postPaymentPlan") ||
+        sessionStorage.getItem("postPaymentPlan");
+      const postPaymentEmail =
+        localStorage.getItem("postPaymentEmail") ||
+        sessionStorage.getItem("postPaymentEmail");
+
+      // ✅ Jeśli wraca ze Stripe i dane się zgadzają — przejdź do /processing
+      if (
+        usr &&
+        usr.emailVerified &&
+        postPaymentPlan &&
+        postPaymentEmail === usr.email
+      ) {
+        navigate(
+          `/processing?plan=${encodeURIComponent(
+            postPaymentPlan
+          )}&email=${encodeURIComponent(postPaymentEmail)}`
+        );
+        return;
+      }
+
+      // ✅ Jeśli to zwykłe logowanie i użytkownik wybrał wcześniej plan
+      const selectedPlan = localStorage.getItem("selectedPlan");
+      if (
+        usr &&
+        usr.emailVerified &&
+        selectedPlan &&
+        !postPaymentPlan // tylko jeśli nie ma aktywnego procesu opłaty
+      ) {
+        localStorage.removeItem("selectedPlan");
+        subscribeToStripe(selectedPlan, usr.email);
+      }
     });
+
     return () => unsubscribe();
-  }, []);
+  }, [navigate]);
 
   const subscribeToStripe = (plan, email) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan, email })
+      body: JSON.stringify({ plan, email }),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.url) {
+          localStorage.setItem("postPaymentPlan", plan);
+          localStorage.setItem("postPaymentEmail", email);
+          sessionStorage.setItem("postPaymentPlan", plan);
+          sessionStorage.setItem("postPaymentEmail", email);
           window.location.href = data.url;
         } else {
           alert("Error: No Stripe URL returned.");
@@ -56,7 +95,8 @@ function App() {
     });
   };
 
-  if (user === undefined) return <div style={{ color: "white" }}>Loading...</div>;
+  if (user === undefined)
+    return <div style={{ color: "white" }}>Loading...</div>;
 
   return (
     <Routes>
