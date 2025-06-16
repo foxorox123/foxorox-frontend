@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import {
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-} from "firebase/auth";
+import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, provider } from "./firebase-config";
-import {
-  Routes,
-  Route,
-  useNavigate,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 
 import Tips from "./pages/Tips";
 import Login from "./pages/Login";
@@ -24,12 +15,13 @@ import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
-import Processing from "./pages/Processing"; // 🆕
+import Processing from "./pages/Processing"; // ⬅️ Dodaj import
 
 function App() {
   const [user, setUser] = useState(undefined);
   const navigate = useNavigate();
 
+  // 🔄 Obsługa subskrypcji
   const subscribe = (plan) => {
     if (!user || !user.email) {
       alert("Error: No user email found.");
@@ -57,25 +49,40 @@ function App() {
       });
   };
 
+  // 🔐 Obsługa logowania i pamięci planu
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
       setUser(usr);
 
-      const selectedPlan = localStorage.getItem("selectedPlan");
-      const postPaymentPlan = localStorage.getItem("postPaymentPlan");
-      const postPaymentEmail = localStorage.getItem("postPaymentEmail");
+      if (usr && usr.emailVerified) {
+        const selectedPlan = localStorage.getItem("selectedPlan");
+        const postPaymentPlan = localStorage.getItem("postPaymentPlan");
+        const postPaymentEmail = localStorage.getItem("postPaymentEmail");
 
-      // 🔁 Jeśli użytkownik zalogował się po kliknięciu w plan
-      if (usr && selectedPlan && usr.emailVerified) {
-        localStorage.removeItem("selectedPlan");
-        subscribe(selectedPlan);
-      }
+        // ➕ Plan wybrany przed logowaniem
+        if (selectedPlan) {
+          localStorage.removeItem("selectedPlan");
+          fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ plan: selectedPlan, email: usr.email }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.url) {
+                localStorage.setItem("postPaymentPlan", selectedPlan);
+                localStorage.setItem("postPaymentEmail", usr.email);
+                window.location.href = data.url;
+              }
+            });
+        }
 
-      // 🧾 Po powrocie ze Stripe
-      else if (usr && postPaymentPlan && postPaymentEmail === usr.email) {
-        localStorage.removeItem("postPaymentPlan");
-        localStorage.removeItem("postPaymentEmail");
-        navigate("/processing"); // ⬅️ najpierw do "Processing"
+        // ✅ Po powrocie z płatności
+        if (postPaymentPlan && postPaymentEmail === usr.email) {
+          localStorage.removeItem("postPaymentPlan");
+          localStorage.removeItem("postPaymentEmail");
+          navigate("/processing");
+        }
       }
     });
 
@@ -83,17 +90,19 @@ function App() {
   }, [navigate]);
 
   const loginWithGoogle = () => {
-    signInWithPopup(auth, provider).catch((error) =>
-      alert("Login error: " + error.message)
-    );
+    signInWithPopup(auth, provider)
+      .then(() => {})
+      .catch((error) => alert("Login error: " + error.message));
   };
 
   const logout = () => {
-    signOut(auth).then(() => navigate("/"));
+    signOut(auth).then(() => {
+      setUser(null);
+      navigate("/");
+    });
   };
 
-  if (user === undefined)
-    return <div style={{ color: "white" }}>Loading...</div>;
+  if (user === undefined) return <div style={{ color: "white" }}>Loading...</div>;
 
   return (
     <Routes>
@@ -114,41 +123,11 @@ function App() {
           />
         }
       />
-      <Route
-        path="/login"
-        element={<Login onSuccess={() => navigate("/")} />}
-      />
-      <Route
-        path="/dashboard"
-        element={
-          user ? (
-            <Dashboard user={user} logout={logout} />
-          ) : (
-            <Navigate to="/login" />
-          )
-        }
-      />
-      <Route
-        path="/downloads/basic"
-        element={
-          user ? (
-            <DownloadsBasic user={user} />
-          ) : (
-            <Navigate to="/login" />
-          )
-        }
-      />
-      <Route
-        path="/downloads/premium"
-        element={
-          user ? (
-            <DownloadsPremium user={user} />
-          ) : (
-            <Navigate to="/login" />
-          )
-        }
-      />
-      <Route path="/processing" element={<Processing user={user} />} />
+      <Route path="/login" element={<Login onSuccess={() => navigate("/")} />} />
+      <Route path="/dashboard" element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />} />
+      <Route path="/downloads/basic" element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />} />
+      <Route path="/downloads/premium" element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />} />
+      <Route path="/processing" element={<Processing />} />
       <Route path="/tips" element={<Tips />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
