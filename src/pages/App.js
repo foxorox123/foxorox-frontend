@@ -6,6 +6,7 @@ import {
   Routes,
   Route,
   useNavigate,
+  useLocation,
   Navigate,
 } from "react-router-dom";
 
@@ -25,11 +26,30 @@ import Processing from "./pages/Processing";
 function App() {
   const [user, setUser] = useState(undefined);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
       setUser(usr);
 
+      const selectedPlan = localStorage.getItem("selectedPlan");
+
+      // ✅ Zabezpieczenie – jeśli jesteśmy na processing z query i mamy usera
+      const params = new URLSearchParams(location.search);
+      const planParam = params.get("plan");
+      const emailParam = params.get("email");
+
+      if (
+        location.pathname === "/processing" &&
+        usr &&
+        usr.emailVerified &&
+        emailParam === usr.email
+      ) {
+        // nie rób nic – pozwól Processing.js działać
+        return;
+      }
+
+      // 🔁 Jeśli mamy dane z local/sessionStorage (np. po powrocie ze Stripe)
       const postPaymentPlan =
         localStorage.getItem("postPaymentPlan") ||
         sessionStorage.getItem("postPaymentPlan");
@@ -51,7 +71,7 @@ function App() {
         return;
       }
 
-      const selectedPlan = localStorage.getItem("selectedPlan");
+      // Jeśli użytkownik właśnie się zalogował po kliknięciu Subscribe
       if (usr && usr.emailVerified && selectedPlan) {
         localStorage.removeItem("selectedPlan");
         subscribeToStripe(selectedPlan, usr.email);
@@ -59,7 +79,7 @@ function App() {
     });
 
     return () => unsubscribe();
-  }, [navigate]);
+  }, [navigate, location]);
 
   const subscribeToStripe = (plan, email) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {

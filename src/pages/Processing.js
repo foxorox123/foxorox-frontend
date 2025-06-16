@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../firebase-config";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Processing = () => {
   const navigate = useNavigate();
@@ -9,59 +10,58 @@ const Processing = () => {
   const plan = params.get("plan");
   const email = params.get("email");
 
-  const [status, setStatus] = useState("processing"); // 'processing' | 'error'
+  const [status, setStatus] = useState("processing");
   const [secondsLeft, setSecondsLeft] = useState(90);
 
   useEffect(() => {
-    let interval;
     let attempts = 0;
-    const maxAttempts = 30; // 30 * 3s = 90s
+    const maxAttempts = 30;
 
-    const tryConfirm = () => {
-      const user = auth.currentUser;
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user || user.email !== email) {
-        console.warn("Waiting for correct user...");
+        console.warn("Waiting for auth state...");
         return;
       }
 
-      fetch("https://foxorox-backend.onrender.com/check-subscription", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, device_id: "web" }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.active) {
-            localStorage.removeItem("postPaymentPlan");
-            localStorage.removeItem("postPaymentEmail");
+      const interval = setInterval(() => {
+        attempts++;
+        setSecondsLeft((s) => s - 3);
 
-            if (data.plan.startsWith("basic")) {
-              navigate("/downloads/basic");
-            } else {
-              navigate("/downloads/premium");
-            }
-          }
+        fetch("https://foxorox-backend.onrender.com/check-subscription", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, device_id: "web" }),
         })
-        .catch((err) => {
-          console.error("❌ Błąd połączenia:", err);
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.active) {
+              localStorage.removeItem("postPaymentPlan");
+              localStorage.removeItem("postPaymentEmail");
+              clearInterval(interval);
+
+              if (data.plan.startsWith("basic")) {
+                navigate("/downloads/basic");
+              } else {
+                navigate("/downloads/premium");
+              }
+            }
+          })
+          .catch((err) => {
+            console.error("Backend error:", err);
+            clearInterval(interval);
+            setStatus("error");
+            setTimeout(() => navigate("/login"), 5000);
+          });
+
+        if (attempts >= maxAttempts) {
+          clearInterval(interval);
           setStatus("error");
-        });
-    };
+          setTimeout(() => navigate("/login"), 5000);
+        }
+      }, 3000);
+    });
 
-    interval = setInterval(() => {
-      attempts++;
-      setSecondsLeft((s) => s - 3);
-
-      if (attempts >= maxAttempts) {
-        clearInterval(interval);
-        setStatus("error");
-        setTimeout(() => navigate("/login"), 5000);
-      } else {
-        tryConfirm();
-      }
-    }, 3000);
-
-    return () => clearInterval(interval);
+    return () => unsubscribe();
   }, [navigate, plan, email]);
 
   return (
