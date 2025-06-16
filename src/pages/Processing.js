@@ -9,19 +9,18 @@ const Processing = () => {
   const plan = params.get("plan");
   const email = params.get("email");
 
-  const [message, setMessage] = useState("⏳ Processing your transaction...");
+  const [secondsLeft, setSecondsLeft] = useState(30);
+  const [message, setMessage] = useState("⏳ Processing your transaction. Pleas wait 30-40 seconds");
 
   useEffect(() => {
     let retries = 0;
-    const maxRetries = 15;
+    const maxRetries = 30;
 
     const interval = setInterval(() => {
       const user = auth.currentUser;
 
       if (user && user.email === email) {
         clearInterval(interval);
-
-        // ✅ Użytkownik się zgadza — przekieruj do odpowiednich plików
         if (plan.startsWith("basic")) {
           navigate("/downloads/basic");
         } else {
@@ -29,13 +28,14 @@ const Processing = () => {
         }
       } else {
         retries++;
+        setSecondsLeft(maxRetries - retries);
         if (retries >= maxRetries) {
           clearInterval(interval);
           setMessage("⚠️ Could not confirm your login. Please log in again.");
           setTimeout(() => navigate("/login"), 3000);
         }
       }
-    }, 1000); // Co 1s sprawdza czy user już załadowany
+    }, 1000); // co sekundę
 
     return () => clearInterval(interval);
   }, [navigate, plan, email]);
@@ -43,7 +43,10 @@ const Processing = () => {
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
       <h1>{message}</h1>
-      <p>Please wait while we verify your subscription and prepare your download.</p>
+      {message.includes("Processing") && (
+        <p>Please wait ({secondsLeft}s)...</p>
+      )}
+      <p>If nothing happens, you'll be redirected to login.</p>
     </div>
   );
 };
