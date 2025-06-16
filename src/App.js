@@ -17,6 +17,7 @@ import FAQ from "./pages/FAQ";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Processing from "./pages/Processing";
+import Returning from "./pages/Returning";
 
 function App() {
   const [user, setUser] = useState(undefined);
@@ -128,6 +129,8 @@ function App() {
       <Route path="/faq" element={<FAQ />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/privacy" element={<Privacy />} />
+      <Route path="/returning" element={<Returning />} />
+
     </Routes>
   );
 }
