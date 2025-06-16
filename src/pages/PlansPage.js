@@ -4,6 +4,15 @@ import { useNavigate } from "react-router-dom";
 function PlansPage({ user, logout, subscribe }) {
   const navigate = useNavigate();
 
+  const handleSubscribe = (plan) => {
+    if (!user || !user.email) {
+      localStorage.setItem("selectedPlan", plan);
+      navigate("/login");
+    } else {
+      subscribe(plan);
+    }
+  };
+
   return (
     <div className="main-container">
       <div
@@ -64,7 +73,7 @@ function PlansPage({ user, logout, subscribe }) {
         <div className="plan-card" style={{ width: 250 }}>
           <h2>🟢 Basic Monthly</h2>
           <p>NASDAQ & S&P 500 – candle pattern prediction</p>
-          <button onClick={() => subscribe("basic_monthly")}>
+          <button onClick={() => handleSubscribe("basic_monthly")}>
             Subscribe – $79.99
           </button>
         </div>
@@ -72,7 +81,7 @@ function PlansPage({ user, logout, subscribe }) {
         <div className="plan-card" style={{ width: 250 }}>
           <h2>🔵 Basic Yearly</h2>
           <p>NASDAQ & S&P 500 – full year access</p>
-          <button onClick={() => subscribe("basic_yearly")}>
+          <button onClick={() => handleSubscribe("basic_yearly")}>
             Subscribe – $790.00
           </button>
         </div>
@@ -80,7 +89,7 @@ function PlansPage({ user, logout, subscribe }) {
         <div className="plan-card" style={{ width: 250 }}>
           <h2>🟠 Global Monthly</h2>
           <p>Global markets + Markov modeling</p>
-          <button onClick={() => subscribe("global_monthly")}>
+          <button onClick={() => handleSubscribe("global_monthly")}>
             Subscribe – $129.99
           </button>
         </div>
@@ -88,7 +97,7 @@ function PlansPage({ user, logout, subscribe }) {
         <div className="plan-card" style={{ width: 250 }}>
           <h2>🔴 Global Yearly</h2>
           <p>All features, all markets, full year</p>
-          <button onClick={() => subscribe("global_yearly")}>
+          <button onClick={() => handleSubscribe("global_yearly")}>
             Subscribe – $1290.00
           </button>
         </div>
