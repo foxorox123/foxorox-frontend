@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signInWithPopup,
   sendEmailVerification,
+  signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebase-config";
@@ -16,17 +16,6 @@ function Login({ onSuccess }) {
   const [isRegistering, setIsRegistering] = useState(false);
   const [resendAvailable, setResendAvailable] = useState(false);
   const navigate = useNavigate();
-
-  // ✅ Redirect to /processing if we are returning from Stripe
-  useEffect(() => {
-    const plan = localStorage.getItem("postPaymentPlan");
-    const email = localStorage.getItem("postPaymentEmail");
-
-    if (plan && email) {
-      // User just returned from Stripe, go to processing
-      navigate("/processing");
-    }
-  }, [navigate]);
 
   const isValidEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
@@ -66,9 +55,8 @@ function Login({ onSuccess }) {
           setResendAvailable(true);
           return;
         }
-
         alert("Login successful!");
-        onSuccess(); // App.js will handle routing
+        onSuccess(); // Przekierowanie kontrolowane w App.js
       } catch (err) {
         if (err.code === "auth/user-not-found") {
           alert("No account found with that email.");
@@ -86,8 +74,11 @@ function Login({ onSuccess }) {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
       const user = result.user;
 
-      alert("Google login successful");
-      onSuccess(); // App.js will redirect
+      if (!user.emailVerified) {
+        alert("Google login successful (email auto-verified).");
+      }
+
+      onSuccess(); // Przekierowanie kontrolowane w App.js
     } catch (err) {
       alert("Google login failed: " + err.message);
     }

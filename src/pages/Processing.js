@@ -1,47 +1,50 @@
-// src/pages/Processing.js
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase-config";
-import { useLocation } from "react-router-dom";
-
-const Processing = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const plan = params.get("plan");
-  const email = params.get("email");
 
 function Processing() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    const check = () => {
-      const plan = localStorage.getItem("postPaymentPlan");
-      const email = localStorage.getItem("postPaymentEmail");
+    const urlParams = new URLSearchParams(location.search);
+    const plan = urlParams.get("plan");
+    const email = urlParams.get("email");
 
-      if (!plan || !email) {
-        navigate("/plans");
-        return;
-      }
+    // Zapisz do localStorage na wypadek odświeżenia
+    if (plan && email) {
+      localStorage.setItem("postPaymentPlan", plan);
+      localStorage.setItem("postPaymentEmail", email);
+    }
 
+    const localPlan = localStorage.getItem("postPaymentPlan");
+    const localEmail = localStorage.getItem("postPaymentEmail");
+
+    if (!localPlan || !localEmail) {
+      navigate("/plans");
+      return;
+    }
+
+    const timer = setTimeout(() => {
       onAuthStateChanged(auth, (user) => {
-        if (user && user.email === email) {
+        if (user && user.email === localEmail) {
           localStorage.removeItem("postPaymentPlan");
           localStorage.removeItem("postPaymentEmail");
 
-          if (plan.startsWith("basic")) {
+          if (localPlan.startsWith("basic")) {
             navigate("/downloads/basic");
           } else {
             navigate("/downloads/premium");
           }
+        } else {
+          navigate("/login");
         }
       });
-    };
+    }, 2000); // symulacja czasu przetwarzania
 
-    const timer = setTimeout(check, 2000); // simulate processing delay
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [navigate, location]);
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>

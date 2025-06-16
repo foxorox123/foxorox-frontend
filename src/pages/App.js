@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, provider } from "./firebase-config";
-import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate, useLocation } from "react-router-dom";
 
 import Tips from "./pages/Tips";
 import Login from "./pages/Login";
@@ -20,6 +20,7 @@ import Processing from "./pages/Processing";
 function App() {
   const [user, setUser] = useState(undefined);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
@@ -27,10 +28,19 @@ function App() {
 
       const postPaymentPlan = localStorage.getItem("postPaymentPlan");
       const postPaymentEmail = localStorage.getItem("postPaymentEmail");
+      const selectedPlan = localStorage.getItem("selectedPlan");
+
+      const urlParams = new URLSearchParams(location.search);
+      const fromStripe = urlParams.get("fromStripe");
 
       if (usr && usr.emailVerified) {
-        
-        const selectedPlan = localStorage.getItem("selectedPlan");
+        // 🔁 Jeśli wrócił z Stripe
+        if (fromStripe === "true" && postPaymentPlan && postPaymentEmail === usr.email) {
+          navigate("/processing");
+          return;
+        }
+
+        // 🔁 Jeśli wybrał plan i dopiero co się zalogował
         if (selectedPlan) {
           localStorage.removeItem("selectedPlan");
           subscribeToStripe(selectedPlan, usr.email);
@@ -39,7 +49,7 @@ function App() {
     });
 
     return () => unsubscribe();
-  }, [navigate]);
+  }, [navigate, location]);
 
   const subscribeToStripe = (plan, email) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
@@ -64,9 +74,9 @@ function App() {
   };
 
   const loginWithGoogle = () => {
-    signInWithPopup(auth, provider)
-      .then(() => {})
-      .catch((error) => alert("Login error: " + error.message));
+    signInWithPopup(auth, provider).catch((error) =>
+      alert("Login error: " + error.message)
+    );
   };
 
   const logout = () => {
@@ -97,10 +107,22 @@ function App() {
           />
         }
       />
-      <Route path="/login" element={<Login onSuccess={() => navigate("/")} />} />
-      <Route path="/dashboard" element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />} />
-      <Route path="/downloads/basic" element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />} />
-      <Route path="/downloads/premium" element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />} />
+      <Route
+        path="/login"
+        element={<Login onSuccess={() => navigate("/")} />}
+      />
+      <Route
+        path="/dashboard"
+        element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/downloads/basic"
+        element={user ? <DownloadsBasic user={user} /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/downloads/premium"
+        element={user ? <DownloadsPremium user={user} /> : <Navigate to="/login" />}
+      />
       <Route path="/processing" element={<Processing />} />
       <Route path="/tips" element={<Tips />} />
       <Route path="/about" element={<About />} />

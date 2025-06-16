@@ -9,7 +9,7 @@ function PlansPage({ user, logout, subscribe }) {
       localStorage.setItem("selectedPlan", plan);
       navigate("/login");
     } else {
-      subscribe(plan);
+      subscribe(plan); // wywołuje subscribeToStripe z App.js
     }
   };
 
