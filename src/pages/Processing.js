@@ -7,20 +7,20 @@ const Processing = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const planFromQuery = params.get("plan");
-  const emailFromQuery = params.get("email");
+  const plan = params.get("plan");
+  const email = params.get("email");
 
   const [secondsLeft, setSecondsLeft] = useState(30);
   const [message, setMessage] = useState("⏳ Processing your transaction...");
 
   useEffect(() => {
-    let interval;
     let resolved = false;
-    let authUnsub;
+    const device_id = localStorage.getItem("device_id") || generateDeviceId();
+    localStorage.setItem("device_id", device_id);
 
-    const device_id = navigator.userAgent || "unknown";
+    const checkSubscription = () => {
+      console.log("🔍 Checking subscription with:", email, device_id);
 
-    const checkSub = (email) => {
       fetch("https://foxorox-backend.onrender.com/check-subscription", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -28,61 +28,60 @@ const Processing = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          if (data.active) {
+          if (data.active && !resolved) {
             resolved = true;
-            setMessage("✅ Subscription confirmed. Redirecting...");
             localStorage.removeItem("postPaymentPlan");
             localStorage.removeItem("postPaymentEmail");
             sessionStorage.removeItem("postPaymentPlan");
             sessionStorage.removeItem("postPaymentEmail");
 
-            setTimeout(() => {
-              if (data.plan.startsWith("basic")) {
-                navigate("/downloads/basic");
-              } else {
-                navigate("/downloads/premium");
-              }
-            }, 1000);
-          } else {
-            setMessage("⚠️ Subscription not active. Please log in again.");
-            setTimeout(() => navigate("/login"), 4000);
+            if (data.plan.startsWith("basic")) {
+              navigate("/downloads/basic");
+            } else {
+              navigate("/downloads/premium");
+            }
           }
         })
         .catch((err) => {
-          console.error("❌ Error checking subscription:", err);
-          setMessage("❌ Server error. Please try again.");
-          setTimeout(() => navigate("/login"), 4000);
+          console.error("❌ Subscription check failed:", err);
         });
     };
 
-    authUnsub = onAuthStateChanged(auth, (user) => {
-      if (user && user.emailVerified && !resolved) {
-        checkSub(user.email);
+    const interval = setInterval(() => {
+      setSecondsLeft((prev) => {
+        const next = prev - 1;
+        if (next <= 0 && !resolved) {
+          setMessage("⚠️ Could not confirm your subscription. Please log in again.");
+          setTimeout(() => navigate("/login"), 3000);
+        }
+        return next;
+      });
+    }, 1000);
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user && user.email === email) {
+        checkSubscription();
       }
     });
 
-    let elapsed = 0;
-    interval = setInterval(() => {
-      elapsed++;
-      setSecondsLeft(30 - elapsed);
-      if (elapsed >= 30 && !resolved) {
-        clearInterval(interval);
-        authUnsub();
-        setMessage("⚠️ Could not confirm your login. Please log in again.");
-        setTimeout(() => navigate("/login"), 4000);
-      }
-    }, 1000);
+    checkSubscription(); // try immediately once
 
     return () => {
       clearInterval(interval);
-      if (authUnsub) authUnsub();
+      unsubscribe();
     };
-  }, [navigate]);
+  }, [navigate, email, plan]);
+
+  const generateDeviceId = () => {
+    return "dev-" + Math.random().toString(36).substring(2, 15);
+  };
 
   return (
     <div style={{ color: "white", textAlign: "center", marginTop: "100px" }}>
       <h1>{message}</h1>
-      {message.includes("Processing") && <p>Please wait ({secondsLeft}s)...</p>}
+      {message.includes("Processing") && (
+        <p>Please wait ({secondsLeft}s)...</p>
+      )}
     </div>
   );
 };

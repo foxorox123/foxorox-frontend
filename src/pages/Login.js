@@ -30,26 +30,28 @@ function Login({ onSuccess }) {
       return;
     }
 
-    if (isRegistering) {
-      if (password !== repeatPassword) {
-        alert("Passwords do not match.");
-        return;
-      }
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        await sendEmailVerification(userCredential.user);
-        alert("Account created. Please check your inbox and verify your email.");
-        setResendAvailable(true);
-      } catch (err) {
-        if (err.code === "auth/email-already-in-use") {
-          alert("This email is already registered.");
-        } else {
-          alert("Registration error: " + err.message);
+    try {
+      if (isRegistering) {
+        if (password !== repeatPassword) {
+          alert("Passwords do not match.");
+          return;
         }
-      }
-    } else {
-      try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        await sendEmailVerification(userCredential.user);
+        alert("Account created. Please verify your email.");
+        setResendAvailable(true);
+      } else {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
         if (!userCredential.user.emailVerified) {
           alert("Email not verified. Please check your inbox.");
           setResendAvailable(true);
@@ -58,23 +60,25 @@ function Login({ onSuccess }) {
 
         alert("Login successful!");
 
-        const postPlan = localStorage.getItem("postPaymentPlan");
-        const postEmail = localStorage.getItem("postPaymentEmail");
+        const postPlan =
+          localStorage.getItem("postPaymentPlan") ||
+          sessionStorage.getItem("postPaymentPlan");
+        const postEmail =
+          localStorage.getItem("postPaymentEmail") ||
+          sessionStorage.getItem("postPaymentEmail");
 
-        if (postPlan && postEmail && postEmail === userCredential.user.email) {
-          navigate(`/processing?plan=${encodeURIComponent(postPlan)}&email=${encodeURIComponent(postEmail)}`);
+        if (postPlan && postEmail === userCredential.user.email) {
+          navigate(
+            `/processing?plan=${postPlan}&email=${encodeURIComponent(
+              postEmail
+            )}`
+          );
         } else {
-          navigate("/plans");
-        }
-      } catch (err) {
-        if (err.code === "auth/user-not-found") {
-          alert("No account found with that email.");
-        } else if (err.code === "auth/wrong-password") {
-          alert("Incorrect password.");
-        } else {
-          alert("Login error: " + err.message);
+          navigate("/");
         }
       }
+    } catch (err) {
+      alert("Auth error: " + err.message);
     }
   };
 
@@ -83,13 +87,19 @@ function Login({ onSuccess }) {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
       const user = result.user;
 
-      const postPlan = localStorage.getItem("postPaymentPlan");
-      const postEmail = localStorage.getItem("postPaymentEmail");
+      const postPlan =
+        localStorage.getItem("postPaymentPlan") ||
+        sessionStorage.getItem("postPaymentPlan");
+      const postEmail =
+        localStorage.getItem("postPaymentEmail") ||
+        sessionStorage.getItem("postPaymentEmail");
 
-      if (postPlan && postEmail && postEmail === user.email) {
-        navigate(`/processing?plan=${encodeURIComponent(postPlan)}&email=${encodeURIComponent(postEmail)}`);
+      if (postPlan && postEmail === user.email) {
+        navigate(
+          `/processing?plan=${postPlan}&email=${encodeURIComponent(postEmail)}`
+        );
       } else {
-        navigate("/plans");
+        onSuccess();
       }
     } catch (err) {
       alert("Google login failed: " + err.message);
@@ -101,9 +111,7 @@ function Login({ onSuccess }) {
       const user = auth.currentUser;
       if (user && !user.emailVerified) {
         await sendEmailVerification(user);
-        alert("Verification email resent. Please check your inbox.");
-      } else {
-        alert("You're already verified or not logged in.");
+        alert("Verification email resent.");
       }
     } catch (err) {
       alert("Resend failed: " + err.message);
@@ -119,14 +127,16 @@ function Login({ onSuccess }) {
         placeholder="Email address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-      /><br />
+      />
+      <br />
 
       <input
         type="password"
         placeholder="Password (min. 6 chars)"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-      /><br />
+      />
+      <br />
 
       {isRegistering && (
         <>
@@ -135,7 +145,8 @@ function Login({ onSuccess }) {
             placeholder="Repeat password"
             value={repeatPassword}
             onChange={(e) => setRepeatPassword(e.target.value)}
-          /><br />
+          />
+          <br />
         </>
       )}
 
@@ -145,7 +156,9 @@ function Login({ onSuccess }) {
 
       {resendAvailable && !isRegistering && (
         <div style={{ marginTop: "10px" }}>
-          <button onClick={handleResendEmail}>📩 Resend verification email</button>
+          <button onClick={handleResendEmail}>
+            📩 Resend verification email
+          </button>
         </div>
       )}
 
