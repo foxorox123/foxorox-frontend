@@ -31,6 +31,7 @@ function App() {
       if (usr && usr.emailVerified) {
         if (postPaymentPlan && postPaymentEmail === usr.email) {
           navigate("/processing");
+          return;
         }
 
         const selectedPlan = localStorage.getItem("selectedPlan");

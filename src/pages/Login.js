@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -16,6 +16,17 @@ function Login({ onSuccess }) {
   const [isRegistering, setIsRegistering] = useState(false);
   const [resendAvailable, setResendAvailable] = useState(false);
   const navigate = useNavigate();
+
+  // ✅ Redirect to /processing if we are returning from Stripe
+  useEffect(() => {
+    const plan = localStorage.getItem("postPaymentPlan");
+    const email = localStorage.getItem("postPaymentEmail");
+
+    if (plan && email) {
+      // User just returned from Stripe, go to processing
+      navigate("/processing");
+    }
+  }, [navigate]);
 
   const isValidEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
@@ -37,7 +48,6 @@ function Login({ onSuccess }) {
       }
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        // 🔥 Wysyłka maila weryfikacyjnego
         await sendEmailVerification(userCredential.user);
         alert("Account created. Please check your inbox and verify your email.");
         setResendAvailable(true);
@@ -56,8 +66,9 @@ function Login({ onSuccess }) {
           setResendAvailable(true);
           return;
         }
+
         alert("Login successful!");
-        navigate("/plans");
+        onSuccess(); // App.js will handle routing
       } catch (err) {
         if (err.code === "auth/user-not-found") {
           alert("No account found with that email.");
@@ -75,12 +86,8 @@ function Login({ onSuccess }) {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
       const user = result.user;
 
-      if (!user.emailVerified) {
-        // Dla Google zwykle email jest automatycznie zweryfikowany
-        alert("Google login successful (email auto-verified)");
-      }
-
-      onSuccess(); // Przekierowanie kontroluje App.js
+      alert("Google login successful");
+      onSuccess(); // App.js will redirect
     } catch (err) {
       alert("Google login failed: " + err.message);
     }
