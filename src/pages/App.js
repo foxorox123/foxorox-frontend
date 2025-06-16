@@ -21,22 +21,40 @@ function App() {
   const [user, setUser] = useState(undefined);
   const navigate = useNavigate();
 
-  const subscribe = (plan) => {
-    if (!user || !user.email) {
-      alert("Error: No user email found.");
-      return;
-    }
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (usr) => {
+      setUser(usr);
 
+      const postPaymentPlan = localStorage.getItem("postPaymentPlan");
+      const postPaymentEmail = localStorage.getItem("postPaymentEmail");
+
+      if (usr && usr.emailVerified) {
+        if (postPaymentPlan && postPaymentEmail === usr.email) {
+          navigate("/processing");
+        }
+
+        const selectedPlan = localStorage.getItem("selectedPlan");
+        if (selectedPlan) {
+          localStorage.removeItem("selectedPlan");
+          subscribeToStripe(selectedPlan, usr.email);
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
+
+  const subscribeToStripe = (plan, email) => {
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan, email: user.email }),
+      body: JSON.stringify({ plan, email }),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.url) {
           localStorage.setItem("postPaymentPlan", plan);
-          localStorage.setItem("postPaymentEmail", user.email);
+          localStorage.setItem("postPaymentEmail", email);
           window.location.href = data.url;
         } else {
           alert("Error: No Stripe URL returned.");
@@ -47,43 +65,6 @@ function App() {
         console.error("Stripe error:", err);
       });
   };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (usr) => {
-      setUser(usr);
-
-      if (usr && usr.emailVerified) {
-        const selectedPlan = localStorage.getItem("selectedPlan");
-        const postPaymentPlan = localStorage.getItem("postPaymentPlan");
-        const postPaymentEmail = localStorage.getItem("postPaymentEmail");
-
-        if (selectedPlan) {
-          localStorage.removeItem("selectedPlan");
-
-          fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ plan: selectedPlan, email: usr.email }),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data.url) {
-                localStorage.setItem("postPaymentPlan", selectedPlan);
-                localStorage.setItem("postPaymentEmail", usr.email);
-                window.location.href = data.url;
-              }
-            });
-        }
-
-        if (postPaymentPlan && postPaymentEmail === usr.email) {
-          // NIE USUWAJ tu postPaymentPlan/email – Processing.js ich potrzebuje
-          navigate("/processing");
-        }
-      }
-    });
-
-    return () => unsubscribe();
-  }, [navigate]);
 
   const loginWithGoogle = () => {
     signInWithPopup(auth, provider)
@@ -113,7 +94,7 @@ function App() {
                 localStorage.setItem("selectedPlan", plan);
                 navigate("/login");
               } else {
-                subscribe(plan);
+                subscribeToStripe(plan, user.email);
               }
             }}
           />
