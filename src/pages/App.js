@@ -27,10 +27,23 @@ function App() {
       setUser(usr);
 
       const selectedPlan = localStorage.getItem("selectedPlan");
+      const postPaymentPlan = localStorage.getItem("postPaymentPlan") || sessionStorage.getItem("postPaymentPlan");
+      const postPaymentEmail = localStorage.getItem("postPaymentEmail") || sessionStorage.getItem("postPaymentEmail");
 
-      if (usr && usr.emailVerified && selectedPlan) {
-        localStorage.removeItem("selectedPlan");
-        subscribeToStripe(selectedPlan, usr.email);
+      if (usr && usr.emailVerified) {
+        // 💳 Wraca po Stripe lub po zalogowaniu po płatności
+        if (postPaymentPlan && postPaymentEmail === usr.email) {
+          navigate("/processing");
+          return;
+        }
+
+        // 🧾 Świeżo zalogowany po wybraniu planu
+        if (selectedPlan) {
+          localStorage.removeItem("selectedPlan");
+          sessionStorage.setItem("postPaymentPlan", selectedPlan);
+          sessionStorage.setItem("postPaymentEmail", usr.email);
+          subscribeToStripe(selectedPlan, usr.email);
+        }
       }
     });
 
@@ -38,6 +51,11 @@ function App() {
   }, [navigate]);
 
   const subscribeToStripe = (plan, email) => {
+    localStorage.setItem("postPaymentPlan", plan);
+    localStorage.setItem("postPaymentEmail", email);
+    sessionStorage.setItem("postPaymentPlan", plan);
+    sessionStorage.setItem("postPaymentEmail", email);
+
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
