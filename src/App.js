@@ -23,19 +23,9 @@ function App() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
-      const postPaymentPlan = localStorage.getItem("postPaymentPlan");
-      const postPaymentEmail = localStorage.getItem("postPaymentEmail");
-      const selectedPlan = localStorage.getItem("selectedPlan");
-
       setUser(usr);
 
-      // Jeśli użytkownik wrócił z płatności Stripe i wszystko się zgadza
-      if (usr && usr.emailVerified && postPaymentPlan && postPaymentEmail === usr.email) {
-        navigate("/processing");
-        return;
-      }
-
-      // Jeśli użytkownik dopiero co wybrał plan i się zalogował
+      const selectedPlan = localStorage.getItem("selectedPlan");
       if (usr && usr.emailVerified && selectedPlan) {
         localStorage.removeItem("selectedPlan");
         subscribeToStripe(selectedPlan, usr.email);
@@ -54,8 +44,7 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         if (data.url) {
-          localStorage.setItem("postPaymentPlan", plan);
-          localStorage.setItem("postPaymentEmail", email);
+          // Nie przekierowujemy do /processing ręcznie – Stripe zrobi to po opłacie
           window.location.href = data.url;
         } else {
           alert("Error: No Stripe URL returned.");
