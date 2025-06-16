@@ -15,13 +15,12 @@ import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
-import Processing from "./pages/Processing"; // ⬅️ Dodaj import
+import Processing from "./pages/Processing";
 
 function App() {
   const [user, setUser] = useState(undefined);
   const navigate = useNavigate();
 
-  // 🔄 Obsługa subskrypcji
   const subscribe = (plan) => {
     if (!user || !user.email) {
       alert("Error: No user email found.");
@@ -49,7 +48,6 @@ function App() {
       });
   };
 
-  // 🔐 Obsługa logowania i pamięci planu
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (usr) => {
       setUser(usr);
@@ -59,9 +57,9 @@ function App() {
         const postPaymentPlan = localStorage.getItem("postPaymentPlan");
         const postPaymentEmail = localStorage.getItem("postPaymentEmail");
 
-        // ➕ Plan wybrany przed logowaniem
         if (selectedPlan) {
           localStorage.removeItem("selectedPlan");
+
           fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -77,10 +75,8 @@ function App() {
             });
         }
 
-        // ✅ Po powrocie z płatności
         if (postPaymentPlan && postPaymentEmail === usr.email) {
-          localStorage.removeItem("postPaymentPlan");
-          localStorage.removeItem("postPaymentEmail");
+          // NIE USUWAJ tu postPaymentPlan/email – Processing.js ich potrzebuje
           navigate("/processing");
         }
       }
