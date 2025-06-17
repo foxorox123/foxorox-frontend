@@ -44,12 +44,7 @@ function App() {
       }
 
       const selectedPlan = localStorage.getItem("selectedPlan");
-      if (
-        usr &&
-        usr.emailVerified &&
-        selectedPlan &&
-        !postPaymentPlan
-      ) {
+      if (usr && usr.emailVerified && selectedPlan && !postPaymentPlan) {
         localStorage.removeItem("selectedPlan");
         subscribeToStripe(selectedPlan, usr.email);
       }
@@ -112,21 +107,30 @@ function App() {
         }
       />
       <Route path="/login" element={<Login onSuccess={() => navigate("/")} />} />
-      <Route path="/dashboard" element={user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />} />
+      <Route
+        path="/dashboard"
+        element={
+          user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />
+        }
+      />
       <Route
         path="/downloads/basic"
         element={
-          user && !localStorage.getItem("postPaymentPlan")
-            ? <DownloadsBasic user={user} />
-            : <Navigate to="/DownloadsBasic />
+          user && !localStorage.getItem("postPaymentPlan") ? (
+            <DownloadsBasic user={user} />
+          ) : (
+            <Navigate to="/processing" />
+          )
         }
       />
       <Route
         path="/downloads/premium"
         element={
-          user && !localStorage.getItem("postPaymentPlan")
-            ? <DownloadsPremium user={user} />
-            : <Navigate to="/DownloadsPremium" />
+          user && !localStorage.getItem("postPaymentPlan") ? (
+            <DownloadsPremium user={user} />
+          ) : (
+            <Navigate to="/processing" />
+          )
         }
       />
       <Route path="/processing" element={<Processing />} />
