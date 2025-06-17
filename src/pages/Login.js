@@ -9,7 +9,7 @@ import {
 import { auth } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 
-function Login({ onSuccess }) {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -17,22 +17,27 @@ function Login({ onSuccess }) {
   const [resendAvailable, setResendAvailable] = useState(false);
   const navigate = useNavigate();
 
-  const isValidEmail = (email) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+
+  const redirectPostLogin = (userEmail) => {
+    const plan = localStorage.getItem("postPaymentPlan");
+    const storedEmail = localStorage.getItem("postPaymentEmail");
+
+    if (plan && storedEmail && storedEmail === userEmail) {
+      navigate(`/processing?plan=${encodeURIComponent(plan)}&email=${encodeURIComponent(userEmail)}`);
+    } else {
+      navigate("/");
+    }
+  };
 
   const handleEmailAuth = async () => {
     if (!isValidEmail(email)) return alert("Enter a valid email.");
-    if (password.length < 6)
-      return alert("Password must be at least 6 characters.");
+    if (password.length < 6) return alert("Password must be at least 6 characters.");
 
     if (isRegistering) {
       if (password !== repeatPassword) return alert("Passwords do not match.");
       try {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await sendEmailVerification(userCredential.user);
         alert("Account created. Verify your email.");
         setResendAvailable(true);
@@ -41,18 +46,14 @@ function Login({ onSuccess }) {
       }
     } else {
       try {
-        const userCredential = await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
         if (!userCredential.user.emailVerified) {
           alert("Verify your email.");
           setResendAvailable(true);
           return;
         }
         alert("Login successful");
-        if (onSuccess) onSuccess();
+        redirectPostLogin(userCredential.user.email);
       } catch (err) {
         alert("Login error: " + err.message);
       }
@@ -64,7 +65,14 @@ function Login({ onSuccess }) {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
       const user = result.user;
       alert("Google login successful");
-      if (onSuccess) onSuccess();
+
+      // Jeśli email nie jest zweryfikowany przez Google, zablokuj
+      if (!user.emailVerified) {
+        alert("Google account is not verified.");
+        return;
+      }
+
+      redirectPostLogin(user.email);
     } catch (err) {
       alert("Google login failed: " + err.message);
     }
@@ -89,16 +97,14 @@ function Login({ onSuccess }) {
         placeholder="Email address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-      />
-      <br />
+      /><br />
 
       <input
         type="password"
         placeholder="Password (min. 6 chars)"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-      />
-      <br />
+      /><br />
 
       {isRegistering && (
         <>
@@ -107,8 +113,7 @@ function Login({ onSuccess }) {
             placeholder="Repeat password"
             value={repeatPassword}
             onChange={(e) => setRepeatPassword(e.target.value)}
-          />
-          <br />
+          /><br />
         </>
       )}
 
@@ -118,9 +123,7 @@ function Login({ onSuccess }) {
 
       {resendAvailable && !isRegistering && (
         <div style={{ marginTop: "10px" }}>
-          <button onClick={handleResendEmail}>
-            📩 Resend verification email
-          </button>
+          <button onClick={handleResendEmail}>📩 Resend verification email</button>
         </div>
       )}
 
