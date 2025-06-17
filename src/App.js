@@ -118,7 +118,7 @@ function App() {
         element={
           user && !localStorage.getItem("postPaymentPlan")
             ? <DownloadsBasic user={user} />
-            : <Navigate to="/processing" />
+            : <Navigate to="/DownloadsBasic />
         }
       />
       <Route
@@ -126,7 +126,7 @@ function App() {
         element={
           user && !localStorage.getItem("postPaymentPlan")
             ? <DownloadsPremium user={user} />
-            : <Navigate to="/processing" />
+            : <Navigate to="/DownloadsPremium" />
         }
       />
       <Route path="/processing" element={<Processing />} />

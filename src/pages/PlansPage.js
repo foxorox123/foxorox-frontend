@@ -48,22 +48,30 @@ function PlansPage({ user, logout, subscribe }) {
         <div className="plan-card" style={{ width: 250 }}>
           <h2>🟢 Basic Monthly</h2>
           <p>NASDAQ & S&P 500 – candle pattern prediction</p>
-          <button onClick={() => handleSubscribe("basic_monthly")}>Subscribe – $79.99</button>
+          <button onClick={() => handleSubscribe("basic_monthly")}>
+            Subscribe to Basic Monthly – $79.99
+          </button>
         </div>
         <div className="plan-card" style={{ width: 250 }}>
           <h2>🔵 Basic Yearly</h2>
           <p>NASDAQ & S&P 500 – full year access</p>
-          <button onClick={() => handleSubscribe("basic_yearly")}>Subscribe – $790.00</button>
+          <button onClick={() => handleSubscribe("basic_yearly")}>
+            Subscribe to Basic Yearly – $790.00
+          </button>
         </div>
         <div className="plan-card" style={{ width: 250 }}>
           <h2>🟠 Global Monthly</h2>
           <p>Global markets + Markov modeling</p>
-          <button onClick={() => handleSubscribe("global_monthly")}>Subscribe – $129.99</button>
+          <button onClick={() => handleSubscribe("global_monthly")}>
+            Subscribe to Global Monthly – $129.99
+          </button>
         </div>
         <div className="plan-card" style={{ width: 250 }}>
           <h2>🔴 Global Yearly</h2>
           <p>All features, all markets, full year</p>
-          <button onClick={() => handleSubscribe("global_yearly")}>Subscribe – $1290.00</button>
+          <button onClick={() => handleSubscribe("global_yearly")}>
+            Subscribe to Global Yearly – $1290.00
+          </button>
         </div>
       </div>
     </div>
