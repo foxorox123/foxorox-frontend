@@ -16,7 +16,6 @@ import FAQ from "./pages/FAQ";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Processing from "./pages/Processing";
-import Returning from "./pages/Returning";
 
 function App() {
   const [user, setUser] = useState(undefined);
@@ -134,7 +133,6 @@ function App() {
         }
       />
       <Route path="/processing" element={<Processing />} />
-      <Route path="/returning" element={<Returning />} />
       <Route path="/tips" element={<Tips />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
