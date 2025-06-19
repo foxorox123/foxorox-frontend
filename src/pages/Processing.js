@@ -20,7 +20,7 @@ const Processing = () => {
     const maxRetries = 30;
  
    const interval = setInterval(() => {
-       fetch(`ttps://foxorox-backend.onrender.com/payment-status?session_id=${session_id}`, {
+       fetch(`https://foxorox-backend.onrender.com/payment-status?session_id=${session_id}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, device_id: "web" }),
