@@ -24,7 +24,7 @@ const Processing = () => {
     let retries = 0;
     const maxRetries = 30;
  if(!session_id || !postPaymentPlan || !postPaymentEmail)
-    navigate("/);
+    navigate("/");
     
    const interval = setInterval(() => {
      if(session_id===null){
