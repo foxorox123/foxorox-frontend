@@ -11,6 +11,11 @@ const Processing = () => {
   const email = params.get("email");
     const session_id =
         localStorage.getItem("session_id") || sessionStorage.getItem("session_id");
+  const postPaymentPlan =
+        localStorage.getItem("postPaymentPlan") || sessionStorage.getItem("postPaymentPlan");
+      const postPaymentEmail =
+        localStorage.getItem("postPaymentEmail") || sessionStorage.getItem("postPaymentEmail");
+  
  const [attempts, setAttempts] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(90);
   const [message, setMessage] = useState("⏳ Processing your transaction...");
@@ -18,7 +23,9 @@ const Processing = () => {
   useEffect(() => {
     let retries = 0;
     const maxRetries = 30;
- 
+ if(!session_id || !postPaymentPlan || !postPaymentEmail)
+    navigate("/);
+    
    const interval = setInterval(() => {
      if(session_id===null){
           localStorage.removeItem("postPaymentPlan");
