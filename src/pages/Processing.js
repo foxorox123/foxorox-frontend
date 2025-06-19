@@ -41,22 +41,28 @@ const Processing = () => {
         .then(data => {
           if (data.status === "paid") {
       
-             localStorage.removeItem("postPaymentPlan");
-             localStorage.removeItem("postPaymentEmail");
+               setTimeout(() => {
+                localStorage.removeItem("postPaymentPlan");
+                localStorage.removeItem("postPaymentEmail");
+              }, 5000);
              setMessage("success");
              clearInterval(interval);
           } else if (data.status === "failed" || data.status === "canceled") {
             setMessage("failed");
-             localStorage.removeItem("postPaymentPlan");
-             localStorage.removeItem("postPaymentEmail");
+               setTimeout(() => {
+                localStorage.removeItem("postPaymentPlan");
+                localStorage.removeItem("postPaymentEmail");
+              }, 5000);
              setMessage("failed");
              clearInterval(interval);
           } else {
             setAttempts(prev => prev + 1);
             if (attempts >= 10) {
               setStatus("timeout");
-               localStorage.removeItem("postPaymentPlan");
-            localStorage.removeItem("postPaymentEmail");
+               setTimeout(() => {
+                localStorage.removeItem("postPaymentPlan");
+                localStorage.removeItem("postPaymentEmail");
+              }, 5000);
               clearInterval(interval);
             }
           }
