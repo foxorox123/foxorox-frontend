@@ -52,14 +52,15 @@ const Processing = () => {
         });
         const data = await res.json();
              localStorage.removeItem("postPaymentPlan");
-            localStorage.removeItem("postPaymentEmail");
-            setMessage("success");
+             localStorage.removeItem("postPaymentEmail");
+             setMessage("success");
              clearInterval(interval);
           } else if (data.status === "failed" || data.status === "canceled") {
             setMessage("failed");
              localStorage.removeItem("postPaymentPlan");
-            localStorage.removeItem("postPaymentEmail");
-            clearInterval(interval);
+             localStorage.removeItem("postPaymentEmail");
+             setMessage("failed");
+             clearInterval(interval);
           } else {
             setAttempts(prev => prev + 1);
             if (attempts >= 10) {
