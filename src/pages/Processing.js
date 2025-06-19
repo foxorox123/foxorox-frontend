@@ -29,13 +29,19 @@ const Processing = () => {
           if (data.status === "paid") {
             setMessage("success");
             clearInterval(interval);
+             localStorage.removeItem("postPaymentPlan");
+            localStorage.removeItem("postPaymentEmail");
           } else if (data.status === "failed" || data.status === "canceled") {
             setMessage("failed");
+             localStorage.removeItem("postPaymentPlan");
+            localStorage.removeItem("postPaymentEmail");
             clearInterval(interval);
           } else {
             setAttempts(prev => prev + 1);
             if (attempts >= 10) {
               setStatus("timeout");
+               localStorage.removeItem("postPaymentPlan");
+            localStorage.removeItem("postPaymentEmail");
               clearInterval(interval);
             }
           }
@@ -82,6 +88,8 @@ const Processing = () => {
             console.error("Error checking subscription:", err);
             setMessage("❌ Error verifying subscription.");
             setTimeout(() => navigate("/login"), 5000);
+            localStorage.removeItem("postPaymentPlan");
+            localStorage.removeItem("postPaymentEmail");
           });
       }
     });
