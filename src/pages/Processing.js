@@ -41,9 +41,10 @@ const Processing = () => {
         .then(data => {
           if (data.status === "paid") {
             setMessage("success");
-            clearInterval(interval);
+           
              localStorage.removeItem("postPaymentPlan");
             localStorage.removeItem("postPaymentEmail");
+             clearInterval(interval);
           } else if (data.status === "failed" || data.status === "canceled") {
             setMessage("failed");
              localStorage.removeItem("postPaymentPlan");
