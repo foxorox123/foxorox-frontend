@@ -69,6 +69,7 @@ const Processing = () => {
               } else {
                 navigate("/downloads/premium");
               }
+               clearInterval(interval);
             } else {
               retries++;
               if (retries >= maxRetries) {
