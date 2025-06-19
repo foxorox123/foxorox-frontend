@@ -41,7 +41,20 @@ const Processing = () => {
         .then(data => {
           if (data.status === "paid") {
             setMessage("success");
-           
+            const deviceId =
+          localStorage.getItem("deviceId") || crypto.randomUUID();
+        localStorage.setItem("deviceId", deviceId);
+
+        const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: user.email,
+            device_id: deviceId,
+          }),
+        });
+
+        const data = await res.json();
              localStorage.removeItem("postPaymentPlan");
             localStorage.removeItem("postPaymentEmail");
              clearInterval(interval);
