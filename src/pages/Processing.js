@@ -87,7 +87,7 @@ const Processing = () => {
             
              setMessage("success");
              clearInterval(interval);
-          } else if (data.status === "failed" || data.status === "canceled" || data.status === "unpaid") {
+          } else if (data.status === "failed" || data.status === "canceled") {
             setMessage("failed");
                setTimeout(() => {
                 localStorage.removeItem("postPaymentPlan");
@@ -97,7 +97,18 @@ const Processing = () => {
               }, 5000);
              setMessage("failed");
              clearInterval(interval);
-          } else {
+          } else if (data.status === "unpaid" ) {
+            setMessage("unpaid");
+               setTimeout(() => {
+                localStorage.removeItem("postPaymentPlan");
+                localStorage.removeItem("postPaymentEmail");
+                sessionStorage.removeItem("postPaymentPlan");
+                sessionStorage.removeItem("postPaymentEmail"); 
+              }, 5000);
+             setMessage("unpaid");
+             navigate("/");
+             clearInterval(interval);
+          }else {
             setAttempts(prev => prev + 1);
             if (attempts >= 10) {
               setStatus("timeout");
