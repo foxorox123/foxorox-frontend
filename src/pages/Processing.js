@@ -21,9 +21,8 @@ const Processing = () => {
  
    const interval = setInterval(() => {
        fetch(`https://foxorox-backend.onrender.com/payment-status?session_id=${session_id}`, {
-          method: "POST",
+          method: "GET",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, device_id: "web" }),
         })
         .then(res => res.json())
         .then(data => {
