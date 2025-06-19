@@ -30,6 +30,8 @@ const Processing = () => {
      if(session_id===null){
           localStorage.removeItem("postPaymentPlan");
           localStorage.removeItem("postPaymentEmail");
+          sessionStorage.removeItem("postPaymentPlan");
+          sessionStorage.removeItem("postPaymentEmail");
            clearInterval(interval);
        return;
      }
@@ -44,6 +46,8 @@ const Processing = () => {
                setTimeout(() => {
                 localStorage.removeItem("postPaymentPlan");
                 localStorage.removeItem("postPaymentEmail");
+                sessionStorage.removeItem("postPaymentPlan");
+                sessionStorage.removeItem("postPaymentEmail");
               }, 5000);
              setMessage("success");
              clearInterval(interval);
@@ -52,6 +56,8 @@ const Processing = () => {
                setTimeout(() => {
                 localStorage.removeItem("postPaymentPlan");
                 localStorage.removeItem("postPaymentEmail");
+                sessionStorage.removeItem("postPaymentPlan");
+                sessionStorage.removeItem("postPaymentEmail"); 
               }, 5000);
              setMessage("failed");
              clearInterval(interval);
@@ -62,6 +68,8 @@ const Processing = () => {
                setTimeout(() => {
                 localStorage.removeItem("postPaymentPlan");
                 localStorage.removeItem("postPaymentEmail");
+                sessionStorage.removeItem("postPaymentPlan");
+                sessionStorage.removeItem("postPaymentEmail");
               }, 5000);
               clearInterval(interval);
             }
