@@ -20,6 +20,12 @@ const Processing = () => {
     const maxRetries = 30;
  
    const interval = setInterval(() => {
+     if(session_id===null){
+          localStorage.removeItem("postPaymentPlan");
+          localStorage.removeItem("postPaymentEmail");
+           clearInterval(interval);
+       return;
+     }
        fetch(`https://foxorox-backend.onrender.com/payment-status?session_id=${session_id}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
