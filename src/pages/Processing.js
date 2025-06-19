@@ -87,7 +87,7 @@ const Processing = () => {
             
              setMessage("success");
              clearInterval(interval);
-          } else if (data.status === "failed" || data.status === "canceled") {
+          } else if (data.status === "failed" || data.status === "canceled" || data.status === "unpaid") {
             setMessage("failed");
                setTimeout(() => {
                 localStorage.removeItem("postPaymentPlan");
