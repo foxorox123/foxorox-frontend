@@ -57,18 +57,13 @@ const Processing = () => {
           .then((res) => res.json())
           .then((data) => {
             if (data.active) {
-              // 🔄 Delayed clearing of localStorage
-              setTimeout(() => {
-                localStorage.removeItem("postPaymentPlan");
-                localStorage.removeItem("postPaymentEmail");
-              }, 5000);
+              
 
               if (data.plan.startsWith("basic")) {
                 navigate("/downloads/basic");
               } else {
                 navigate("/downloads/premium");
               }
-               clearInterval(interval);
             } else {
               retries++;
               if (retries >= maxRetries) {
