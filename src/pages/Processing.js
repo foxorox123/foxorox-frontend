@@ -49,6 +49,42 @@ const Processing = () => {
                 sessionStorage.removeItem("postPaymentPlan");
                 sessionStorage.removeItem("postPaymentEmail");
               }, 5000);
+ fetch("https://foxorox-backend.onrender.com/check-subscription", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, device_id: "web" }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.active) {
+              // 🔄 Delayed clearing of localStorage
+              setTimeout(() => {
+                localStorage.removeItem("postPaymentPlan");
+                localStorage.removeItem("postPaymentEmail");
+              }, 5000);
+
+              if (data.plan.startsWith("basic")) {
+                navigate("/downloads/basic");
+              } else {
+                navigate("/downloads/premium");
+              }
+               clearInterval(interval);
+            } else {
+              retries++;
+              if (retries >= maxRetries) {
+                setMessage("⚠️ Subscription still inactive. Please log in again.");
+                setTimeout(() => navigate("/login"), 4000);
+              }
+            }
+          })
+          .catch((err) => {
+            console.error("Error checking subscription:", err);
+            setMessage("❌ Error verifying subscription.");
+            setTimeout(() => navigate("/login"), 5000);
+            localStorage.removeItem("postPaymentPlan");
+            localStorage.removeItem("postPaymentEmail");
+          });
+            
              setMessage("success");
              clearInterval(interval);
           } else if (data.status === "failed" || data.status === "canceled") {
