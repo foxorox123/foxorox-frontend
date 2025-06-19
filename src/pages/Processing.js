@@ -65,7 +65,7 @@ const Processing = () => {
         });
     }, 3000); // sprawdza co 3 sekundy
  
-
+  /*
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && user.email === email) {
         // ✅ Check subscription on backend
@@ -106,9 +106,10 @@ const Processing = () => {
           });
       }
     });
+    */
 
     return () => {
-      unsubscribe();
+     // unsubscribe();
       clearInterval(interval);
     };
   }, [navigate, email, plan]);
