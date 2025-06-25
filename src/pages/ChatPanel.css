@@ -72,6 +72,13 @@
   background-color: #fefefe;
 }
 
+.emoji-picker {
+  position: absolute;
+  bottom: 60px;
+  right: 10px;
+  z-index: 10;
+}
+
 .chat-input button {
   padding: 10px 14px;
   background-color: #007bff;

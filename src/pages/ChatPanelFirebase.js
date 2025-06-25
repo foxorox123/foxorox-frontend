@@ -10,8 +10,7 @@ import {
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
-import Picker from "@emoji-mart/react";
-import data from "@emoji-mart/data";
+import EmojiPicker from "emoji-picker-react";
 import "./ChatPanel.css";
 
 function ChatPanelFirebase({ user }) {
@@ -49,13 +48,14 @@ function ChatPanelFirebase({ user }) {
     await updateDoc(messageRef, { likes: currentLikes + 1 });
   };
 
-  const addEmoji = (emoji) => {
-    setNewMsg((prev) => prev + emoji.native);
+  const handleEmojiClick = (emojiData) => {
+    setNewMsg((prev) => prev + emojiData.emoji);
   };
 
   return (
     <div className="chat-panel">
       <h3>💬 FoxChat</h3>
+
       <div className="chat-messages">
         {messages.map((msg) => (
           <div
@@ -84,12 +84,7 @@ function ChatPanelFirebase({ user }) {
         <button onClick={() => setShowEmoji(!showEmoji)}>😊</button>
         {showEmoji && (
           <div className="emoji-picker">
-            <Picker
-              data={data}
-              onEmojiSelect={addEmoji}
-              theme="light"
-              previewPosition="none"
-            />
+            <EmojiPicker onEmojiClick={handleEmojiClick} />
           </div>
         )}
         <input
