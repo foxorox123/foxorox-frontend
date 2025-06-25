@@ -17,7 +17,7 @@ function ChatPanelFirebase({ user }) {
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("createdAt", "asc"));
     const unsubscribe = onSnapshot(q, (snapshot) =>
-      setMessages(snapshot.docs.map((doc) => doc.data()))
+      setMessages(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
     );
     return () => unsubscribe();
   }, []);
@@ -34,11 +34,23 @@ function ChatPanelFirebase({ user }) {
 
   return (
     <div className="chat-panel">
-      <h3>💬 Chat użytkowników</h3>
+      <h3>💬 FoxChat</h3>
       <div className="chat-messages">
-        {messages.map((msg, i) => (
-          <div key={i} className="chat-message">
-            <strong>{msg.user}:</strong> {msg.text}
+        {messages.map((msg) => (
+          <div
+            key={msg.id}
+            className={`chat-message ${msg.user === user.email ? "own" : ""}`}
+          >
+            <strong>{msg.user}</strong>
+            <div>{msg.text}</div>
+            {msg.createdAt && (
+              <div className="chat-timestamp">
+                {msg.createdAt.toDate().toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </div>
+            )}
           </div>
         ))}
       </div>
