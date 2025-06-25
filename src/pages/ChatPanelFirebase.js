@@ -61,9 +61,10 @@ function ChatPanelFirebase({ user }) {
             key={msg.id}
             className={`chat-message ${msg.user === user.email ? "own" : ""}`}
           >
-            <div className="chat-avatar">{msg.user[0].toUpperCase()}</div>
+            <div className="chat-avatar">
+              {msg.user?.[0]?.toUpperCase() || "?"}
+            </div>
             <div className="chat-bubble">
-              <div className="chat-user">{msg.user}</div>
               <div className="chat-text">{msg.text}</div>
               <div className="chat-actions">
                 <button
@@ -94,7 +95,7 @@ function ChatPanelFirebase({ user }) {
       </div>
 
       {showEmoji && (
-        <div className="emoji-picker">
+        <div className="emoji-picker left">
           <EmojiPicker onEmojiClick={addEmoji} />
         </div>
       )}
