@@ -1,4 +1,4 @@
-// ✅ ChatPanelFirebase.js z Avatarami, Reakcjami i Emoji Pickerem
+// ✅ ChatPanelFirebase.js z Avatarami, Reakcjami i Emoji Pickerem (emoji-mart v3)
 import React, { useState, useEffect, useRef } from "react";
 import { db } from "../firebase";
 import {
@@ -12,7 +12,6 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { Picker } from 'emoji-mart';
-import 'emoji-mart/css/emoji-mart.css';
 import "./ChatPanel.css";
 
 function ChatPanelFirebase({ user }) {
@@ -50,8 +49,8 @@ function ChatPanelFirebase({ user }) {
     await updateDoc(messageRef, { likes: currentLikes + 1 });
   };
 
-  const addEmoji = (e) => {
-    setNewMsg(newMsg + e.native);
+  const addEmoji = (emoji) => {
+    setNewMsg((prev) => prev + emoji.native);
   };
 
   return (
@@ -85,7 +84,7 @@ function ChatPanelFirebase({ user }) {
         <button onClick={() => setShowEmoji(!showEmoji)}>😊</button>
         {showEmoji && (
           <div className="emoji-picker">
-            <Picker onSelect={addEmoji} theme="light" title="Wybierz emoji" />
+            <Picker onEmojiSelect={addEmoji} theme="light" previewPosition="none" />
           </div>
         )}
         <input
