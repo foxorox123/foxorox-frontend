@@ -48,14 +48,13 @@ function ChatPanelFirebase({ user }) {
     await updateDoc(messageRef, { likes: currentLikes + 1 });
   };
 
-  const handleEmojiClick = (emojiData) => {
+  const addEmoji = (emojiData) => {
     setNewMsg((prev) => prev + emojiData.emoji);
   };
 
   return (
     <div className="chat-panel">
       <h3>💬 FoxChat</h3>
-
       <div className="chat-messages">
         {messages.map((msg) => (
           <div
@@ -82,11 +81,7 @@ function ChatPanelFirebase({ user }) {
 
       <div className="chat-input">
         <button onClick={() => setShowEmoji(!showEmoji)}>😊</button>
-        {showEmoji && (
-          <div className="emoji-picker">
-            <EmojiPicker onEmojiClick={handleEmojiClick} />
-          </div>
-        )}
+
         <input
           type="text"
           value={newMsg}
@@ -94,8 +89,15 @@ function ChatPanelFirebase({ user }) {
           placeholder="Write your tip..."
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
         />
+
         <button onClick={handleSend}>Wyślij</button>
       </div>
+
+      {showEmoji && (
+        <div className="emoji-picker">
+          <EmojiPicker onEmojiClick={addEmoji} />
+        </div>
+      )}
     </div>
   );
 }
