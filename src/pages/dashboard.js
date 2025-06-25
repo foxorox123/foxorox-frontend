@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ChatPanelFirebase from "./ChatPanelFirebase"; // << dodany czat
+import ChatPanelFirebase from "./ChatPanelFirebase";
 import "./Dashboard.css";
 
 function Dashboard({ user, logout }) {
@@ -32,7 +32,7 @@ function Dashboard({ user, logout }) {
         { proName: "EUREX:FDAX1!", title: "DAX Futures" },
         { proName: "GPW:FW20M2025", title: "WIG20 Futures" },
         { proName: "BET:BSE", title: "BUX Index" },
-        { proName: "OSE:NK2251!", title: "Nikkei 225 Futures" },
+        { proName: "TVC:NI225", title: "Nikkei 225" },
       ],
       colorTheme: "dark",
       isTransparent: false,
@@ -45,7 +45,7 @@ function Dashboard({ user, logout }) {
     tickerContainer.appendChild(tickerScript);
   }, []);
 
-  // ▶ TradingView Market Overview
+  // ▶ Market Overview (Poprawione symbole Asia)
   useEffect(() => {
     const script = document.createElement("script");
     script.src =
@@ -88,8 +88,8 @@ function Dashboard({ user, logout }) {
         {
           title: "Asia",
           symbols: [
-            { s: "TSE:N225", d: "Nikkei 225" },
-            { s: "HKEX:HSI", d: "Hang Seng" },
+            { s: "TVC:NI225", d: "Nikkei 225" },
+            { s: "TVC:HSI", d: "Hang Seng" },
             { s: "SSE:000001", d: "Shanghai Composite" },
           ],
         },
@@ -101,7 +101,7 @@ function Dashboard({ user, logout }) {
     container.appendChild(script);
   }, []);
 
-  // ▶ Check subscription and set plan type
+  // ▶ Check subscription
   useEffect(() => {
     const checkSubscription = async () => {
       try {
@@ -115,7 +115,6 @@ function Dashboard({ user, logout }) {
         );
 
         const data = await res.json();
-
         if (data.active && data.plan) {
           const planMap = {
             basic_monthly: "Basic Monthly",
@@ -170,7 +169,7 @@ function Dashboard({ user, logout }) {
 
       {/* ▶ Main layout with chat */}
       <main className="dashboard-content" style={{ display: "flex" }}>
-        {/* Left content */}
+        {/* ▶ Left panel */}
         <div style={{ flex: 1 }}>
           <section className="market-overview">
             <h2>🌍 Market Overview – Global Indexes</h2>
@@ -198,7 +197,7 @@ function Dashboard({ user, logout }) {
           </div>
         </div>
 
-        {/* ▶ Chat panel on the right */}
+        {/* ▶ Chat on right */}
         <ChatPanelFirebase user={user} />
       </main>
     </div>
