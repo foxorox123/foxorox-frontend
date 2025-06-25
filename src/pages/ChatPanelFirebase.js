@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { db } from "../firebase";
 import {
   collection,
@@ -13,6 +13,7 @@ import "./ChatPanel.css";
 function ChatPanelFirebase({ user }) {
   const [messages, setMessages] = useState([]);
   const [newMsg, setNewMsg] = useState("");
+  const bottomRef = useRef(null); // ⬅ ref do ostatniego elementu
 
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("createdAt", "asc"));
@@ -21,6 +22,13 @@ function ChatPanelFirebase({ user }) {
     );
     return () => unsubscribe();
   }, []);
+
+  // ⬇ auto-scroll do dołu po każdej aktualizacji wiadomości
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   const handleSend = async () => {
     if (!newMsg.trim()) return;
@@ -53,6 +61,7 @@ function ChatPanelFirebase({ user }) {
             )}
           </div>
         ))}
+        <div ref={bottomRef} /> {/* ⬅ niewidoczny element na dole */}
       </div>
       <div className="chat-input">
         <input
