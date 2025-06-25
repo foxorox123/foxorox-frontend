@@ -1,19 +1,25 @@
+// ✅ ChatPanelFirebase.js z Avatarami, Reakcjami i Emoji Pickerem
 import React, { useState, useEffect, useRef } from "react";
 import { db } from "../firebase";
 import {
   collection,
   addDoc,
+  updateDoc,
+  doc,
   serverTimestamp,
   query,
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
+import { Picker } from 'emoji-mart';
+import 'emoji-mart/css/emoji-mart.css';
 import "./ChatPanel.css";
 
 function ChatPanelFirebase({ user }) {
   const [messages, setMessages] = useState([]);
   const [newMsg, setNewMsg] = useState("");
-  const bottomRef = useRef(null); // ⬅ ref do ostatniego elementu
+  const [showEmoji, setShowEmoji] = useState(false);
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("createdAt", "asc"));
@@ -23,11 +29,8 @@ function ChatPanelFirebase({ user }) {
     return () => unsubscribe();
   }, []);
 
-  // ⬇ auto-scroll do dołu po każdej aktualizacji wiadomości
   useEffect(() => {
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const handleSend = async () => {
@@ -36,8 +39,19 @@ function ChatPanelFirebase({ user }) {
       user: user.email,
       text: newMsg.trim(),
       createdAt: serverTimestamp(),
+      likes: 0,
     });
     setNewMsg("");
+    setShowEmoji(false);
+  };
+
+  const handleLike = async (id, currentLikes) => {
+    const messageRef = doc(db, "messages", id);
+    await updateDoc(messageRef, { likes: currentLikes + 1 });
+  };
+
+  const addEmoji = (e) => {
+    setNewMsg(newMsg + e.native);
   };
 
   return (
@@ -49,21 +63,31 @@ function ChatPanelFirebase({ user }) {
             key={msg.id}
             className={`chat-message ${msg.user === user.email ? "own" : ""}`}
           >
-            <strong>{msg.user}</strong>
-            <div>{msg.text}</div>
-            {msg.createdAt && (
-              <div className="chat-timestamp">
-                {msg.createdAt.toDate().toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
+            <div className="chat-avatar">{msg.user[0].toUpperCase()}</div>
+            <div className="chat-bubble">
+              <div className="chat-user">{msg.user}</div>
+              <div className="chat-text">{msg.text}</div>
+              <div className="chat-actions">
+                <button
+                  className="like-button"
+                  onClick={() => handleLike(msg.id, msg.likes || 0)}
+                >
+                  👍 {msg.likes || 0}
+                </button>
               </div>
-            )}
+            </div>
           </div>
         ))}
-        <div ref={bottomRef} /> {/* ⬅ niewidoczny element na dole */}
+        <div ref={messagesEndRef} />
       </div>
+
       <div className="chat-input">
+        <button onClick={() => setShowEmoji(!showEmoji)}>😊</button>
+        {showEmoji && (
+          <div className="emoji-picker">
+            <Picker onSelect={addEmoji} theme="light" title="Wybierz emoji" />
+          </div>
+        )}
         <input
           type="text"
           value={newMsg}
