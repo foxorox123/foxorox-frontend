@@ -11,6 +11,7 @@
   font-family: 'Segoe UI', Roboto, sans-serif;
   font-size: 0.95em;
   line-height: 1.5;
+  position: relative; /* Potrzebne do pozycjonowania emoji */
 }
 
 .chat-messages {
@@ -57,13 +58,15 @@
 .chat-input {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   padding-top: 12px;
   border-top: 1px solid #ddd;
+  flex-shrink: 0;
 }
 
 .chat-input input {
   flex: 1;
+  min-width: 0;
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -72,15 +75,9 @@
   background-color: #fefefe;
 }
 
-.emoji-picker {
-  position: absolute;
-  bottom: 60px;
-  right: 10px;
-  z-index: 10;
-}
-
 .chat-input button {
-  padding: 10px 14px;
+  flex-shrink: 0;
+  padding: 10px 12px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -92,4 +89,12 @@
 
 .chat-input button:hover {
   background-color: #005ecb;
+}
+
+/* 👇 Emoji Picker po lewej stronie i niżej */
+.emoji-picker.left {
+  position: absolute;
+  bottom: 70px;
+  left: -320px;
+  z-index: 100;
 }
