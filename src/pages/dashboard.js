@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ChatPanelFirebase from "./ChatPanelFirebase"; // << dodany czat
 import "./Dashboard.css";
 
 function Dashboard({ user, logout }) {
   const navigate = useNavigate();
-  const [subscriptionType, setSubscriptionType] = React.useState("");
+  const [subscriptionType, setSubscriptionType] = useState("");
 
   const bullTips = [
     "📈 AI suggests upward momentum in S&P 500.",
@@ -21,16 +22,17 @@ function Dashboard({ user, logout }) {
   // ▶ Ticker Tape
   useEffect(() => {
     const tickerScript = document.createElement("script");
-    tickerScript.src = "https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js";
+    tickerScript.src =
+      "https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js";
     tickerScript.async = true;
     tickerScript.innerHTML = JSON.stringify({
       symbols: [
-        { proName: "CME_MINI:ES1!", title: "S&P 500 Futures" },
-        { proName: "CME_MINI:NQ1!", title: "Nasdaq Futures" },
+        { proName: "OANDA:SPX500USD", title: "S&P 500 Futures" },
+        { proName: "OANDA:NAS100USD", title: "Nasdaq 100 Futures" },
         { proName: "EUREX:FDAX1!", title: "DAX Futures" },
         { proName: "GPW:FW20M2025", title: "WIG20 Futures" },
-        { proName: "BET:BSE", title: "BUX Index (proxy)" },
-        { proName: "OSE:NK1!", title: "Nikkei Futures" },
+        { proName: "BET:BSE", title: "BUX Index" },
+        { proName: "OSE:NK2251!", title: "Nikkei 225 Futures" },
       ],
       colorTheme: "dark",
       isTransparent: false,
@@ -46,7 +48,8 @@ function Dashboard({ user, logout }) {
   // ▶ TradingView Market Overview
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
+    script.src =
+      "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
     script.async = true;
     script.innerHTML = JSON.stringify({
       colorTheme: "dark",
@@ -102,11 +105,14 @@ function Dashboard({ user, logout }) {
   useEffect(() => {
     const checkSubscription = async () => {
       try {
-        const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: user.email }),
-        });
+        const res = await fetch(
+          "https://foxorox-backend.onrender.com/check-subscription",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: user.email }),
+          }
+        );
 
         const data = await res.json();
 
@@ -141,7 +147,11 @@ function Dashboard({ user, logout }) {
       <header className="dashboard-header">
         <div className="left">
           <h1 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <img src="/logo-foxorox.png" alt="Foxorox Icon" style={{ height: "55px" }} />
+            <img
+              src="/logo-foxorox.png"
+              alt="Foxorox Icon"
+              style={{ height: "55px" }}
+            />
             Foxorox Dashboard
           </h1>
         </div>
@@ -152,36 +162,44 @@ function Dashboard({ user, logout }) {
               Subscription: {subscriptionType}
             </div>
           </div>
-          <button onClick={logout} className="logout-btn">Sign out</button>
+          <button onClick={logout} className="logout-btn">
+            Sign out
+          </button>
         </div>
       </header>
 
-      {/* ▶ Main */}
-      <main className="dashboard-content">
-        <section className="market-overview">
-          <h2>🌍 Market Overview – Global Indexes</h2>
-          <div id="tradingview-widget" />
-        </section>
-
-        <div className="ai-tips-wrapper">
-          <section className="ai-tips">
-            <h2>📗 AI Tips for Bulls</h2>
-            <ul>
-              {bullTips.map((tip, index) => (
-                <li key={index}>{tip}</li>
-              ))}
-            </ul>
+      {/* ▶ Main layout with chat */}
+      <main className="dashboard-content" style={{ display: "flex" }}>
+        {/* Left content */}
+        <div style={{ flex: 1 }}>
+          <section className="market-overview">
+            <h2>🌍 Market Overview – Global Indexes</h2>
+            <div id="tradingview-widget" />
           </section>
 
-          <section className="ai-tips">
-            <h2>📕 AI Tips for Bears</h2>
-            <ul>
-              {bearTips.map((tip, index) => (
-                <li key={index}>{tip}</li>
-              ))}
-            </ul>
-          </section>
+          <div className="ai-tips-wrapper">
+            <section className="ai-tips">
+              <h2>📗 AI Tips for Bulls</h2>
+              <ul>
+                {bullTips.map((tip, index) => (
+                  <li key={index}>{tip}</li>
+                ))}
+              </ul>
+            </section>
+
+            <section className="ai-tips">
+              <h2>📕 AI Tips for Bears</h2>
+              <ul>
+                {bearTips.map((tip, index) => (
+                  <li key={index}>{tip}</li>
+                ))}
+              </ul>
+            </section>
+          </div>
         </div>
+
+        {/* ▶ Chat panel on the right */}
+        <ChatPanelFirebase user={user} />
       </main>
     </div>
   );
