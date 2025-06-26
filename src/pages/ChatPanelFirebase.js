@@ -4,6 +4,8 @@ import {
   collection,
   addDoc,
   updateDoc,
+  deleteDoc,
+  getDocs,
   doc,
   serverTimestamp,
   query,
@@ -18,6 +20,25 @@ function ChatPanelFirebase({ user }) {
   const [newMsg, setNewMsg] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
   const messagesEndRef = useRef(null);
+
+  // 🔁 Usuwanie wiadomości nie z dzisiaj
+  useEffect(() => {
+    const clearOldMessages = async () => {
+      const q = query(collection(db, "messages"));
+      const snapshot = await getDocs(q);
+      const today = new Date().toDateString();
+
+      for (const docSnap of snapshot.docs) {
+        const msg = docSnap.data();
+        const msgDate = msg.createdAt?.toDate?.().toDateString?.();
+        if (msgDate && msgDate !== today) {
+          await deleteDoc(doc(db, "messages", docSnap.id));
+        }
+      }
+    };
+
+    clearOldMessages();
+  }, []);
 
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("createdAt", "asc"));
