@@ -1,4 +1,4 @@
-/* === GLOBAL === */
+/* === GLOBAL RESET === */
 body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
@@ -6,9 +6,42 @@ body {
   background: #000;
 }
 
+/* === LAYOUT === */
 .main-container {
   text-align: center;
   padding: 100px 20px;
+}
+
+/* === TOP NAVIGATION === */
+.top-bar {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 20px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.auth-section {
+  display: flex;
+  gap: 10px;
+}
+
+.auth-button {
+  background-color: #222;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.auth-button:hover {
+  background-color: #333;
 }
 
 /* === LOGO === */
@@ -36,7 +69,7 @@ body {
   color: #ccc;
 }
 
-/* === BUTTONS === */
+/* === BUTTON STYLES === */
 .google-btn,
 .auth-button,
 .button-group button,
@@ -130,60 +163,12 @@ body {
   color: #ccc;
 }
 
-.plan-card button {
-  align-self: flex-end;
-  background-color: #f58220;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-weight: bold;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: auto;
-}
-
-.plan-card button:hover {
-  background-color: #ff7f00;
-}
-
-@media (max-width: 768px) {
-  .plans-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .plan-card {
-    min-height: auto;
-  }
-}
-
 .plan-card.active {
   border: 2px solid #fff;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
-/* === AUTH CONTROL === */
-.auth-control {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-}
-
-/* === RESPONSIVE === */
-@media (max-width: 600px) {
-  .main-container {
-    padding: 60px 15px;
-  }
-
-  .hero h1 {
-    font-size: 2em;
-  }
-
-  .subtitle {
-    font-size: 1em;
-  }
-}
-/* === LOGIN/REGISTER PAGE STYLES === */
-
+/* === LOGIN / REGISTER PAGE === */
 .login-container {
   text-align: center;
   max-width: 400px;
@@ -249,4 +234,29 @@ body {
   margin-top: 20px;
   color: #ccc;
   font-size: 0.9em;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .plan-card {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-container {
+    padding: 60px 15px;
+  }
+
+  .hero h1 {
+    font-size: 2em;
+  }
+
+  .subtitle {
+    font-size: 1em;
+  }
 }

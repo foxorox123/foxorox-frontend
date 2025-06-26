@@ -7,12 +7,24 @@ import logo from "../assets/logo-foxorox.png";
 function Home() {
   const [user, setUser] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState("basic_monthly");
+  const [hasSubscription, setHasSubscription] = useState(false);
   const navigate = useNavigate();
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(setUser);
+    const unsubscribe = auth.onAuthStateChanged((usr) => {
+      setUser(usr);
+
+      const postPaymentPlan =
+        localStorage.getItem("postPaymentPlan") || sessionStorage.getItem("postPaymentPlan");
+
+      if (usr && usr.emailVerified && postPaymentPlan) {
+        setHasSubscription(true);
+      } else {
+        setHasSubscription(false);
+      }
+    });
     return () => unsubscribe();
   }, []);
 
@@ -41,13 +53,22 @@ function Home() {
 
   return (
     <div className="main-container">
-      {/* Auth controls */}
-      <div className="auth-control">
-        {user ? (
-          <button className="auth-button" onClick={logout}>Sign out</button>
-        ) : (
-          <button className="auth-button" onClick={loginWithGoogle}>Sign in</button>
-        )}
+      {/* Top right auth/dashboard controls */}
+      <div className="top-bar">
+        <div className="auth-section">
+          {user ? (
+            <>
+              {hasSubscription && (
+                <button className="auth-button" onClick={() => navigate("/dashboard")}>
+                  🧾 My Dashboard
+                </button>
+              )}
+              <button className="auth-button" onClick={logout}>Logout</button>
+            </>
+          ) : (
+            <button className="auth-button" onClick={loginWithGoogle}>Login</button>
+          )}
+        </div>
       </div>
 
       <header className="hero">
