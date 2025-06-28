@@ -101,7 +101,7 @@ function Dashboard({ user, logout }) {
     container.appendChild(script);
   }, []);
 
-  // ▶ Check subscription
+  // ▶ Check subscription and redirect if inactive
   useEffect(() => {
     const checkSubscription = async () => {
       try {
@@ -125,10 +125,12 @@ function Dashboard({ user, logout }) {
           setSubscriptionType(planMap[data.plan] || "Active");
         } else {
           setSubscriptionType("Inactive");
+          navigate("/plans");
         }
       } catch (err) {
         console.error("Subscription check failed:", err);
         setSubscriptionType("Error");
+        navigate("/plans");
       }
     };
 
@@ -136,6 +138,7 @@ function Dashboard({ user, logout }) {
       checkSubscription();
     }
   }, [user]);
+  }, [user, navigate]);
 
   return (
     <div className="dashboard-container">
