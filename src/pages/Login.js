@@ -19,7 +19,7 @@ function Login() {
 
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
-  const redirectPostLogin = (userEmail) => {
+  const redirectPostLogin = async (userEmail) => {
     const plan = localStorage.getItem("postPaymentPlan");
     const storedEmail = localStorage.getItem("postPaymentEmail");
 
@@ -27,10 +27,28 @@ function Login() {
       navigate(`/processing?plan=${encodeURIComponent(plan)}&email=${encodeURIComponent(userEmail)}`);
     } else {
       navigate("/");
+      try {
+        const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: userEmail }),
+        });
+
+        const data = await res.json();
+
+        if (data.active) {
+          navigate("/dashboard");
+        } else {
+          navigate("/plans");
+        }
+      } catch (err) {
+        console.error("Subscription check failed:", err);
+        navigate("/plans");
+      }
     }
   };
 
-  const handleEmailAuth = async () => {
+ const handleEmailAuth = async () => {
     if (!isValidEmail(email)) return alert("Enter a valid email.");
     if (password.length < 6) return alert("Password must be at least 6 characters.");
 
@@ -54,6 +72,7 @@ function Login() {
         }
         alert("Login successful");
         redirectPostLogin(userCredential.user.email);
+        await redirectPostLogin(userCredential.user.email);
       } catch (err) {
         alert("Login error: " + err.message);
       }
@@ -73,6 +92,7 @@ function Login() {
       }
 
       redirectPostLogin(user.email);
+      await redirectPostLogin(user.email);
     } catch (err) {
       alert("Google login failed: " + err.message);
     }
