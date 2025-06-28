@@ -137,6 +137,7 @@ function Dashboard({ user, logout }) {
     }
   }, [user, navigate]);
 
+  
   return (
     <div className="dashboard-container">
       {/* ▶ Ticker Tape Widget */}
