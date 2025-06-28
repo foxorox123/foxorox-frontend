@@ -124,12 +124,10 @@ function Dashboard({ user, logout }) {
           };
           setSubscriptionType(planMap[data.plan] || "Active");
         } else {
-          setSubscriptionType("Inactive");
-          navigate("/plans");
+            navigate("/plans");
         }
       } catch (err) {
         console.error("Subscription check failed:", err);
-        setSubscriptionType("Error");
         navigate("/plans");
       }
     };
@@ -137,7 +135,6 @@ function Dashboard({ user, logout }) {
     if (user && user.emailVerified) {
       checkSubscription();
     }
-  }, [user]);
   }, [user, navigate]);
 
   return (
