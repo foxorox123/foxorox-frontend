@@ -68,7 +68,6 @@ function App() {
           sessionStorage.setItem("postPaymentPlan", plan);
           sessionStorage.setItem("postPaymentEmail", email);
           sessionStorage.setItem("session_id", data.session_id);
-     
           window.location.href = data.url;
         } else {
           alert("Error: No Stripe URL returned.");
@@ -87,64 +86,76 @@ function App() {
     });
   };
 
-  if (user === undefined)
-    return <div style={{ color: "white" }}>Loading...</div>;
+  if (user === undefined) return <div style={{ color: "white" }}>Loading...</div>;
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <PlansPage
-            user={user}
-            logout={logout}
-            subscribe={(plan) => {
-              if (!user) {
-                localStorage.setItem("selectedPlan", plan);
-                navigate("/login");
-              } else {
-                subscribeToStripe(plan, user.email);
-              }
-            }}
-          />
-        }
-      />
-      <Route path="/login" element={<Login onSuccess={() => navigate("/")} />} />
-      <Route
-        path="/dashboard"
-        element={
-          user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />
-        }
-      />
-      <Route
-        path="/downloads/basic"
-        element={
-          user && !localStorage.getItem("postPaymentPlan") ? (
-            <DownloadsBasic user={user} />
-          ) : (
-            <Navigate to="/processing" />
-          )
-        }
-      />
-      <Route
-        path="/downloads/premium"
-        element={
-          user && !localStorage.getItem("postPaymentPlan") ? (
-            <DownloadsPremium user={user} />
-          ) : (
-            <Navigate to="/processing" />
-          )
-        }
-      />
-      <Route path="/processing" element={<Processing />} />
-      <Route path="/returning" element={<Returning />} />
-      <Route path="/tips" element={<Tips />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/faq" element={<FAQ />} />
-      <Route path="/terms" element={<Terms />} />
-      <Route path="/privacy" element={<Privacy />} />
-    </Routes>
+    <div className="app-container">
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <PlansPage
+              user={user}
+              logout={logout}
+              subscribe={(plan) => {
+                if (!user) {
+                  localStorage.setItem("selectedPlan", plan);
+                  navigate("/login");
+                } else {
+                  subscribeToStripe(plan, user.email);
+                }
+              }}
+            />
+          }
+        />
+        <Route path="/login" element={<Login onSuccess={() => navigate("/")} />} />
+        <Route
+          path="/dashboard"
+          element={
+            user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/downloads/basic"
+          element={
+            user && !localStorage.getItem("postPaymentPlan") ? (
+              <DownloadsBasic user={user} />
+            ) : (
+              <Navigate to="/processing" />
+            )
+          }
+        />
+        <Route
+          path="/downloads/premium"
+          element={
+            user && !localStorage.getItem("postPaymentPlan") ? (
+              <DownloadsPremium user={user} />
+            ) : (
+              <Navigate to="/processing" />
+            )
+          }
+        />
+        <Route path="/processing" element={<Processing />} />
+        <Route path="/returning" element={<Returning />} />
+        <Route path="/tips" element={<Tips />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+      </Routes>
+
+      {/* Footer */}
+      <footer style={{ textAlign: "center", marginTop: "2rem", padding: "1rem", fontSize: "0.95em", borderTop: "1px solid #ccc" }}>
+        <p><strong>Educational Resources:</strong></p>
+        <p>
+          <a href="/ai-stock-prediction" target="_blank" rel="noopener noreferrer">AI Stock Prediction</a> |
+          <a href="/learn-etf-trading" target="_blank" rel="noopener noreferrer"> Learn ETF Trading</a> |
+          <a href="/crypto-insights" target="_blank" rel="noopener noreferrer"> Crypto Insights</a> |
+          <a href="/us-market-tutorials" target="_blank" rel="noopener noreferrer"> US Market Tutorials</a>
+        </p>
+      </footer>
+    </div>
   );
 }
 
