@@ -16,6 +16,7 @@ import FAQ from "./pages/FAQ";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Processing from "./pages/Processing";
+import Returning from "./pages/Returning";
 
 function App() {
   const [user, setUser] = useState(undefined);
@@ -67,7 +68,6 @@ function App() {
           sessionStorage.setItem("postPaymentPlan", plan);
           sessionStorage.setItem("postPaymentEmail", email);
           sessionStorage.setItem("session_id", data.session_id);
-
           window.location.href = data.url;
         } else {
           alert("Error: No Stripe URL returned.");
@@ -86,63 +86,79 @@ function App() {
     });
   };
 
-  if (user === undefined)
-    return <div style={{ color: "white" }}>Loading...</div>;
+  if (user === undefined) return <div style={{ color: "white" }}>Loading...</div>;
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <PlansPage
-            user={user}
-            logout={logout}
-            subscribe={(plan) => {
-              if (!user) {
-                localStorage.setItem("selectedPlan", plan);
-                navigate("/login");
-              } else {
-                subscribeToStripe(plan, user.email);
-              }
-            }}
-          />
-        }
-      />
-      <Route path="/login" element={<Login onSuccess={() => navigate("/")} />} />
-      <Route
-        path="/dashboard"
-        element={
-          user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />
-        }
-      />
-      <Route
-        path="/downloads/basic"
-        element={
-          user && !localStorage.getItem("postPaymentPlan") ? (
-            <DownloadsBasic user={user} />
-          ) : (
-            <Navigate to="/processing" />
-          )
-        }
-      />
-      <Route
-        path="/downloads/premium"
-        element={
-          user && !localStorage.getItem("postPaymentPlan") ? (
-            <DownloadsPremium user={user} />
-          ) : (
-            <Navigate to="/processing" />
-          )
-        }
-      />
-      <Route path="/processing" element={<Processing />} />
-      <Route path="/tips" element={<Tips />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/faq" element={<FAQ />} />
-      <Route path="/terms" element={<Terms />} />
-      <Route path="/privacy" element={<Privacy />} />
-    </Routes>
+    <div className="app-container">
+      {/* TOPBAR */}
+      <div className="top-bar">
+        {user ? (
+          <div className="auth-section">
+            <span style={{ marginRight: "10px", color: "#fff" }}>{user.email}</span>
+            <button className="auth-button" onClick={logout}>Logout</button>
+          </div>
+        ) : (
+          <div className="auth-section">
+            <button className="auth-button" onClick={() => navigate("/login")}>Sign in to Subscribe</button>
+          </div>
+        )}
+      </div>
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <PlansPage
+              user={user}
+              logout={logout}
+              subscribe={(plan) => {
+                if (!user) {
+                  localStorage.setItem("selectedPlan", plan);
+                  navigate("/login");
+                } else {
+                  subscribeToStripe(plan, user.email);
+                }
+              }}
+            />
+          }
+        />
+        <Route path="/login" element={<Login onSuccess={() => navigate("/")} />} />
+        <Route
+          path="/dashboard"
+          element={
+            user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/downloads/basic"
+          element={
+            user && !localStorage.getItem("postPaymentPlan") ? (
+              <DownloadsBasic user={user} />
+            ) : (
+              <Navigate to="/processing" />
+            )
+          }
+        />
+        <Route
+          path="/downloads/premium"
+          element={
+            user && !localStorage.getItem("postPaymentPlan") ? (
+              <DownloadsPremium user={user} />
+            ) : (
+              <Navigate to="/processing" />
+            )
+          }
+        />
+        <Route path="/processing" element={<Processing />} />
+        <Route path="/returning" element={<Returning />} />
+        <Route path="/tips" element={<Tips />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+      </Routes>
+    </div>
   );
 }
 
