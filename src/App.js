@@ -17,6 +17,7 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Processing from "./pages/Processing";
 import Returning from "./pages/Returning";
+import Footer from "./components/Footer"; // <--- dodaj ten import
 
 function App() {
   const [user, setUser] = useState(undefined);
@@ -68,6 +69,7 @@ function App() {
           sessionStorage.setItem("postPaymentPlan", plan);
           sessionStorage.setItem("postPaymentEmail", email);
           sessionStorage.setItem("session_id", data.session_id);
+
           window.location.href = data.url;
         } else {
           alert("Error: No Stripe URL returned.");
@@ -86,10 +88,11 @@ function App() {
     });
   };
 
-  if (user === undefined) return <div style={{ color: "white" }}>Loading...</div>;
+  if (user === undefined)
+    return <div style={{ color: "white" }}>Loading...</div>;
 
   return (
-    <div className="app-container">
+    <>
       <Routes>
         <Route
           path="/"
@@ -143,8 +146,10 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
-       </Routes>
-    </div>
+      </Routes>
+
+      <Footer /> {/* <-- widoczny na każdej stronie */}
+    </>
   );
 }
 
