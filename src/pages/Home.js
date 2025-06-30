@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { signInWithPopup, signOut, GoogleAuthProvider, getAuth } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../../src/App.css";
 import logo from "../assets/logo-foxorox.png";
 
@@ -18,8 +18,10 @@ function Home() {
 
       const postPaymentPlan =
         localStorage.getItem("postPaymentPlan") || sessionStorage.getItem("postPaymentPlan");
+      const postPaymentEmail =
+        localStorage.getItem("postPaymentEmail") || sessionStorage.getItem("postPaymentEmail");
 
-      if (usr && usr.emailVerified && postPaymentPlan) {
+      if (usr && usr.emailVerified && postPaymentPlan && postPaymentEmail === usr.email) {
         setHasSubscription(true);
       } else {
         setHasSubscription(false);
@@ -29,10 +31,16 @@ function Home() {
   }, []);
 
   const subscribe = (plan) => {
+    if (!user) {
+      localStorage.setItem("selectedPlan", plan);
+      navigate("/login");
+      return;
+    }
+
     fetch("https://foxorox-backend.onrender.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan }),
+      body: JSON.stringify({ plan, email: user.email }),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -92,9 +100,11 @@ function Home() {
             <option value="global_yearly">🔴 Global Yearly – $999.99</option>
           </select>
 
-          <button onClick={() => subscribe(selectedPlan)} className="auth-button">
-            💳 Subscribe
-          </button>
+          {!hasSubscription && (
+            <button onClick={() => subscribe(selectedPlan)} className="auth-button">
+              💳 Subscribe
+            </button>
+          )}
 
           {user && (
             <button onClick={() => navigate("/tips")} className="auth-button">
@@ -103,6 +113,18 @@ function Home() {
           )}
         </div>
       </header>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="footer-links">
+          <Link to="/about">About</Link>
+          <Link to="/contact">Contact</Link>
+          <Link to="/faq">FAQ</Link>
+          <Link to="/terms">Terms</Link>
+          <Link to="/privacy">Privacy</Link>
+        </div>
+        <p className="footer-text">© {new Date().getFullYear()} Foxorox. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
