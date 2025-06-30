@@ -145,18 +145,6 @@ function App() {
         <Route path="/privacy" element={<Privacy />} />
       </Routes>
 
-      {/* Footer */}
-      <footer style={{ textAlign: "center", marginTop: "2rem", padding: "1rem", fontSize: "0.95em", borderTop: "1px solid #ccc" }}>
-        <p><strong>Educational Resources:</strong></p>
-        <p>
-          <a href="/ai-stock-prediction" target="_blank" rel="noopener noreferrer">AI Stock Prediction</a> |
-          <a href="/learn-etf-trading" target="_blank" rel="noopener noreferrer"> Learn ETF Trading</a> |
-          <a href="/crypto-insights" target="_blank" rel="noopener noreferrer"> Crypto Insights</a> |
-          <a href="/us-market-tutorials" target="_blank" rel="noopener noreferrer"> US Market Tutorials</a>
-        </p>
-      </footer>
-    </div>
-  );
-}
+      
 
 export default App;
