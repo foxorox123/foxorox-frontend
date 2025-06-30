@@ -143,8 +143,9 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
-      </Routes>
-
-      
+       </Routes>
+    </div>
+  );
+}
 
 export default App;
