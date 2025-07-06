@@ -96,8 +96,8 @@ function Home() {
           >
             <option value="basic_monthly">🟢 Basic Monthly – $79.99</option>
             <option value="basic_yearly">🔵 Basic Yearly – $499.99</option>
-            <option value="global_monthly">🟠 Global Monthly – $149.99</option>
-            <option value="global_yearly">🔴 Global Yearly – $999.99</option>
+            <option value="global_monthly">🟠 Premium Monthly – $149.99</option>
+            <option value="global_yearly">🔴 Premium Yearly – $999.99</option>
           </select>
 
           {!hasSubscription && (
