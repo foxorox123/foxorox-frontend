@@ -5,8 +5,10 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
+  setPersistence,
+  browserLocalPersistence,
 } from "firebase/auth";
-import { getFirestore } from "firebase/firestore"; // ⬅ dodane
+import { getFirestore } from "firebase/firestore"; // ⬅ Firestore
 
 const firebaseConfig = {
   apiKey: "AIzaSyDD8dWivFZ-5k21Dzu550PzBe3nk7ygTa8",
@@ -22,5 +24,10 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app); // ⬅ Firestore
+
+// ✅ Tutaj ustawiasz PERSISTENCE
+setPersistence(auth, browserLocalPersistence).catch((err) => {
+  console.error("Failed to set persistence:", err);
+});
 
 export { auth, provider, signInWithPopup, signOut, db };

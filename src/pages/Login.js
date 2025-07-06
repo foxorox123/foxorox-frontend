@@ -17,22 +17,36 @@ function Login() {
   const [resendAvailable, setResendAvailable] = useState(false);
   const navigate = useNavigate();
 
-  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const isValidEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const redirectPostLogin = async (userEmail) => {
+    const redirect = localStorage.getItem("redirectAfterLogin");
+    if (redirect) {
+      localStorage.removeItem("redirectAfterLogin");
+      navigate(redirect);
+      return;
+    }
+
     const plan = localStorage.getItem("postPaymentPlan");
     const storedEmail = localStorage.getItem("postPaymentEmail");
 
     if (plan && storedEmail && storedEmail === userEmail) {
-      navigate(`/processing?plan=${encodeURIComponent(plan)}&email=${encodeURIComponent(userEmail)}`);
+      navigate(
+        `/processing?plan=${encodeURIComponent(
+          plan
+        )}&email=${encodeURIComponent(userEmail)}`
+      );
     } else {
-      navigate("/");
       try {
-        const res = await fetch("https://foxorox-backend.onrender.com/check-subscription", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: userEmail }),
-        });
+        const res = await fetch(
+          "https://foxorox-backend.onrender.com/check-subscription",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: userEmail }),
+          }
+        );
 
         const data = await res.json();
 
@@ -48,14 +62,20 @@ function Login() {
     }
   };
 
- const handleEmailAuth = async () => {
+  const handleEmailAuth = async () => {
     if (!isValidEmail(email)) return alert("Enter a valid email.");
-    if (password.length < 6) return alert("Password must be at least 6 characters.");
+    if (password.length < 6)
+      return alert("Password must be at least 6 characters.");
 
     if (isRegistering) {
-      if (password !== repeatPassword) return alert("Passwords do not match.");
+      if (password !== repeatPassword)
+        return alert("Passwords do not match.");
       try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
         await sendEmailVerification(userCredential.user);
         alert("Account created. Verify your email.");
         setResendAvailable(true);
@@ -64,14 +84,17 @@ function Login() {
       }
     } else {
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
         if (!userCredential.user.emailVerified) {
           alert("Verify your email.");
           setResendAvailable(true);
           return;
         }
         alert("Login successful");
-        redirectPostLogin(userCredential.user.email);
         await redirectPostLogin(userCredential.user.email);
       } catch (err) {
         alert("Login error: " + err.message);
@@ -91,7 +114,6 @@ function Login() {
         return;
       }
 
-      redirectPostLogin(user.email);
       await redirectPostLogin(user.email);
     } catch (err) {
       alert("Google login failed: " + err.message);
@@ -143,7 +165,9 @@ function Login() {
 
       {resendAvailable && !isRegistering && (
         <div style={{ marginTop: "10px" }}>
-          <button onClick={handleResendEmail}>📩 Resend verification email</button>
+          <button onClick={handleResendEmail}>
+            📩 Resend verification email
+          </button>
         </div>
       )}
 
