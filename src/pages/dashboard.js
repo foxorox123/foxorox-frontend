@@ -19,6 +19,18 @@ function Dashboard({ user, logout }) {
     "🔻 Bear divergence on FTSE 100 hourly chart.",
   ];
 
+  // ▶ Generate and get device_id
+  const getDeviceId = () => {
+    let id = localStorage.getItem("device_id");
+    if (!id) {
+      id =
+        Math.random().toString(36).substring(2) +
+        Date.now().toString(36);
+      localStorage.setItem("device_id", id);
+    }
+    return id;
+  };
+
   // ▶ Ticker Tape
   useEffect(() => {
     const tickerScript = document.createElement("script");
@@ -45,7 +57,7 @@ function Dashboard({ user, logout }) {
     tickerContainer.appendChild(tickerScript);
   }, []);
 
-  // ▶ Market Overview (Poprawione symbole Asia)
+  // ▶ Market Overview
   useEffect(() => {
     const script = document.createElement("script");
     script.src =
@@ -105,12 +117,13 @@ function Dashboard({ user, logout }) {
   useEffect(() => {
     const checkSubscription = async () => {
       try {
+        const deviceId = getDeviceId();
         const res = await fetch(
           "https://foxorox-backend.onrender.com/check-subscription",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: user.email, device_id: myDeviceId }),
+            body: JSON.stringify({ email: user.email, device_id: deviceId }),
           }
         );
 
