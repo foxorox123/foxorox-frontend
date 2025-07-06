@@ -19,7 +19,6 @@ function Dashboard({ user, logout }) {
     "🔻 Bear divergence on FTSE 100 hourly chart.",
   ];
 
-  // ▶ Generate and get device_id
   const getDeviceId = () => {
     let id = localStorage.getItem("device_id");
     if (!id) {
@@ -31,7 +30,6 @@ function Dashboard({ user, logout }) {
     return id;
   };
 
-  // ▶ Ticker Tape
   useEffect(() => {
     const tickerScript = document.createElement("script");
     tickerScript.src =
@@ -57,7 +55,6 @@ function Dashboard({ user, logout }) {
     tickerContainer.appendChild(tickerScript);
   }, []);
 
-  // ▶ Market Overview
   useEffect(() => {
     const script = document.createElement("script");
     script.src =
@@ -113,7 +110,6 @@ function Dashboard({ user, logout }) {
     container.appendChild(script);
   }, []);
 
-  // ▶ Check subscription and redirect if inactive
   useEffect(() => {
     const checkSubscription = async () => {
       try {
@@ -152,10 +148,8 @@ function Dashboard({ user, logout }) {
 
   return (
     <div className="dashboard-container">
-      {/* ▶ Ticker Tape Widget */}
       <div id="ticker-tape" style={{ marginBottom: "20px" }}></div>
 
-      {/* ▶ Header */}
       <header className="dashboard-header">
         <div className="left">
           <h1 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -173,35 +167,6 @@ function Dashboard({ user, logout }) {
             <div style={{ fontSize: "0.9em", color: "#ccc" }}>
               Subscription: {subscriptionType}
             </div>
-
-            {/* ▶ Download link */}
-            {subscriptionType && (
-              <div style={{ marginTop: "10px", textAlign: "right" }}>
-                {subscriptionType.includes("Basic") ? (
-                  <a
-                    href={`https://foxorox-backend.onrender.com/download/basic?email=${encodeURIComponent(
-                      user.email
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="download-btn"
-                  >
-                    📥 Download Basic Version
-                  </a>
-                ) : subscriptionType.includes("Global") ? (
-                  <a
-                    href={`https://foxorox-backend.onrender.com/download/premium?email=${encodeURIComponent(
-                      user.email
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="download-btn"
-                  >
-                    📥 Download Premium Version
-                  </a>
-                ) : null}
-              </div>
-            )}
           </div>
           <button onClick={logout} className="logout-btn">
             Sign out
@@ -209,9 +174,7 @@ function Dashboard({ user, logout }) {
         </div>
       </header>
 
-      {/* ▶ Main layout with chat */}
       <main className="dashboard-content" style={{ display: "flex" }}>
-        {/* ▶ Left panel */}
         <div style={{ flex: 1 }}>
           <section className="market-overview">
             <h2>🌍 Market Overview – Global Indexes</h2>
@@ -239,9 +202,37 @@ function Dashboard({ user, logout }) {
           </div>
         </div>
 
-        {/* ▶ Chat on right */}
         <ChatPanelFirebase user={user} />
       </main>
+
+      {/* ▶ Download Button at Bottom */}
+      {subscriptionType && (
+        <div className="download-section">
+          {subscriptionType.includes("Basic") ? (
+            <a
+              href={`https://foxorox-backend.onrender.com/download/basic?email=${encodeURIComponent(
+                user.email
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="download-btn"
+            >
+              📥 Download Basic Version
+            </a>
+          ) : subscriptionType.includes("Global") ? (
+            <a
+              href={`https://foxorox-backend.onrender.com/download/premium?email=${encodeURIComponent(
+                user.email
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="download-btn"
+            >
+              📥 Download Premium Version
+            </a>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 }

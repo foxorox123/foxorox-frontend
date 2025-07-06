@@ -57,3 +57,25 @@ h2 {
   padding: 0;
   color: #ccc;
 }
+.download-section {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.download-btn {
+  display: inline-block;
+  background: linear-gradient(90deg, #f58220, #ff9900);
+  color: white;
+  padding: 15px 25px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.download-btn:hover {
+  background: linear-gradient(90deg, #ff9900, #f58220);
+  transform: scale(1.05);
+}
+
