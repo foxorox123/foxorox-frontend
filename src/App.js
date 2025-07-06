@@ -26,9 +26,11 @@ function App() {
       setUser(usr);
 
       const postPaymentPlan =
-        localStorage.getItem("postPaymentPlan") || sessionStorage.getItem("postPaymentPlan");
+        localStorage.getItem("postPaymentPlan") ||
+        sessionStorage.getItem("postPaymentPlan");
       const postPaymentEmail =
-        localStorage.getItem("postPaymentEmail") || sessionStorage.getItem("postPaymentEmail");
+        localStorage.getItem("postPaymentEmail") ||
+        sessionStorage.getItem("postPaymentEmail");
 
       if (
         usr &&
@@ -37,7 +39,9 @@ function App() {
         postPaymentEmail === usr.email
       ) {
         navigate(
-          `/processing?plan=${encodeURIComponent(postPaymentPlan)}&email=${encodeURIComponent(postPaymentEmail)}`
+          `/processing?plan=${encodeURIComponent(
+            postPaymentPlan
+          )}&email=${encodeURIComponent(postPaymentEmail)}`
         );
         return;
       }
@@ -112,7 +116,11 @@ function App() {
       <Route
         path="/dashboard"
         element={
-          user ? <Dashboard user={user} logout={logout} /> : <Navigate to="/login" />
+          user ? (
+            <Dashboard user={user} logout={logout} />
+          ) : (
+            <Navigate to="/login" state={{ from: "/dashboard" }} />
+          )
         }
       />
       <Route

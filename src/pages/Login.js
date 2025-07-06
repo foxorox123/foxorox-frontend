@@ -7,7 +7,7 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebase-config";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -16,53 +16,13 @@ function Login() {
   const [isRegistering, setIsRegistering] = useState(false);
   const [resendAvailable, setResendAvailable] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || "/";
 
   const isValidEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
-  const redirectPostLogin = async (userEmail) => {
-    const redirect = localStorage.getItem("redirectAfterLogin");
-    if (redirect) {
-      localStorage.removeItem("redirectAfterLogin");
-      navigate(redirect);
-      return;
-    }
-
-    const plan = localStorage.getItem("postPaymentPlan");
-    const storedEmail = localStorage.getItem("postPaymentEmail");
-
-    if (plan && storedEmail && storedEmail === userEmail) {
-      navigate(
-        `/processing?plan=${encodeURIComponent(
-          plan
-        )}&email=${encodeURIComponent(userEmail)}`
-      );
-    } else {
-      try {
-        const res = await fetch(
-          "https://foxorox-backend.onrender.com/check-subscription",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: userEmail }),
-          }
-        );
-
-        const data = await res.json();
-
-        if (data.active) {
-          navigate("/dashboard");
-        } else {
-          navigate("/plans");
-        }
-      } catch (err) {
-        console.error("Subscription check failed:", err);
-        navigate("/plans");
-      }
-    }
-  };
-
-  const handleEmailAuth = async () => {
+  const handleAuth = async () => {
     if (!isValidEmail(email)) return alert("Enter a valid email.");
     if (password.length < 6)
       return alert("Password must be at least 6 characters.");
@@ -95,7 +55,7 @@ function Login() {
           return;
         }
         alert("Login successful");
-        await redirectPostLogin(userCredential.user.email);
+        navigate(from);
       } catch (err) {
         alert("Login error: " + err.message);
       }
@@ -107,14 +67,7 @@ function Login() {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
       const user = result.user;
       alert("Google login successful");
-
-      // Jeśli email nie jest zweryfikowany przez Google, zablokuj
-      if (!user.emailVerified) {
-        alert("Google account is not verified.");
-        return;
-      }
-
-      await redirectPostLogin(user.email);
+      navigate(from);
     } catch (err) {
       alert("Google login failed: " + err.message);
     }
@@ -159,7 +112,7 @@ function Login() {
         </>
       )}
 
-      <button onClick={handleEmailAuth}>
+      <button onClick={handleAuth}>
         {isRegistering ? "📝 Register" : "🔓 Login"}
       </button>
 
