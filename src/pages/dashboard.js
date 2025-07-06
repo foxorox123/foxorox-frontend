@@ -124,7 +124,7 @@ function Dashboard({ user, logout }) {
           };
           setSubscriptionType(planMap[data.plan] || "Active");
         } else {
-            navigate("/");
+          navigate("/");
         }
       } catch (err) {
         console.error("Subscription check failed:", err);
@@ -137,7 +137,6 @@ function Dashboard({ user, logout }) {
     }
   }, [user, navigate]);
 
-  
   return (
     <div className="dashboard-container">
       {/* ▶ Ticker Tape Widget */}
@@ -161,6 +160,35 @@ function Dashboard({ user, logout }) {
             <div style={{ fontSize: "0.9em", color: "#ccc" }}>
               Subscription: {subscriptionType}
             </div>
+
+            {/* ▶ Download link */}
+            {subscriptionType && (
+              <div style={{ marginTop: "10px", textAlign: "right" }}>
+                {subscriptionType.includes("Basic") ? (
+                  <a
+                    href={`https://foxorox-backend.onrender.com/download/basic?email=${encodeURIComponent(
+                      user.email
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="download-btn"
+                  >
+                    📥 Download Basic Version
+                  </a>
+                ) : subscriptionType.includes("Global") ? (
+                  <a
+                    href={`https://foxorox-backend.onrender.com/download/premium?email=${encodeURIComponent(
+                      user.email
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="download-btn"
+                  >
+                    📥 Download Premium Version
+                  </a>
+                ) : null}
+              </div>
+            )}
           </div>
           <button onClick={logout} className="logout-btn">
             Sign out
