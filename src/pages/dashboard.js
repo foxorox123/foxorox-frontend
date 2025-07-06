@@ -110,7 +110,7 @@ function Dashboard({ user, logout }) {
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: user.email }),
+            body: JSON.stringify({ email: user.email, device_id: myDeviceId }),
           }
         );
 
