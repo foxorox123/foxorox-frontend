@@ -205,8 +205,14 @@ function Dashboard({ user, logout }) {
         <ChatPanelFirebase user={user} />
       </main>
 
+      {/* ▶ Download Section at Bottom */}
       {subscriptionType && (
         <div className="download-section">
+          <p style={{ textAlign: "center", marginBottom: "15px", fontWeight: "bold", color: "white" }}>
+            Please download your version of Foxorox.<br />
+            Please copy your DEVICE ID during login to AI program.
+          </p>
+
           {subscriptionType.includes("Basic") ? (
             <a
               href={`https://foxorox-backend.onrender.com/download/basic?email=${encodeURIComponent(
@@ -231,7 +237,7 @@ function Dashboard({ user, logout }) {
             </a>
           ) : null}
 
-          {/* ▶ DEVICE ID BELOW DOWNLOAD */}
+          {/* ▶ DEVICE ID Below Download */}
           <div
             className="download-btn"
             style={{
