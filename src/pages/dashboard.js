@@ -30,6 +30,12 @@ function Dashboard({ user, logout }) {
     return id;
   };
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(getDeviceId()).then(() => {
+      alert("DEVICE ID copied to clipboard!");
+    });
+  };
+
   useEffect(() => {
     const tickerScript = document.createElement("script");
     tickerScript.src =
@@ -237,20 +243,26 @@ function Dashboard({ user, logout }) {
             </a>
           ) : null}
 
-          {/* ▶ DEVICE ID Below Download */}
+          {/* ▶ DEVICE ID & Copy Button */}
           <div
             className="download-btn"
             style={{
               marginTop: "15px",
               textAlign: "center",
-              pointerEvents: "none",
-              opacity: 0.8,
               backgroundColor: "#444",
               cursor: "default",
             }}
           >
             DEVICE ID: {getDeviceId()}
           </div>
+
+          <button
+            onClick={handleCopy}
+            className="download-btn"
+            style={{ marginTop: "10px", backgroundColor: "#666" }}
+          >
+            📋 Copy DEVICE ID
+          </button>
         </div>
       )}
     </div>
