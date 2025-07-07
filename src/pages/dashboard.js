@@ -22,7 +22,9 @@ function Dashboard({ user, logout }) {
   const getDeviceId = () => {
     let id = localStorage.getItem("device_id");
     if (!id) {
-      id = Math.random().toString(36).substring(2) + Date.now().toString(36);
+      id =
+        Math.random().toString(36).substring(2) +
+        Date.now().toString(36);
       localStorage.setItem("device_id", id);
     }
     return id;
@@ -34,50 +36,118 @@ function Dashboard({ user, logout }) {
     });
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("subscription_plan");
-    logout();
-  };
+  useEffect(() => {
+    const tickerScript = document.createElement("script");
+    tickerScript.src =
+      "https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js";
+    tickerScript.async = true;
+    tickerScript.innerHTML = JSON.stringify({
+      symbols: [
+        { proName: "OANDA:SPX500USD", title: "S&P 500 Futures" },
+        { proName: "OANDA:NAS100USD", title: "Nasdaq 100 Futures" },
+        { proName: "EUREX:FDAX1!", title: "DAX Futures" },
+        { proName: "GPW:FW20M2025", title: "WIG20 Futures" },
+        { proName: "BET:BSE", title: "BUX Index" },
+        { proName: "TVC:NI225", title: "Nikkei 225" },
+      ],
+      colorTheme: "dark",
+      isTransparent: false,
+      displayMode: "adaptive",
+      locale: "en",
+    });
+
+    const tickerContainer = document.getElementById("ticker-tape");
+    if (tickerContainer) tickerContainer.innerHTML = "";
+    tickerContainer.appendChild(tickerScript);
+  }, []);
 
   useEffect(() => {
-    const storedPlan = localStorage.getItem("subscription_plan");
-    if (storedPlan) {
-      setSubscriptionType(storedPlan);
-    }
+    const script = document.createElement("script");
+    script.src =
+      "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
+    script.async = true;
+    script.innerHTML = JSON.stringify({
+      colorTheme: "dark",
+      dateRange: "12M",
+      showChart: true,
+      locale: "en",
+      width: "100%",
+      height: "600",
+      isTransparent: false,
+      showSymbolLogo: true,
+      tabs: [
+        {
+          title: "America",
+          symbols: [
+            { s: "NASDAQ:NDX", d: "NASDAQ 100" },
+            { s: "OANDA:SPX500USD", d: "S&P 500" },
+            { s: "DJ:DJI", d: "Dow Jones" },
+          ],
+        },
+        {
+          title: "Europe",
+          symbols: [
+            { s: "XETR:DAX", d: "DAX 40" },
+            { s: "EURONEXT:PX1", d: "CAC 40" },
+            { s: "LSE:UKX", d: "FTSE 100" },
+          ],
+        },
+        {
+          title: "EMEA",
+          symbols: [
+            { s: "GPW:WIG20", d: "WIG20" },
+            { s: "TADAWUL:TASI", d: "Tadawul All Share" },
+            { s: "MOEX:IMOEX", d: "MOEX Russia" },
+          ],
+        },
+        {
+          title: "Asia",
+          symbols: [
+            { s: "TVC:NI225", d: "Nikkei 225" },
+            { s: "TVC:HSI", d: "Hang Seng" },
+            { s: "SSE:000001", d: "Shanghai Composite" },
+          ],
+        },
+      ],
+    });
 
-    if (user && user.emailVerified) {
-      const checkSubscription = async () => {
-        try {
-          const deviceId = getDeviceId();
-          const res = await fetch(
-            "https://foxorox-backend.onrender.com/check-subscription",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email: user.email, device_id: deviceId }),
-            }
-          );
+    const container = document.getElementById("tradingview-widget");
+    if (container) container.innerHTML = "";
+    container.appendChild(script);
+  }, []);
 
-          const data = await res.json();
-          if (data.active && data.plan) {
-            const planMap = {
-              basic_monthly: "Basic Monthly",
-              basic_yearly: "Basic Yearly",
-              global_monthly: "Global Monthly",
-              global_yearly: "Global Yearly",
-            };
-            const planName = planMap[data.plan] || "Active";
-            setSubscriptionType(planName);
-            localStorage.setItem("subscription_plan", planName);
-          } else {
-            navigate("/");
+  useEffect(() => {
+    const checkSubscription = async () => {
+      try {
+        const deviceId = getDeviceId();
+        const res = await fetch(
+          "https://foxorox-backend.onrender.com/check-subscription",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: user.email, device_id: deviceId }),
           }
-        } catch (err) {
-          console.error("Subscription check failed:", err);
+        );
+
+        const data = await res.json();
+        if (data.active && data.plan) {
+          const planMap = {
+            basic_monthly: "Basic Monthly",
+            basic_yearly: "Basic Yearly",
+            global_monthly: "Global Monthly",
+            global_yearly: "Global Yearly",
+          };
+          setSubscriptionType(planMap[data.plan] || "Active");
+        } else {
           navigate("/");
         }
-      };
+      } catch (err) {
+        console.error("Subscription check failed:", err);
+        navigate("/");
+      }
+    };
 
+    if (user && user.emailVerified) {
       checkSubscription();
     }
   }, [user, navigate]);
@@ -104,7 +174,7 @@ function Dashboard({ user, logout }) {
               Subscription: {subscriptionType}
             </div>
           </div>
-          <button onClick={handleLogout} className="logout-btn">
+          <button onClick={logout} className="logout-btn">
             Sign out
           </button>
         </div>
@@ -141,6 +211,7 @@ function Dashboard({ user, logout }) {
         <ChatPanelFirebase user={user} />
       </main>
 
+      {/* ▶ Download Section at Bottom */}
       {subscriptionType && (
         <div className="download-section">
           <p style={{ textAlign: "center", marginBottom: "15px", fontWeight: "bold", color: "white" }}>
@@ -172,6 +243,7 @@ function Dashboard({ user, logout }) {
             </a>
           ) : null}
 
+          {/* ▶ DEVICE ID & Copy Button */}
           <div
             className="download-btn"
             style={{
