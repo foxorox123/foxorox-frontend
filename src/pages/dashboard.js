@@ -205,7 +205,6 @@ function Dashboard({ user, logout }) {
         <ChatPanelFirebase user={user} />
       </main>
 
-      {/* ▶ Download Button at Bottom */}
       {subscriptionType && (
         <div className="download-section">
           {subscriptionType.includes("Basic") ? (
@@ -231,6 +230,21 @@ function Dashboard({ user, logout }) {
               📥 Download Premium Version
             </a>
           ) : null}
+
+          {/* ▶ DEVICE ID BELOW DOWNLOAD */}
+          <div
+            className="download-btn"
+            style={{
+              marginTop: "15px",
+              textAlign: "center",
+              pointerEvents: "none",
+              opacity: 0.8,
+              backgroundColor: "#444",
+              cursor: "default",
+            }}
+          >
+            DEVICE ID: {getDeviceId()}
+          </div>
         </div>
       )}
     </div>
