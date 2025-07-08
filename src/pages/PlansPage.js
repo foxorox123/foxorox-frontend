@@ -115,26 +115,34 @@ function PlansPage({ user, logout, subscribe }) {
         </div>
 
         {/* Screenshots Section */}
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: 50, gap: 40 }}>
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-start",
+          marginTop: 60,
+          position: "relative",
+        }}>
           <div style={{
             border: "2px solid #ffffff22",
             borderRadius: "10px",
             boxShadow: "0 8px 20px rgba(0,0,0,0.5)",
             overflow: "hidden",
-            transform: "rotate(-5deg) translateY(20px)",
-            transition: "transform 0.3s ease",
+            position: "relative",
+            zIndex: 2,
           }}>
-            <img src="/screen1.png" alt="Screenshot 1" style={{ width: "300px", display: "block" }} />
+            <img src="/screen1.png" alt="Screenshot 1" style={{ width: "320px", display: "block" }} />
           </div>
           <div style={{
             border: "2px solid #ffffff22",
             borderRadius: "10px",
             boxShadow: "0 8px 20px rgba(0,0,0,0.5)",
             overflow: "hidden",
-            transform: "rotate(5deg) translateY(-20px)",
-            transition: "transform 0.3s ease",
+            position: "relative",
+            left: "-100px",
+            top: "50px",
+            zIndex: 1,
           }}>
-            <img src="/screen2.png" alt="Screenshot 2" style={{ width: "300px", display: "block" }} />
+            <img src="/screen2.png" alt="Screenshot 2" style={{ width: "320px", display: "block" }} />
           </div>
         </div>
       </div>
