@@ -115,47 +115,44 @@ function Dashboard({ user, logout }) {
   }, []);
 
   useEffect(() => {
-    const storedPlan = localStorage.getItem("subscription_plan");
-    if (storedPlan) {
-      setSubscriptionType(storedPlan);
-    }
+    const checkSubscription = async () => {
+      try {
+        const deviceId = getDeviceId();
+        const res = await fetch(
+          "https://foxorox-backend.onrender.com/check-subscription",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: user.email, device_id: deviceId }),
+          }
+        );
+
+        const data = await res.json();
+        if (data.active && data.plan) {
+          const planMap = {
+            basic_monthly: "Basic Monthly",
+            basic_yearly: "Basic Yearly",
+            global_monthly: "Global Monthly",
+            global_yearly: "Global Yearly",
+          };
+          const planName = planMap[data.plan] || "Active";
+          setSubscriptionType(planName);
+          localStorage.setItem("subscription_plan", planName);
+        } else {
+          setSubscriptionType("None");
+          localStorage.removeItem("subscription_plan");
+        }
+      } catch (err) {
+        console.error("Subscription check failed:", err);
+        setSubscriptionType("None");
+        localStorage.removeItem("subscription_plan");
+      }
+    };
 
     if (user && user.emailVerified) {
-      const checkSubscription = async () => {
-        try {
-          const deviceId = getDeviceId();
-          const res = await fetch(
-            "https://foxorox-backend.onrender.com/check-subscription",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email: user.email, device_id: deviceId }),
-            }
-          );
-
-          const data = await res.json();
-          if (data.active && data.plan) {
-            const planMap = {
-              basic_monthly: "Basic Monthly",
-              basic_yearly: "Basic Yearly",
-              global_monthly: "Global Monthly",
-              global_yearly: "Global Yearly",
-            };
-            const planName = planMap[data.plan] || "Active";
-            setSubscriptionType(planName);
-            localStorage.setItem("subscription_plan", planName);
-          } else {
-            navigate("/");
-          }
-        } catch (err) {
-          console.error("Subscription check failed:", err);
-          navigate("/");
-        }
-      };
-
       checkSubscription();
     }
-  }, [user, navigate]);
+  }, [user]);
 
   return (
     <div className="dashboard-container">
@@ -216,7 +213,8 @@ function Dashboard({ user, logout }) {
         <ChatPanelFirebase user={user} />
       </main>
 
-      {subscriptionType && (
+      {/* ▶ Download Section at Bottom */}
+      {subscriptionType && subscriptionType !== "None" && (
         <div className="download-section">
           <p
             style={{
