@@ -216,7 +216,9 @@ function Dashboard({ user, logout }) {
         <div className="download-section">
           <p style={{ textAlign: "center", marginBottom: "15px", fontWeight: "bold", color: "white" }}>
             Please download your version of Foxorox.<br />
-            Please copy your DEVICE ID during login to AI program.
+            Please copy your DEVICE ID during login to AI program.<br />
+            Please remember you DEVICE ID number and rewrite it in you passwords. <br />
+
           </p>
 
           {subscriptionType.includes("Basic") ? (

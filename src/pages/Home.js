@@ -3,6 +3,8 @@ import { signInWithPopup, signOut, GoogleAuthProvider, getAuth } from "firebase/
 import { useNavigate, Link } from "react-router-dom";
 import "../../src/App.css";
 import logo from "../assets/logo-foxorox.png";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
 
 function Home() {
   const [user, setUser] = useState(null);
@@ -59,10 +61,37 @@ function Home() {
     signOut(auth).catch((err) => alert("Logout error: " + err.message));
   };
 
+  const particlesInit = async (main) => {
+    await loadFull(main);
+  };
+
   return (
-    <div className="main-container">
+    <div className="main-container" style={{ position: "relative", overflow: "hidden" }}>
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        options={{
+          background: { color: "#0d47a1" }, // tło nocne
+          fpsLimit: 60,
+          interactivity: {
+            events: { onHover: { enable: true, mode: "repulse" }, resize: true },
+            modes: { repulse: { distance: 100, duration: 0.4 } },
+          },
+          particles: {
+            color: { value: "#ffffff" },
+            links: { color: "#ffffff", distance: 150, enable: true, opacity: 0.5, width: 1 },
+            move: { enable: true, speed: 1, outModes: { default: "bounce" } },
+            number: { density: { enable: true, area: 800 }, value: 80 },
+            opacity: { value: 0.5 },
+            shape: { type: "circle" },
+            size: { value: { min: 1, max: 3 } },
+          },
+          detectRetina: true,
+        }}
+      />
+
       {/* Top right auth/dashboard controls */}
-      <div className="top-bar">
+      <div className="top-bar" style={{ position: "relative", zIndex: 2 }}>
         <div className="auth-section">
           {user ? (
             <>
@@ -79,7 +108,7 @@ function Home() {
         </div>
       </div>
 
-      <header className="hero">
+      <header className="hero" style={{ position: "relative", zIndex: 2 }}>
         <img src={logo} alt="Foxorox Logo" className="logo" />
         <h1>Welcome to <span className="highlight">Foxorox</span></h1>
         <p className="subtitle">
@@ -115,7 +144,7 @@ function Home() {
       </header>
 
       {/* Footer */}
-      <footer className="footer">
+      <footer className="footer" style={{ position: "relative", zIndex: 2 }}>
         <div className="footer-links">
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
