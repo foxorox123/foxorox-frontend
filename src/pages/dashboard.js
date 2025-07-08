@@ -22,7 +22,9 @@ function Dashboard({ user, logout }) {
   const getDeviceId = () => {
     let id = localStorage.getItem("device_id");
     if (!id) {
-      id = Math.random().toString(36).substring(2) + Date.now().toString(36);
+      id =
+        Math.random().toString(36).substring(2) +
+        Date.now().toString(36);
       localStorage.setItem("device_id", id);
     }
     return id;
@@ -135,24 +137,20 @@ function Dashboard({ user, logout }) {
             global_monthly: "Global Monthly",
             global_yearly: "Global Yearly",
           };
-          const planName = planMap[data.plan] || "Active";
-          setSubscriptionType(planName);
-          localStorage.setItem("subscription_plan", planName);
+          setSubscriptionType(planMap[data.plan] || "Active");
         } else {
-          setSubscriptionType("None");
-          localStorage.removeItem("subscription_plan");
+          navigate("/");
         }
       } catch (err) {
         console.error("Subscription check failed:", err);
-        setSubscriptionType("None");
-        localStorage.removeItem("subscription_plan");
+        navigate("/");
       }
     };
 
     if (user && user.emailVerified) {
       checkSubscription();
     }
-  }, [user]);
+  }, [user, navigate]);
 
   return (
     <div className="dashboard-container">
@@ -214,16 +212,9 @@ function Dashboard({ user, logout }) {
       </main>
 
       {/* ▶ Download Section at Bottom */}
-      {subscriptionType && subscriptionType !== "None" && (
+      {subscriptionType && (
         <div className="download-section">
-          <p
-            style={{
-              textAlign: "center",
-              marginBottom: "15px",
-              fontWeight: "bold",
-              color: "white",
-            }}
-          >
+          <p style={{ textAlign: "center", marginBottom: "15px", fontWeight: "bold", color: "white" }}>
             Please download your version of Foxorox.<br />
             Please copy your DEVICE ID during login to AI program.
           </p>
@@ -252,6 +243,7 @@ function Dashboard({ user, logout }) {
             </a>
           ) : null}
 
+          {/* ▶ DEVICE ID & Copy Button */}
           <div
             className="download-btn"
             style={{
