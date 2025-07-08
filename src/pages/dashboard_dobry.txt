@@ -22,7 +22,9 @@ function Dashboard({ user, logout }) {
   const getDeviceId = () => {
     let id = localStorage.getItem("device_id");
     if (!id) {
-      id = Math.random().toString(36).substring(2) + Date.now().toString(36);
+      id =
+        Math.random().toString(36).substring(2) +
+        Date.now().toString(36);
       localStorage.setItem("device_id", id);
     }
     return id;
@@ -115,44 +117,37 @@ function Dashboard({ user, logout }) {
   }, []);
 
   useEffect(() => {
-    const storedPlan = localStorage.getItem("subscription_plan");
-    if (storedPlan) {
-      setSubscriptionType(storedPlan);
-    }
-
-    if (user && user.emailVerified) {
-      const checkSubscription = async () => {
-        try {
-          const deviceId = getDeviceId();
-          const res = await fetch(
-            "https://foxorox-backend.onrender.com/check-subscription",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email: user.email, device_id: deviceId }),
-            }
-          );
-
-          const data = await res.json();
-          if (data.active && data.plan) {
-            const planMap = {
-              basic_monthly: "Basic Monthly",
-              basic_yearly: "Basic Yearly",
-              global_monthly: "Global Monthly",
-              global_yearly: "Global Yearly",
-            };
-            const planName = planMap[data.plan] || "Active";
-            setSubscriptionType(planName);
-            localStorage.setItem("subscription_plan", planName);
-          } else {
-            navigate("/");
+    const checkSubscription = async () => {
+      try {
+        const deviceId = getDeviceId();
+        const res = await fetch(
+          "https://foxorox-backend.onrender.com/check-subscription",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: user.email, device_id: deviceId }),
           }
-        } catch (err) {
-          console.error("Subscription check failed:", err);
+        );
+
+        const data = await res.json();
+        if (data.active && data.plan) {
+          const planMap = {
+            basic_monthly: "Basic Monthly",
+            basic_yearly: "Basic Yearly",
+            global_monthly: "Global Monthly",
+            global_yearly: "Global Yearly",
+          };
+          setSubscriptionType(planMap[data.plan] || "Active");
+        } else {
           navigate("/");
         }
-      };
+      } catch (err) {
+        console.error("Subscription check failed:", err);
+        navigate("/");
+      }
+    };
 
+    if (user && user.emailVerified) {
       checkSubscription();
     }
   }, [user, navigate]);
@@ -216,16 +211,10 @@ function Dashboard({ user, logout }) {
         <ChatPanelFirebase user={user} />
       </main>
 
+      {/* ▶ Download Section at Bottom */}
       {subscriptionType && (
         <div className="download-section">
-          <p
-            style={{
-              textAlign: "center",
-              marginBottom: "15px",
-              fontWeight: "bold",
-              color: "white",
-            }}
-          >
+          <p style={{ textAlign: "center", marginBottom: "15px", fontWeight: "bold", color: "white" }}>
             Please download your version of Foxorox.<br />
             Please copy your DEVICE ID during login to AI program.
           </p>
@@ -254,6 +243,7 @@ function Dashboard({ user, logout }) {
             </a>
           ) : null}
 
+          {/* ▶ DEVICE ID & Copy Button */}
           <div
             className="download-btn"
             style={{
