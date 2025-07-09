@@ -1,5 +1,32 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+
+function StarryBackground() {
+  const particlesInit = async (main) => {
+    await loadFull(main);
+  };
+
+  return (
+    <Particles
+      id="tsparticles"
+      init={particlesInit}
+      options={{
+        fullScreen: { enable: true, zIndex: -2 },
+        particles: {
+          number: { value: 150 },
+          color: { value: "#ffffff" },
+          shape: { type: "circle" },
+          opacity: { value: 0.8 },
+          size: { value: 1 },
+          move: { enable: true, speed: 0.2 }
+        },
+        background: { color: "transparent" }
+      }}
+    />
+  );
+}
 
 function PlansPage({ user, logout, subscribe }) {
   const navigate = useNavigate();
@@ -14,7 +41,8 @@ function PlansPage({ user, logout, subscribe }) {
   };
 
   return (
-    <div className="main-container">
+    <div className="main-container aurora-background">
+      <StarryBackground />
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 100 }} />
         <div>
@@ -40,7 +68,7 @@ function PlansPage({ user, logout, subscribe }) {
 
       {!user && (
         <p style={{ textAlign: "center", color: "#ccc", marginBottom: 30 }}>
-           Subscribe to a plan and make money with AI tool.
+          Subscribe to a plan and make money with AI tool.
         </p>
       )}
 
