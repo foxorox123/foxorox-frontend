@@ -285,7 +285,7 @@ body {
                     radial-gradient(circle at 70% 70%, rgba(255, 0, 150, 0.3), transparent 30%);
   background-repeat: no-repeat;
   background-size: 200% 200%;
-  animation: auroraMove 20s ease-in-out infinite;
+  animation: auroraMove 15s ease-in-out infinite;
   overflow: hidden;
 }
 

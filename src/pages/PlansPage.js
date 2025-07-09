@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
@@ -30,13 +30,19 @@ function StarryBackground() {
 
 function PlansPage({ user, logout, subscribe }) {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const handleSubscribe = (plan) => {
+  const handleSubscribe = async (plan) => {
     if (!user || !user.email) {
       localStorage.setItem("selectedPlan", plan);
       navigate("/login");
     } else {
-      subscribe(plan);
+      setLoading(true);
+      try {
+        await subscribe(plan);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -70,6 +76,12 @@ function PlansPage({ user, logout, subscribe }) {
         <p style={{ textAlign: "center", color: "#ccc", marginBottom: 30 }}>
           Subscribe to a plan and make money with AI tool.
         </p>
+      )}
+
+      {loading && (
+        <div style={{ color: "white", fontWeight: "bold", marginTop: "20px" }}>
+          Redirecting to payment... Please wait.
+        </div>
       )}
 
       <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", marginTop: 30, gap: 20 }}>
