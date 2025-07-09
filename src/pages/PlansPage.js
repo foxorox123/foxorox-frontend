@@ -46,12 +46,6 @@ function PlansPage({ user, logout, subscribe }) {
     }
   };
 
-  const renderBullet = (text) => (
-    <li style={{ listStyle: "none", marginBottom: "8px" }}>
-      🦊 {text}
-    </li>
-  );
-
   return (
     <div className="main-container aurora-background">
       <StarryBackground />
@@ -94,14 +88,14 @@ function PlansPage({ user, logout, subscribe }) {
         <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
           <h2>🟢 Basic Monthly</h2>
           <ul>
-            {renderBullet("NASDAQ100 & S&P 500 – monthly access")}
-            {renderBullet("Predicts next candle based on AI prediction")}
-            {renderBullet("Includes all stocks from Nasdaq100 and S&P 500")}
-            {renderBullet("Shows stock highest probability to move up or down")}
-            {renderBullet("Iterations up to 300 trading sessions")}
-            {renderBullet("Interactive charts")}
-            {renderBullet("You can resign at any time")}
-            {renderBullet("Charged monthly")}
+            <li>NASDAQ100 & S&P 500 – monthly access</li>
+            <li>Predicts next candle based on AI prediction</li>
+            <li>Includes all stocks from Nasdaq100 and S&P 500</li>
+            <li>Shows stock highest probability to move up or down</li>
+            <li>Iterations up to 300 trading sessions</li>
+            <li>Interactive charts</li>
+            <li>You can resign at any time</li>
+            <li>Charged monthly</li>
           </ul>
           <button onClick={() => handleSubscribe("basic_monthly")}>
             Subscribe to Basic Monthly – $79.99
@@ -110,14 +104,14 @@ function PlansPage({ user, logout, subscribe }) {
         <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
           <h2>🔵 Basic Yearly</h2>
           <ul>
-            {renderBullet("NASDAQ100 & S&P 500 – yearly access")}
-            {renderBullet("Predicts next candle based on AI prediction")}
-            {renderBullet("Includes all stocks from Nasdaq100 and S&P 500")}
-            {renderBullet("Shows stock highest probability to move up or down")}
-            {renderBullet("Iterations up to 300 trading sessions")}
-            {renderBullet("Interactive charts")}
-            {renderBullet("You can resign at any time")}
-            {renderBullet("Charged once per year")}
+            <li>NASDAQ100 & S&P 500 – yearly access</li>
+            <li>Predicts next candle based on AI prediction</li>
+            <li>Includes all stocks from Nasdaq100 and S&P 500</li>
+            <li>Shows stock highest probability to move up or down</li>
+            <li>Iterations up to 300 trading sessions</li>
+            <li>Interactive charts</li>
+            <li>You can resign at any time</li>
+            <li>Charged once per year</li>
           </ul>
           <button onClick={() => handleSubscribe("basic_yearly")}>
             Subscribe to Basic Yearly – $790.00
@@ -126,16 +120,16 @@ function PlansPage({ user, logout, subscribe }) {
         <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
           <h2>🟠 Global Monthly</h2>
           <ul>
-            {renderBullet("Global markets + Markov modeling")}
-            {renderBullet("Includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20")}
-            {renderBullet("Includes advanced AI algorithms based on Markov modeling")}
-            {renderBullet("Predicts next candle based on AI prediction")}
-            {renderBullet("Includes all stocks from Nasdaq100 and S&P 500")}
-            {renderBullet("Shows stock highest probability to move up or down")}
-            {renderBullet("Iterations up to 300 trading sessions")}
-            {renderBullet("Interactive charts")}
-            {renderBullet("You can resign at any time")}
-            {renderBullet("Charged monthly")}
+            <li>Global markets + Markov modeling</li>
+            <li>Includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20</li>
+            <li>Includes advanced AI algorithms based on Markov modeling</li>
+            <li>Predicts next candle based on AI prediction</li>
+            <li>Includes all stocks from Nasdaq100 and S&P 500</li>
+            <li>Shows stock highest probability to move up or down</li>
+            <li>Iterations up to 300 trading sessions</li>
+            <li>Interactive charts</li>
+            <li>You can resign at any time</li>
+            <li>Charged monthly</li>
           </ul>
           <button onClick={() => handleSubscribe("global_monthly")}>
             Subscribe to Global Monthly – $129.99
@@ -144,16 +138,16 @@ function PlansPage({ user, logout, subscribe }) {
         <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
           <h2>🔴 Global Yearly</h2>
           <ul>
-            {renderBullet("Global markets + Markov modeling")}
-            {renderBullet("Includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20")}
-            {renderBullet("Includes advanced AI algorithms based on Markov modeling")}
-            {renderBullet("Predicts next candle based on AI prediction")}
-            {renderBullet("Includes all stocks from Nasdaq100 and S&P 500")}
-            {renderBullet("Shows stock highest probability to move up or down")}
-            {renderBullet("Iterations up to 300 trading sessions")}
-            {renderBullet("Interactive charts")}
-            {renderBullet("You can resign at any time")}
-            {renderBullet("Charged yearly")}
+            <li>Global markets + Markov modeling</li>
+            <li>Includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20</li>
+            <li>Includes advanced AI algorithms based on Markov modeling</li>
+            <li>Predicts next candle based on AI prediction</li>
+            <li>Includes all stocks from Nasdaq100 and S&P 500</li>
+            <li>Shows stock highest probability to move up or down</li>
+            <li>Iterations up to 300 trading sessions</li>
+            <li>Interactive charts</li>
+            <li>You can resign at any time</li>
+            <li>Charged yearly</li>
           </ul>
           <button onClick={() => handleSubscribe("global_yearly")}>
             Subscribe to Global Yearly – $1290.00
