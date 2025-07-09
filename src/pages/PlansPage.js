@@ -40,35 +40,75 @@ function PlansPage({ user, logout, subscribe }) {
 
       {!user && (
         <p style={{ textAlign: "center", color: "#ccc", marginBottom: 30 }}>
-          You must sign in before subscribing to a plan.
+           Subscribe to a plan and make money with AI tool.
         </p>
       )}
 
       <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", marginTop: 30, gap: 20 }}>
         <div className="plan-card" style={{ width: 250 }}>
           <h2>🟢 Basic Monthly</h2>
-          <p>NASDAQ & S&P 500 – candle pattern prediction</p>
+          <p>
+            NASDAQ100 & S&P 500 – monthly access<br />
+            predicts next candle based on AI prediction<br />
+            includes all stocks from Nasdaq100 and S&P 500<br />
+            shows stock highest probability to move up or down<br />
+            iterations up to 300 trading sessions<br />
+            interactive charts<br />
+            you can resign at any time<br />
+            charged monthly<br />
+          </p>
           <button onClick={() => handleSubscribe("basic_monthly")}>
             Subscribe to Basic Monthly – $79.99
           </button>
         </div>
         <div className="plan-card" style={{ width: 250 }}>
           <h2>🔵 Basic Yearly</h2>
-          <p>NASDAQ & S&P 500 – full year access</p>
+          <p>
+            NASDAQ100 & S&P 500 – yearly access<br />
+            predicts next candle based on AI prediction<br />
+            includes all stocks from Nasdaq100 and S&P 500<br />
+            shows stock highest probability to move up or down<br />
+            iterations up to 300 trading sessions<br />
+            interactive charts<br />
+            you can resign at any time<br />
+            charged once per year<br />
+          </p>
           <button onClick={() => handleSubscribe("basic_yearly")}>
             Subscribe to Basic Yearly – $790.00
           </button>
         </div>
         <div className="plan-card" style={{ width: 250 }}>
           <h2>🟠 Global Monthly</h2>
-          <p>Global markets + Markov modeling</p>
+          <p>
+            Global markets + Markov modeling<br />
+            includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20<br />
+            includes advanced AI algorithms based on Markov modeling<br />
+            predicts next candle based on AI prediction<br />
+            includes all stocks from Nasdaq100 and S&P 500<br />
+            shows stock highest probability to move up or down<br />
+            iterations up to 300 trading sessions<br />
+            interactive charts<br />
+            you can resign at any time<br />
+            charged monthly<br />
+          </p>
           <button onClick={() => handleSubscribe("global_monthly")}>
             Subscribe to Global Monthly – $129.99
           </button>
         </div>
         <div className="plan-card" style={{ width: 250 }}>
           <h2>🔴 Global Yearly</h2>
-          <p>All features, all markets, full year</p>
+          <p>
+            Global markets + Markov modeling<br />
+            includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20<br />
+            includes advanced AI algorithms based on Markov modeling<br />
+            predicts next candle based on AI prediction<br />
+            includes all stocks from Nasdaq100 and S&P 500<br />
+            shows stock highest probability to move up or down<br />
+            iterations up to 300 trading sessions<br />
+            interactive charts<br />
+            you can resign at any time<br />
+            charged yearly<br />
+          </p>
           <button onClick={() => handleSubscribe("global_yearly")}>
             Subscribe to Global Yearly – $1290.00
           </button>
