@@ -63,7 +63,13 @@ function PlansPage({ user, logout, subscribe }) {
               <button className="google-btn" onClick={logout}>Sign out</button>
             </>
           ) : (
-            <button className="google-btn" onClick={() => navigate("/login")}>
+            <button
+              className="google-btn"
+              onClick={() => {
+                localStorage.setItem("selectedPlan", "basic_monthly");
+                navigate("/login");
+              }}
+            >
               Sign in to Subscribe
             </button>
           )}
@@ -101,6 +107,7 @@ function PlansPage({ user, logout, subscribe }) {
             Subscribe to Basic Monthly – $79.99
           </button>
         </div>
+
         <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
           <h2>🔵 Basic Yearly</h2>
           <ul>
@@ -117,6 +124,7 @@ function PlansPage({ user, logout, subscribe }) {
             Subscribe to Basic Yearly – $790.00
           </button>
         </div>
+
         <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
           <h2>🟠 Global Monthly</h2>
           <ul>
@@ -135,6 +143,7 @@ function PlansPage({ user, logout, subscribe }) {
             Subscribe to Global Monthly – $129.99
           </button>
         </div>
+
         <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
           <h2>🔴 Global Yearly</h2>
           <ul>
