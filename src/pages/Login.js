@@ -5,6 +5,7 @@ import {
   sendEmailVerification,
   signInWithPopup,
   GoogleAuthProvider,
+  FacebookAuthProvider,
 } from "firebase/auth";
 import { auth } from "../firebase-config";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -73,6 +74,17 @@ function Login() {
     }
   };
 
+  const handleFacebookLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, new FacebookAuthProvider());
+      const user = result.user;
+      alert("Facebook login successful");
+      navigate(from);
+    } catch (err) {
+      alert("Facebook login failed: " + err.message);
+    }
+  };
+
   const handleResendEmail = async () => {
     const user = auth.currentUser;
     if (user && !user.emailVerified) {
@@ -127,6 +139,12 @@ function Login() {
       <div style={{ margin: "15px 0" }}>
         <button className="google-btn" onClick={handleGoogleLogin}>
           🔐 Sign in with Google
+        </button>
+      </div>
+
+      <div style={{ margin: "15px 0" }}>
+        <button className="google-btn" onClick={handleFacebookLogin}>
+          🔵 Sign in with Facebook
         </button>
       </div>
 
