@@ -1,6 +1,6 @@
 // src/firebase-config.js
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 
 // 🔐 Dane konfiguracyjne Firebase projektu
 const firebaseConfig = {
@@ -16,8 +16,11 @@ const firebaseConfig = {
 // ✅ Inicjalizacja Firebase
 const app = initializeApp(firebaseConfig);
 
-// 🔐 Inicjalizacja autoryzacji + Google Provider
+// 🔐 Inicjalizacja autoryzacji + Google & Facebook Provider
 const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
 
-export { auth, provider };
+export { auth, googleProvider, facebookProvider };
+
+
