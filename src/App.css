@@ -270,6 +270,15 @@ body {
   text-align: center;
   padding-top: 150px;
 }
+.main-container {
+  position: relative;
+  z-index: 1;
+}
+
+button {
+  position: relative;
+  z-index: 2;
+}
 
 .content img {
   width: 300px;
