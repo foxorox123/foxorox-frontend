@@ -35,4 +35,4 @@ coverage/
 # Misc
 *.tgz
 *.env.local
-src/firebase-config.js
+"src/firebase-config.js"
