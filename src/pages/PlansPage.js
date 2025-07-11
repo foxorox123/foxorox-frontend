@@ -159,7 +159,7 @@ function PlansPage({ user, logout, subscribe }) {
       </div>
 
       {/* Screenshots Section */}
-      <div style={{ marginTop: 50, textAlign: "center" }}>
+      <div style={{ marginTop: 49, textAlign: "center" }}>
         <h2 style={{ color: "#fff", marginBottom: 20 }}>Foxorox AI Screenshots</h2>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 30 }}>
           <img src="/screen1.png" alt="Screenshot 1" style={{ maxWidth: "90%", borderRadius: 10 }} />
