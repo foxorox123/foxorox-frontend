@@ -7,7 +7,7 @@ import {
   GoogleAuthProvider,
   FacebookAuthProvider,
 } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth } from "../firebase-config";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function Login() {
