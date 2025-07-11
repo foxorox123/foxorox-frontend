@@ -11,13 +11,13 @@ import {
 import { getFirestore } from "firebase/firestore"; // ⬅ Firestore
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDD8dWivFZ-5k21Dzu550PzBe3nk7ygTa8",
-  authDomain: "foxorox-firebase.firebaseapp.com",
-  projectId: "foxorox-firebase",
-  storageBucket: "foxorox-firebase.appspot.com", // poprawione rozszerzenie domeny
-  messagingSenderId: "301343245724",
-  appId: "1:301343245724:web:fb072c37c1188c01b3b459",
-  measurementId: "G-8X56DX0V0T",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
@@ -25,7 +25,6 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app); // ⬅ Firestore
 
-// ✅ Tutaj ustawiasz PERSISTENCE
 setPersistence(auth, browserLocalPersistence).catch((err) => {
   console.error("Failed to set persistence:", err);
 });
