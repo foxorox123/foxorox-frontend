@@ -49,56 +49,66 @@ function PlansPage({ user, logout, subscribe }) {
   return (
     <div className="main-container aurora-background">
       <StarryBackground />
-      <div style={{ textAlign: "center", marginTop: 30 }}>
-        <div
-          style={{
-            fontFamily: "'Segoe UI', sans-serif",
-            fontWeight: "bold",
-            fontSize: "1.6em",
-            color: "#f58220",
-            marginBottom: 15,
-            letterSpacing: "0.5px"
-          }}
-        >
-          AI Powered Market Intelligence
-        </div>
-        <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 120 }} />
-      </div>
 
-      <div style={{ textAlign: "center", marginTop: 30 }}>
-        {user ? (
-          <>
-            <span
-              style={{
-                marginRight: 15,
-                fontWeight: "bold",
-                color: "#fff"
-              }}
-            >
-              {user.email}
-            </span>
-            <button
-              className="google-btn"
-              style={{ marginRight: 10 }}
-              onClick={() => navigate("/dashboard")}
-            >
-              Go to Dashboard
-            </button>
-            <button className="google-btn" onClick={logout}>
-              Sign out
-            </button>
-          </>
-        ) : (
-          <button
-            className="google-btn"
-            onClick={() => {
-              localStorage.setItem("selectedPlan", "basic_monthly");
-              navigate("/login");
+      {/* Górny pasek */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "20px 30px"
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+          <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 120 }} />
+          <div
+            style={{
+              fontFamily: "'Segoe UI', sans-serif",
+              fontWeight: "bold",
+              fontSize: "1.8em",
+              color: "#f58220",
+              letterSpacing: "0.5px"
             }}
           >
-            Sign in to Subscribe
-          </button>
-        )}
+            AI Powered Market Intelligence
+          </div>
+        </div>
+
+        <div>
+          {user ? (
+            <>
+              <span
+                style={{
+                  marginRight: 15,
+                  fontWeight: "bold",
+                  color: "#fff"
+                }}
+              >
+                {user.email}
+              </span>
+              <button
+                className="google-btn"
+                style={{ marginRight: 10 }}
+                onClick={() => navigate("/dashboard")}
+              >
+                Go to Dashboard
+              </button>
+              <button className="google-btn" onClick={logout}>
+                Sign out
+              </button>
+            </>
+          ) : (
+            <button
+              className="google-btn"
+              onClick={() => {
+                localStorage.setItem("selectedPlan", "basic_monthly");
+                navigate("/login");
+              }}
+            >
+              Sign in to Subscribe
+            </button>
+          )}
+        </div>
       </div>
 
       <h2 style={{ marginTop: 40, textAlign: "center", color: "#fff" }}>
