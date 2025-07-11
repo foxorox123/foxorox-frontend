@@ -1,6 +1,5 @@
-# Node.js
+# === NODE & REACT ===
 node_modules/
-.env
 dist/
 build/
 npm-debug.log*
@@ -8,31 +7,38 @@ yarn-debug.log*
 yarn-error.log*
 package-lock.json
 
-# React build folder (jeśli frontend jest osobny)
-frontend/build/
-frontend/node_modules/
-
-# OS
+# === OS SYSTEM FILES ===
 .DS_Store
 Thumbs.db
 
-# VSCode
+# === IDE/EDITOR CONFIGS ===
 .vscode/
+.idea/
 
-# Downloads — wyklucz duże pliki np. EXE
-downloads/*.exe
-downloads/*.zip
-
-# Logs
+# === LOGS ===
 logs/
 *.log
 *.gz
 
-# Coverage reports
+# === COVERAGE ===
 coverage/
 *.lcov
 
-# Misc
+# === TEMP FILES ===
 *.tgz
-*.env.local
+*.tmp
+*.swp
+
+# === ENVIRONMENT VARIABLES ===
+.env
+.env.local
+
+# === FIREBASE CONFIG (Frontend) ===
 src/firebase-config.js
+
+# === FRONTEND BUILD (jeśli masz osobny folder) ===
+frontend/build/
+frontend/node_modules/
+
+# === BACKEND SECRETS ===
+foxorox-firebase-firebase-adminsdk-*.json
