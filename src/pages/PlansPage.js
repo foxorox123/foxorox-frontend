@@ -50,42 +50,60 @@ function PlansPage({ user, logout, subscribe }) {
     <div className="main-container aurora-background">
       <StarryBackground />
       <div style={{ textAlign: "center", marginTop: 30 }}>
-  <div style={{ 
-    fontFamily: "'Segoe UI', sans-serif", 
-    fontWeight: "bold", 
-    fontSize: "1.6em", 
-    color: "#f58220", 
-    marginBottom: 15,
-    letterSpacing: "0.5px"
-  }}>
-    AI Powered Market Intelligence
-  </div>
-  <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 120 }} />
-</div>
-
-       
-          {user ? (
-            <>
-              <span style={{ marginRight: 15, fontWeight: "bold", color: "#fff" }}>
-                {user.email}
-              </span>
-              <button className="google-btn" style={{ marginRight: 10 }} onClick={() => navigate("/dashboard")}>
-                Go to Dashboard
-              </button>
-              <button className="google-btn" onClick={logout}>Sign out</button>
-            </>
-          ) : (
-            <button className="google-btn" onClick={() => {
-              localStorage.setItem("selectedPlan", "basic_monthly");
-              navigate("/login");
-            }}>
-              Sign in to Subscribe
-            </button>
-          )}
+        <div
+          style={{
+            fontFamily: "'Segoe UI', sans-serif",
+            fontWeight: "bold",
+            fontSize: "1.6em",
+            color: "#f58220",
+            marginBottom: 15,
+            letterSpacing: "0.5px"
+          }}
+        >
+          AI Powered Market Intelligence
         </div>
+        <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 120 }} />
       </div>
 
-      <h2 style={{ marginTop: 40, textAlign: "center", color: "#fff" }}>Choose Your Plan</h2>
+      <div style={{ textAlign: "center", marginTop: 30 }}>
+        {user ? (
+          <>
+            <span
+              style={{
+                marginRight: 15,
+                fontWeight: "bold",
+                color: "#fff"
+              }}
+            >
+              {user.email}
+            </span>
+            <button
+              className="google-btn"
+              style={{ marginRight: 10 }}
+              onClick={() => navigate("/dashboard")}
+            >
+              Go to Dashboard
+            </button>
+            <button className="google-btn" onClick={logout}>
+              Sign out
+            </button>
+          </>
+        ) : (
+          <button
+            className="google-btn"
+            onClick={() => {
+              localStorage.setItem("selectedPlan", "basic_monthly");
+              navigate("/login");
+            }}
+          >
+            Sign in to Subscribe
+          </button>
+        )}
+      </div>
+
+      <h2 style={{ marginTop: 40, textAlign: "center", color: "#fff" }}>
+        Choose Your Plan
+      </h2>
 
       {!user && (
         <p style={{ textAlign: "center", color: "#ccc", marginBottom: 30 }}>
@@ -99,7 +117,15 @@ function PlansPage({ user, logout, subscribe }) {
         </div>
       )}
 
-      <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", marginTop: 30, gap: 20 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          marginTop: 30,
+          gap: 20
+        }}
+      >
         <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
           <h2>🟢 Basic Monthly</h2>
           <ul>
@@ -173,10 +199,29 @@ function PlansPage({ user, logout, subscribe }) {
       {/* Screenshots Section */}
       <div style={{ marginTop: 49, textAlign: "center" }}>
         <h2 style={{ color: "#fff", marginBottom: 20 }}>Foxorox AI Screenshots</h2>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 30 }}>
-          <img src="/screen1.png" alt="Screenshot 1" style={{ maxWidth: "50%", borderRadius: 10 }} />
-          <img src="/screen2.png" alt="Screenshot 2" style={{ maxWidth: "40%", borderRadius: 10 }} />
-          <img src="/screen3.png" alt="Screenshot 3" style={{ maxWidth: "30%", borderRadius: 10 }} />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 30
+          }}
+        >
+          <img
+            src="/screen1.png"
+            alt="Screenshot 1"
+            style={{ maxWidth: "50%", borderRadius: 10 }}
+          />
+          <img
+            src="/screen2.png"
+            alt="Screenshot 2"
+            style={{ maxWidth: "40%", borderRadius: 10 }}
+          />
+          <img
+            src="/screen3.png"
+            alt="Screenshot 3"
+            style={{ maxWidth: "30%", borderRadius: 10 }}
+          />
         </div>
       </div>
     </div>
