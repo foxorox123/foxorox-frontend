@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { signOut, onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase-config";
+import { auth } from "./firebase";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 
 import Tips from "./pages/Tips";
