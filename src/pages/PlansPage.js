@@ -162,9 +162,9 @@ function PlansPage({ user, logout, subscribe }) {
       <div style={{ marginTop: 49, textAlign: "center" }}>
         <h2 style={{ color: "#fff", marginBottom: 20 }}>Foxorox AI Screenshots</h2>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 30 }}>
-          <img src="/screen1.png" alt="Screenshot 1" style={{ maxWidth: "90%", borderRadius: 10 }} />
-          <img src="/screen2.png" alt="Screenshot 2" style={{ maxWidth: "90%", borderRadius: 10 }} />
-          <img src="/screen3.png" alt="Screenshot 3" style={{ maxWidth: "90%", borderRadius: 10 }} />
+          <img src="/screen1.png" alt="Screenshot 1" style={{ maxWidth: "50%", borderRadius: 10 }} />
+          <img src="/screen2.png" alt="Screenshot 2" style={{ maxWidth: "40%", borderRadius: 10 }} />
+          <img src="/screen3.png" alt="Screenshot 3" style={{ maxWidth: "30%", borderRadius: 10 }} />
         </div>
       </div>
     </div>
