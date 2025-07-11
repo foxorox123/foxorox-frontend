@@ -49,75 +49,181 @@ function PlansPage({ user, logout, subscribe }) {
   return (
     <div className="main-container aurora-background">
       <StarryBackground />
+      <div style={{ textAlign: "center", marginTop: 30 }}>
+        <div
+          style={{
+            fontFamily: "'Segoe UI', sans-serif",
+            fontWeight: "bold",
+            fontSize: "1.6em",
+            color: "#f58220",
+            marginBottom: 15,
+            letterSpacing: "0.5px"
+          }}
+        >
+          AI Powered Market Intelligence
+        </div>
+        <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 120 }} />
+      </div>
 
-      {/* Logo + Slogan + Auth Buttons */}
+      <div style={{ textAlign: "center", marginTop: 30 }}>
+        {user ? (
+          <>
+            <span
+              style={{
+                marginRight: 15,
+                fontWeight: "bold",
+                color: "#fff"
+              }}
+            >
+              {user.email}
+            </span>
+            <button
+              className="google-btn"
+              style={{ marginRight: 10 }}
+              onClick={() => navigate("/dashboard")}
+            >
+              Go to Dashboard
+            </button>
+            <button className="google-btn" onClick={logout}>
+              Sign out
+            </button>
+          </>
+        ) : (
+          <button
+            className="google-btn"
+            onClick={() => {
+              localStorage.setItem("selectedPlan", "basic_monthly");
+              navigate("/login");
+            }}
+          >
+            Sign in to Subscribe
+          </button>
+        )}
+      </div>
+
+      <h2 style={{ marginTop: 40, textAlign: "center", color: "#fff" }}>
+        Choose Your Plan
+      </h2>
+
+      {!user && (
+        <p style={{ textAlign: "center", color: "#ccc", marginBottom: 30 }}>
+          Subscribe to a plan and make money with AI tool.
+        </p>
+      )}
+
+      {loading && (
+        <div style={{ color: "white", fontWeight: "bold", marginTop: "20px" }}>
+          Redirecting to payment... Please wait.
+        </div>
+      )}
+
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          justifyContent: "center",
+          flexWrap: "wrap",
           marginTop: 30,
-          padding: "0 30px"
+          gap: 20
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <img
-            src="/logo-foxorox.png"
-            alt="Foxorox"
-            style={{ height: 190 }}
-          />
-          <div
-            style={{
-              fontFamily: "'Segoe UI', sans-serif",
-              fontWeight: "bold",
-              fontSize: "2em",
-              color: "#f58220",
-              letterSpacing: "0.5px"
-            }}
-          >
-            AI Powered Market Intelligence
-          </div>
+        <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
+          <h2>🟢 Basic Monthly</h2>
+          <ul>
+            <li>NASDAQ100 & S&P 500 – monthly access</li>
+            <li>Predicts next candle based on AI prediction</li>
+            <li>Includes all stocks from Nasdaq100 and S&P 500</li>
+            <li>Shows stock highest probability to move up or down</li>
+            <li>Iterations up to 300 trading sessions</li>
+            <li>Interactive charts</li>
+            <li>You can resign at any time</li>
+            <li>Charged monthly</li>
+          </ul>
+          <button onClick={() => handleSubscribe("basic_monthly")}>
+            Subscribe to Basic Monthly – $79.99
+          </button>
         </div>
-
-        <div>
-          {user ? (
-            <>
-              <span
-                style={{
-                  marginRight: 15,
-                  fontWeight: "bold",
-                  color: "#fff"
-                }}
-              >
-                {user.email}
-              </span>
-              <button
-                className="google-btn"
-                style={{ marginRight: 10 }}
-                onClick={() => navigate("/dashboard")}
-              >
-                Go to Dashboard
-              </button>
-              <button className="google-btn" onClick={logout}>
-                Sign out
-              </button>
-            </>
-          ) : (
-            <button
-              className="google-btn"
-              onClick={() => {
-                localStorage.setItem("selectedPlan", "basic_monthly");
-                navigate("/login");
-              }}
-            >
-              Sign in to Subscribe
-            </button>
-          )}
+        <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
+          <h2>🔵 Basic Yearly</h2>
+          <ul>
+            <li>NASDAQ100 & S&P 500 – yearly access</li>
+            <li>Predicts next candle based on AI prediction</li>
+            <li>Includes all stocks from Nasdaq100 and S&P 500</li>
+            <li>Shows stock highest probability to move up or down</li>
+            <li>Iterations up to 300 trading sessions</li>
+            <li>Interactive charts</li>
+            <li>You can resign at any time</li>
+            <li>Charged once per year</li>
+          </ul>
+          <button onClick={() => handleSubscribe("basic_yearly")}>
+            Subscribe to Basic Yearly – $790.00
+          </button>
+        </div>
+        <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
+          <h2>🟠 Global Monthly</h2>
+          <ul>
+            <li>Global markets + Markov modeling</li>
+            <li>Includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20</li>
+            <li>Includes advanced AI algorithms based on Markov modeling</li>
+            <li>Predicts next candle based on AI prediction</li>
+            <li>Includes all stocks from Nasdaq100 and S&P 500</li>
+            <li>Shows stock highest probability to move up or down</li>
+            <li>Iterations up to 300 trading sessions</li>
+            <li>Interactive charts</li>
+            <li>You can resign at any time</li>
+            <li>Charged monthly</li>
+          </ul>
+          <button onClick={() => handleSubscribe("global_monthly")}>
+            Subscribe to Global Monthly – $129.99
+          </button>
+        </div>
+        <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
+          <h2>🔴 Global Yearly</h2>
+          <ul>
+            <li>Global markets + Markov modeling</li>
+            <li>Includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20</li>
+            <li>Includes advanced AI algorithms based on Markov modeling</li>
+            <li>Predicts next candle based on AI prediction</li>
+            <li>Includes all stocks from Nasdaq100 and S&P 500</li>
+            <li>Shows stock highest probability to move up or down</li>
+            <li>Iterations up to 300 trading sessions</li>
+            <li>Interactive charts</li>
+            <li>You can resign at any time</li>
+            <li>Charged yearly</li>
+          </ul>
+          <button onClick={() => handleSubscribe("global_yearly")}>
+            Subscribe to Global Yearly – $1290.00
+          </button>
         </div>
       </div>
 
-      {/* Reszta bez zmian (plany + screenshoty) */}
-      {/* ... (Twój kod plans + screenshoty tutaj pozostaje bez zmian) */}
+      {/* Screenshots Section */}
+      <div style={{ marginTop: 49, textAlign: "center" }}>
+        <h2 style={{ color: "#fff", marginBottom: 20 }}>Foxorox AI Screenshots</h2>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 30
+          }}
+        >
+          <img
+            src="/screen1.png"
+            alt="Screenshot 1"
+            style={{ maxWidth: "50%", borderRadius: 10 }}
+          />
+          <img
+            src="/screen2.png"
+            alt="Screenshot 2"
+            style={{ maxWidth: "40%", borderRadius: 10 }}
+          />
+          <img
+            src="/screen3.png"
+            alt="Screenshot 3"
+            style={{ maxWidth: "30%", borderRadius: 10 }}
+          />
+        </div>
+      </div>
     </div>
   );
 }
