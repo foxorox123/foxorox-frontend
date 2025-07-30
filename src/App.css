@@ -321,4 +321,28 @@ button {
 .google-btn:hover {
   background-color: #e46b00;
 }
+.footer {
+  background-color: #111;
+  color: #ccc;
+  text-align: center;
+  padding: 20px 10px;
+  margin-top: 50px;
+  border-top: 1px solid #333;
+}
 
+.footer nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer a {
+  color: #ccc;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+.footer a:hover {
+  color: #f58220;
+}

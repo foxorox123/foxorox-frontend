@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import Footer from "../components/Footer";
 
 function StarryBackground() {
   const particlesInit = async (main) => {
@@ -171,6 +172,7 @@ function PlansPage({ user, logout, subscribe }) {
             Subscribe to Basic Monthly – $79.99
           </button>
         </div>
+
         <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
           <h2>🔵 Basic Yearly</h2>
           <ul>
@@ -187,6 +189,7 @@ function PlansPage({ user, logout, subscribe }) {
             Subscribe to Basic Yearly – $790.00
           </button>
         </div>
+
         <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
           <h2>🟠 Global Monthly</h2>
           <ul>
@@ -205,6 +208,7 @@ function PlansPage({ user, logout, subscribe }) {
             Subscribe to Global Monthly – $129.99
           </button>
         </div>
+
         <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
           <h2>🔴 Global Yearly</h2>
           <ul>
@@ -253,6 +257,9 @@ function PlansPage({ user, logout, subscribe }) {
           />
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
