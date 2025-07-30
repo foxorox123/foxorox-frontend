@@ -346,3 +346,6 @@ button {
 .footer a:hover {
   color: #f58220;
 }
+#tsparticles {
+  pointer-events: none;
+}
