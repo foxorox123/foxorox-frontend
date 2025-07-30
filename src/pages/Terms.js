@@ -7,11 +7,11 @@ export default function Terms() {
       <h1 className="highlight">Terms of Use</h1>
 
       <div className="subtitle" style={{ textAlign: "left", maxWidth: "800px", margin: "0 auto" }}>
-        <p><strong>Last updated: October 11, 2024</strong></p>
+        <p><strong>Last updated: July 01, 2025</strong></p>
 
         <h2>1. Agreement to Legal Terms</h2>
         <p>
-          These Terms and Conditions ("Legal Terms") constitute a legally binding agreement made between you ("User", "you") and <strong>Foxorox Sp. z o.o.</strong> ("Company", "we", "us", "our"), a limited liability company based in Poland, with registered office in Warsaw, operating the desktop application and website <a href="https://foxorox.com" target="_blank" rel="noopener noreferrer">https://foxorox.com</a> (the "Services").
+          These Terms and Conditions ("Legal Terms") constitute a legally binding agreement made between you ("User", "you") and <strong>Foxorox Sp. z o.o.</strong> ("Company", "we", "us", "our"), a limited liability company based in Poland, with registered office in Mieruniszki, operating the desktop application and website <a href="https://foxorox.com" target="_blank" rel="noopener noreferrer">https://foxorox.com</a> (the "Services").
         </p>
         <p>
           By accessing or using any part of the Services, you agree that you have read, understood, and agreed to be bound by these Legal Terms. If you do not agree with all of these Legal Terms, you are expressly prohibited from using the Services and must discontinue use immediately.
