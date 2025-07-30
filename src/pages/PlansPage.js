@@ -98,15 +98,34 @@ function PlansPage({ user, logout, subscribe }) {
               </button>
             </>
           ) : (
-            <button
-              className="google-btn"
-              onClick={() => {
-                localStorage.setItem("selectedPlan", "basic_monthly");
-                navigate("/login");
-              }}
-            >
-              Sign in to Subscribe
-            </button>
+            <>
+              <button
+                className="google-btn"
+                onClick={() => {
+                  localStorage.setItem("selectedPlan", "basic_monthly");
+                  navigate("/login");
+                }}
+              >
+                Sign in to Subscribe
+              </button>
+
+              {/* ✅ Dodatkowe przyciski */}
+              <div style={{ marginTop: 10 }}>
+                <button
+                  className="google-btn"
+                  style={{ marginRight: 10 }}
+                  onClick={() => navigate("/features")}
+                >
+                  Explore Features
+                </button>
+                <button
+                  className="google-btn"
+                  onClick={() => navigate("/tips-next-month")}
+                >
+                  Tips for Next Month
+                </button>
+              </div>
+            </>
           )}
         </div>
       </div>
