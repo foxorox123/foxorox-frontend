@@ -40,13 +40,17 @@ function App() {
         postPaymentPlan &&
         postPaymentEmail === usr.email
       ) {
-        navigate(
-          `/processing?plan=${encodeURIComponent(
-            postPaymentPlan
-          )}&email=${encodeURIComponent(postPaymentEmail)}`
-        );
-        return;
-      }
+        const sessionId =
+          localStorage.getItem("session_id") ||
+          sessionStorage.getItem("session_id");
+
+        if (usr && usr.emailVerified && postPaymentPlan && postPaymentEmail === usr.email && sessionId) {
+          navigate(
+    `        /processing?session_id=${encodeURIComponent(sessionId)}`
+          );
+          return;
+        }
+
 
       const selectedPlan = localStorage.getItem("selectedPlan");
       if (usr && usr.emailVerified && selectedPlan && !postPaymentPlan) {
