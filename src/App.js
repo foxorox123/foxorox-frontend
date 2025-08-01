@@ -49,9 +49,20 @@ function App() {
       }
 
       const selectedPlan = localStorage.getItem("selectedPlan");
-      if (usr && usr.emailVerified && selectedPlan && !postPaymentPlan) {
-        localStorage.removeItem("selectedPlan");
-        subscribeToStripe(selectedPlan, usr.email);
+      if (
+        usr &&
+        usr.emailVerified &&
+        selectedPlan &&
+        !postPaymentPlan &&
+        location.pathname === "/"
+      ) {
+        const confirmPlan = window.confirm(`Continue with plan: ${selectedPlan}?`);
+        if (confirmPlan) {
+          localStorage.removeItem("selectedPlan");
+          subscribeToStripe(selectedPlan, usr.email);
+        } else {
+          localStorage.removeItem("selectedPlan");
+        }
       }
     });
 

@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 
 const mailOptions = {
   from: `"Foxorox" <${gmailEmail}>`,
-  to: "odbiorca@email.com", // <- tutaj wpisz swój adres do testu
+  to: "aerga.pl@gmail.com", // <- tutaj wpisz swój adres do testu
   subject: "Test – Nodemailer z App Password",
   html: `
     <h2 style="color: #f58220;">Działa! 🎉</h2>

@@ -39,13 +39,13 @@ exports.sendWelcomeEmail = functions.auth.user().onCreate((user) => {
           <li>
             💼 
             <a href="https://foxorox.com/terms" style="color: #f58220;" target="_blank">
-              Terms and Conditions
+              Terms and Conditions:
             </a>
           </li>
           <li>
             📬 
             <a href="https://foxorox.com/contact" style="color: #f58220;" target="_blank">
-              Contact Support
+              Contact Support:
             </a>
           </li>
         </ul>
