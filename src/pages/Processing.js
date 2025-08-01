@@ -46,6 +46,46 @@ const Processing = () => {
     setTimeout(() => navigate("/"), 3000);
   };
 
+  const renderMessage = () => {
+    switch (status) {
+      case "checking":
+        return (
+          <>
+            <h2>⏳ Processing Payment...</h2>
+            <p>Checking your payment status...</p>
+          </>
+        );
+      case "retrying":
+        return (
+          <>
+            <h2>🔁 Still waiting...</h2>
+            <p>Retrying in a few seconds...</p>
+          </>
+        );
+      case "failed":
+        return (
+          <>
+            <h2>❌ Payment failed or cancelled</h2>
+            <p>Redirecting you back to pricing...</p>
+          </>
+        );
+      case "error":
+        return (
+          <>
+            <h2>⚠️ Unexpected error</h2>
+            <p>Redirecting to home...</p>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div style={{ color: "white", textAlign: "center", padding: "2rem" }}>
-      {status ===
+      {renderMessage()}
+    </div>
+  );
+};
+
+export default Processing;
