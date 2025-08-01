@@ -33,24 +33,20 @@ function App() {
       const postPaymentEmail =
         localStorage.getItem("postPaymentEmail") ||
         sessionStorage.getItem("postPaymentEmail");
+      const sessionId =
+        localStorage.getItem("session_id") ||
+        sessionStorage.getItem("session_id");
 
       if (
         usr &&
         usr.emailVerified &&
         postPaymentPlan &&
-        postPaymentEmail === usr.email
+        postPaymentEmail === usr.email &&
+        sessionId
       ) {
-        const sessionId =
-          localStorage.getItem("session_id") ||
-          sessionStorage.getItem("session_id");
-
-        if (usr && usr.emailVerified && postPaymentPlan && postPaymentEmail === usr.email && sessionId) {
-          navigate(
-    `        /processing?session_id=${encodeURIComponent(sessionId)}`
-          );
-          return;
-        }
-
+        navigate(`/processing?session_id=${encodeURIComponent(sessionId)}`);
+        return;
+      }
 
       const selectedPlan = localStorage.getItem("selectedPlan");
       if (usr && usr.emailVerified && selectedPlan && !postPaymentPlan) {
@@ -96,8 +92,9 @@ function App() {
     });
   };
 
-  if (user === undefined)
+  if (user === undefined) {
     return <div style={{ color: "white" }}>Loading...</div>;
+  }
 
   return (
     <Routes>
@@ -158,7 +155,6 @@ function App() {
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/features" element={<ExploreFeatures />} />
       <Route path="/tips-next-month" element={<TipsNextMonth />} />
-
     </Routes>
   );
 }
