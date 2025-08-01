@@ -36,9 +36,14 @@ coverage/
 # === FIREBASE CONFIG (Frontend) ===
 src/firebase-config.js
 
-# === FRONTEND BUILD (jeśli masz osobny folder) ===
+# === FRONTEND BUILD ===
 frontend/build/
 frontend/node_modules/
 
-# === BACKEND SECRETS ===
+# === BACKEND SECRETS & BUILD ===
 foxorox-firebase-firebase-adminsdk-*.json
+
+# === FIREBASE FUNCTIONS BACKEND ===
+functions/node_modules/
+functions/.env
+functions/.runtimeconfig.json
