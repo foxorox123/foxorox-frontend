@@ -61,12 +61,12 @@ function PlansPage({ user, logout, subscribe }) {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 120 }} />
+          <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 200 }} />
           <div
             style={{
               fontFamily: "'Segoe UI', sans-serif",
               fontWeight: "bold",
-              fontSize: "1.8em",
+              fontSize: "2.3em",
               color: "#f58220",
               letterSpacing: "0.5px"
             }}
