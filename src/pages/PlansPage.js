@@ -107,20 +107,20 @@ function PlansPage({ user, logout, subscribe }) {
                   navigate("/login");
                 }}
               >
-                Sign in to Subscribe
+                Sign in to Subscribe/ Log in
               </button>
 
               {/* ✅ Dodatkowe przyciski */}
               <div style={{ marginTop: 10 }}>
                 <button
-                  className="google-btn"
+                  className="google-btn blue-btn"
                   style={{ marginRight: 10 }}
                   onClick={() => navigate("/features")}
                 >
                   Explore Features
                 </button>
                 <button
-                  className="google-btn"
+                  className="google-btn blue-btn"
                   onClick={() => navigate("/tips-next-month")}
                 >
                   Tips for Next Month
