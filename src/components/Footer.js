@@ -24,7 +24,7 @@ function Footer() {
       </nav>
 
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-        <img src={exanteLogo} alt="Exante Logo" style={{ width: "32px", height: "32px" }} />
+        <img src={exanteLogo} alt="Exante Logo" style={{ width: "134px", height: "37px" }} />
         <a
           href="https://exante.eu/p/39551/"
           target="_blank"
