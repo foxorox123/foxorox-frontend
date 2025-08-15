@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 import TradingViewTicker from "../components/TradingViewTicker";
 
 /** =========================
- *  Box z walutami (TradingView) — mniejszy
+ *  Box z walutami (TradingView) — WYŻSZY
  *  ========================= */
 function CurrencyBox() {
   const containerRef = useRef(null);
@@ -14,10 +14,10 @@ function CurrencyBox() {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Wyczyść poprzednią instancję (gdy React robi remount)
+    // Wyczyść poprzednią instancję
     containerRef.current.innerHTML = "";
 
-    // TradingView oczekuje placeholdera .tradingview-widget-container__widget
+    // Placeholder wymagany przez TradingView
     const widgetHost = document.createElement("div");
     widgetHost.className = "tradingview-widget-container__widget";
     containerRef.current.appendChild(widgetHost);
@@ -27,14 +27,14 @@ function CurrencyBox() {
       "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
     script.async = true;
 
-    // Kompaktowy box: 300x420, zakładka Forex z wykresem EUR/USD
+    // Kompaktowa szerokość, DUŻA wysokość: 300x680
     script.innerHTML = JSON.stringify({
       colorTheme: "dark",
       dateRange: "12M",
       showChart: true,
       locale: "en",
       width: "300",
-      height: "420",
+      height: "680",
       isTransparent: false,
       showSymbolLogo: true,
       tabs: [
@@ -219,7 +219,7 @@ function PlansPage({ user, logout, subscribe }) {
         </div>
       )}
 
-      {/* ====== DWIE KOLUMNY: LEWO (PLANY - 1 linia) | PRAWO (BOX WALUT) ====== */}
+      {/* ====== DWIE KOLUMNY: LEWO (PLANY - 1 linia) | PRAWO (BOX WALUT - WYŻSZY) ====== */}
       <div
         style={{
           display: "flex",
@@ -325,7 +325,7 @@ function PlansPage({ user, logout, subscribe }) {
           </div>
         </div>
 
-        {/* PRAWA kolumna: box walut (mniejszy) */}
+        {/* PRAWA kolumna: wyższy box walut */}
         <div style={{ flex: "0 0 300px" }}>
           <CurrencyBox />
         </div>
