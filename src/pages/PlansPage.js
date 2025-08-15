@@ -1,9 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import Footer from "../components/Footer";
 import TradingViewTicker from "../components/TradingViewTicker";
+
+/** =========================
+ *  Box z walutami (TradingView)
+ *  ========================= */
+function CurrencyBox() {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    // Wyczyść poprzednią instancję (gdy React robi remount)
+    containerRef.current.innerHTML = "";
+
+    const script = document.createElement("script");
+    script.src =
+      "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
+    script.async = true;
+
+    // Konfiguracja: ciemny motyw, zakładka Forex z wykresem EURUSD
+    script.innerHTML = JSON.stringify({
+      colorTheme: "dark",
+      dateRange: "12M",
+      showChart: true,
+      locale: "en",
+      width: "350",
+      height: "420",
+      isTransparent: false,
+      showSymbolLogo: true,
+      tabs: [
+        {
+          title: "Forex",
+          symbols: [
+            { s: "FX:EURUSD", d: "EUR/USD" },
+            { s: "FX:GBPUSD", d: "GBP/USD" },
+            { s: "FX:USDJPY", d: "USD/JPY" },
+            { s: "FX:AUDUSD", d: "AUD/USD" },
+            { s: "FX:USDCAD", d: "USD/CAD" }
+          ]
+        }
+      ]
+    });
+
+    containerRef.current.appendChild(script);
+
+    // Cleanup jeśli komponent zostanie odmontowany
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.innerHTML = "";
+      }
+    };
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        background: "#1e1e1e",
+        borderRadius: 8,
+        overflow: "hidden",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.35)",
+        marginTop: 12
+      }}
+    />
+  );
+}
 
 function StarryBackground() {
   const particlesInit = async (main) => {
@@ -60,10 +125,12 @@ function PlansPage({ user, logout, subscribe }) {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
-          padding: "20px 30px"
+          alignItems: "flex-start",
+          padding: "20px 30px",
+          gap: 20
         }}
       >
+        {/* Lewa strona: logo + tytuł */}
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
           <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 200 }} />
           <div
@@ -79,59 +146,72 @@ function PlansPage({ user, logout, subscribe }) {
           </div>
         </div>
 
-        <div>
-          {user ? (
-            <>
-              <span
-                style={{
-                  marginRight: 15,
-                  fontWeight: "bold",
-                  color: "#fff"
-                }}
-              >
-                {user.email}
-              </span>
-              <button
-                className="google-btn"
-                style={{ marginRight: 10 }}
-                onClick={() => navigate("/dashboard")}
-              >
-                Go to Dashboard
-              </button>
-              <button className="google-btn" onClick={logout}>
-                Sign out
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                className="google-btn"
-                onClick={() => {
-                  localStorage.setItem("selectedPlan", "basic_monthly");
-                  navigate("/login");
-                }}
-              >
-                Sign in to Subscribe/ Log in
-              </button>
-
-              {/* ✅ Dodatkowe przyciski */}
-              <div style={{ marginTop: 10 }}>
+        {/* Prawa kolumna: przyciski + box z walutami */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+            minWidth: 360
+          }}
+        >
+          <div>
+            {user ? (
+              <>
+                <span
+                  style={{
+                    marginRight: 15,
+                    fontWeight: "bold",
+                    color: "#fff"
+                  }}
+                >
+                  {user.email}
+                </span>
                 <button
-                  className="google-btn blue-btn"
+                  className="google-btn"
                   style={{ marginRight: 10 }}
-                  onClick={() => navigate("/features")}
+                  onClick={() => navigate("/dashboard")}
                 >
-                  Explore Features
+                  Go to Dashboard
                 </button>
+                <button className="google-btn" onClick={logout}>
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <>
                 <button
-                  className="google-btn blue-btn"
-                  onClick={() => navigate("/tips-next-month")}
+                  className="google-btn"
+                  onClick={() => {
+                    localStorage.setItem("selectedPlan", "basic_monthly");
+                    navigate("/login");
+                  }}
                 >
-                  Tips for Next Month
+                  Sign in to Subscribe/ Log in
                 </button>
-              </div>
-            </>
-          )}
+
+                {/* ✅ Dodatkowe przyciski */}
+                <div style={{ marginTop: 10, textAlign: "right" }}>
+                  <button
+                    className="google-btn blue-btn"
+                    style={{ marginRight: 10 }}
+                    onClick={() => navigate("/features")}
+                  >
+                    Explore Features
+                  </button>
+                  <button
+                    className="google-btn blue-btn"
+                    onClick={() => navigate("/tips-next-month")}
+                  >
+                    Tips for Next Month
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Box z walutami pod przyciskami (po prawej stronie) */}
+          <CurrencyBox />
         </div>
       </div>
 
