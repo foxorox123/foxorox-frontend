@@ -14,22 +14,25 @@ function CurrencyBox() {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Wyczyść poprzednią instancję (gdy React robi remount)
+    // wyczyść poprzednią instancję
     containerRef.current.innerHTML = "";
+
+    // placeholder wymagany przez TradingView (script używa previousElementSibling)
+    const widgetHost = document.createElement("div");
+    widgetHost.className = "tradingview-widget-container__widget";
+    containerRef.current.appendChild(widgetHost);
 
     const script = document.createElement("script");
     script.src =
       "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
     script.async = true;
-
-    // Konfiguracja: ciemny motyw, zakładka Forex z wykresem EURUSD
     script.innerHTML = JSON.stringify({
       colorTheme: "dark",
       dateRange: "12M",
       showChart: true,
       locale: "en",
       width: "350",
-      height: "420",
+      height: "520",
       isTransparent: false,
       showSymbolLogo: true,
       tabs: [
@@ -48,23 +51,20 @@ function CurrencyBox() {
 
     containerRef.current.appendChild(script);
 
-    // Cleanup jeśli komponent zostanie odmontowany
     return () => {
-      if (containerRef.current) {
-        containerRef.current.innerHTML = "";
-      }
+      if (containerRef.current) containerRef.current.innerHTML = "";
     };
   }, []);
 
   return (
     <div
+      className="tradingview-widget-container"
       ref={containerRef}
       style={{
         background: "#1e1e1e",
-        borderRadius: 8,
+        borderRadius: 10,
         overflow: "hidden",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.35)",
-        marginTop: 12
+        boxShadow: "0 8px 28px rgba(0,0,0,0.35)"
       }}
     />
   );
@@ -125,12 +125,10 @@ function PlansPage({ user, logout, subscribe }) {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "flex-start",
-          padding: "20px 30px",
-          gap: 20
+          alignItems: "center",
+          padding: "20px 30px"
         }}
       >
-        {/* Lewa strona: logo + tytuł */}
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
           <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 200 }} />
           <div
@@ -146,72 +144,59 @@ function PlansPage({ user, logout, subscribe }) {
           </div>
         </div>
 
-        {/* Prawa kolumna: przyciski + box z walutami */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-end",
-            minWidth: 360
-          }}
-        >
-          <div>
-            {user ? (
-              <>
-                <span
-                  style={{
-                    marginRight: 15,
-                    fontWeight: "bold",
-                    color: "#fff"
-                  }}
-                >
-                  {user.email}
-                </span>
+        <div>
+          {user ? (
+            <>
+              <span
+                style={{
+                  marginRight: 15,
+                  fontWeight: "bold",
+                  color: "#fff"
+                }}
+              >
+                {user.email}
+              </span>
+              <button
+                className="google-btn"
+                style={{ marginRight: 10 }}
+                onClick={() => navigate("/dashboard")}
+              >
+                Go to Dashboard
+              </button>
+              <button className="google-btn" onClick={logout}>
+                Sign out
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className="google-btn"
+                onClick={() => {
+                  localStorage.setItem("selectedPlan", "basic_monthly");
+                  navigate("/login");
+                }}
+              >
+                Sign in to Subscribe/ Log in
+              </button>
+
+              {/* ✅ Dodatkowe przyciski */}
+              <div style={{ marginTop: 10 }}>
                 <button
-                  className="google-btn"
+                  className="google-btn blue-btn"
                   style={{ marginRight: 10 }}
-                  onClick={() => navigate("/dashboard")}
+                  onClick={() => navigate("/features")}
                 >
-                  Go to Dashboard
+                  Explore Features
                 </button>
-                <button className="google-btn" onClick={logout}>
-                  Sign out
-                </button>
-              </>
-            ) : (
-              <>
                 <button
-                  className="google-btn"
-                  onClick={() => {
-                    localStorage.setItem("selectedPlan", "basic_monthly");
-                    navigate("/login");
-                  }}
+                  className="google-btn blue-btn"
+                  onClick={() => navigate("/tips-next-month")}
                 >
-                  Sign in to Subscribe/ Log in
+                  Tips for Next Month
                 </button>
-
-                {/* ✅ Dodatkowe przyciski */}
-                <div style={{ marginTop: 10, textAlign: "right" }}>
-                  <button
-                    className="google-btn blue-btn"
-                    style={{ marginRight: 10 }}
-                    onClick={() => navigate("/features")}
-                  >
-                    Explore Features
-                  </button>
-                  <button
-                    className="google-btn blue-btn"
-                    onClick={() => navigate("/tips-next-month")}
-                  >
-                    Tips for Next Month
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* Box z walutami pod przyciskami (po prawej stronie) */}
-          <CurrencyBox />
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -231,89 +216,109 @@ function PlansPage({ user, logout, subscribe }) {
         </div>
       )}
 
+      {/* ====== DWIE KOLUMNY: LEWO (PLANY) | PRAWO (BOX WALUT) ====== */}
       <div
         style={{
           display: "flex",
+          alignItems: "flex-start",
           justifyContent: "center",
+          gap: 24,
+          padding: "0 30px",
           flexWrap: "wrap",
-          marginTop: 30,
-          gap: 20
+          marginTop: 30
         }}
       >
-        <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
-          <h2>🟢 Basic Monthly</h2>
-          <ul>
-            <li>NASDAQ100 & S&P 500 – monthly access</li>
-            <li>Predicts next candle based on AI prediction</li>
-            <li>Includes all stocks from Nasdaq100 and S&P 500</li>
-            <li>Shows stock highest probability to move up or down</li>
-            <li>Iterations up to 300 trading sessions</li>
-            <li>Interactive charts</li>
-            <li>You can resign at any time</li>
-            <li>Charged monthly</li>
-          </ul>
-          <button onClick={() => handleSubscribe("basic_monthly")}>
-            Subscribe to Basic Monthly – $79.99
-          </button>
+        {/* LEWA kolumna: plans grid */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            gap: 20,
+            flex: "1 1 760px",
+            maxWidth: 980
+          }}
+        >
+          <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
+            <h2>🟢 Basic Monthly</h2>
+            <ul>
+              <li>NASDAQ100 & S&P 500 – monthly access</li>
+              <li>Predicts next candle based on AI prediction</li>
+              <li>Includes all stocks from Nasdaq100 and S&P 500</li>
+              <li>Shows stock highest probability to move up or down</li>
+              <li>Iterations up to 300 trading sessions</li>
+              <li>Interactive charts</li>
+              <li>You can resign at any time</li>
+              <li>Charged monthly</li>
+            </ul>
+            <button onClick={() => handleSubscribe("basic_monthly")}>
+              Subscribe to Basic Monthly – $79.99
+            </button>
+          </div>
+
+          <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
+            <h2>🔵 Basic Yearly</h2>
+            <ul>
+              <li>NASDAQ100 & S&P 500 – yearly access</li>
+              <li>Predicts next candle based on AI prediction</li>
+              <li>Includes all stocks from Nasdaq100 and S&P 500</li>
+              <li>Shows stock highest probability to move up or down</li>
+              <li>Iterations up to 300 trading sessions</li>
+              <li>Interactive charts</li>
+              <li>You can resign at any time</li>
+              <li>Charged once per year</li>
+            </ul>
+            <button onClick={() => handleSubscribe("basic_yearly")}>
+              Subscribe to Basic Yearly – $790.00
+            </button>
+          </div>
+
+          <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
+            <h2>🟠 Global Monthly</h2>
+            <ul>
+              <li>Global markets + Markov modeling</li>
+              <li>
+                Includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20
+              </li>
+              <li>Includes advanced AI algorithms based on Markov modeling</li>
+              <li>Predicts next candle based on AI prediction</li>
+              <li>Includes all stocks from Nasdaq100 and S&P 500</li>
+              <li>Shows stock highest probability to move up or down</li>
+              <li>Iterations up to 300 trading sessions</li>
+              <li>Interactive charts</li>
+              <li>You can resign at any time</li>
+              <li>Charged monthly</li>
+            </ul>
+            <button onClick={() => handleSubscribe("global_monthly")}>
+              Subscribe to Global Monthly – $129.99
+            </button>
+          </div>
+
+          <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
+            <h2>🔴 Global Yearly</h2>
+            <ul>
+              <li>Global markets + Markov modeling</li>
+              <li>
+                Includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20
+              </li>
+              <li>Includes advanced AI algorithms based on Markov modeling</li>
+              <li>Predicts next candle based on AI prediction</li>
+              <li>Includes all stocks from Nasdaq100 and S&P 500</li>
+              <li>Shows stock highest probability to move up or down</li>
+              <li>Iterations up to 300 trading sessions</li>
+              <li>Interactive charts</li>
+              <li>You can resign at any time</li>
+              <li>Charged yearly</li>
+            </ul>
+            <button onClick={() => handleSubscribe("global_yearly")}>
+              Subscribe to Global Yearly – $1290.00
+            </button>
+          </div>
         </div>
 
-        <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
-          <h2>🔵 Basic Yearly</h2>
-          <ul>
-            <li>NASDAQ100 & S&P 500 – yearly access</li>
-            <li>Predicts next candle based on AI prediction</li>
-            <li>Includes all stocks from Nasdaq100 and S&P 500</li>
-            <li>Shows stock highest probability to move up or down</li>
-            <li>Iterations up to 300 trading sessions</li>
-            <li>Interactive charts</li>
-            <li>You can resign at any time</li>
-            <li>Charged once per year</li>
-          </ul>
-          <button onClick={() => handleSubscribe("basic_yearly")}>
-            Subscribe to Basic Yearly – $790.00
-          </button>
-        </div>
-
-        <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
-          <h2>🟠 Global Monthly</h2>
-          <ul>
-            <li>Global markets + Markov modeling</li>
-            <li>
-              Includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20
-            </li>
-            <li>Includes advanced AI algorithms based on Markov modeling</li>
-            <li>Predicts next candle based on AI prediction</li>
-            <li>Includes all stocks from Nasdaq100 and S&P 500</li>
-            <li>Shows stock highest probability to move up or down</li>
-            <li>Iterations up to 300 trading sessions</li>
-            <li>Interactive charts</li>
-            <li>You can resign at any time</li>
-            <li>Charged monthly</li>
-          </ul>
-          <button onClick={() => handleSubscribe("global_monthly")}>
-            Subscribe to Global Monthly – $129.99
-          </button>
-        </div>
-
-        <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
-          <h2>🔴 Global Yearly</h2>
-          <ul>
-            <li>Global markets + Markov modeling</li>
-            <li>
-              Includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20
-            </li>
-            <li>Includes advanced AI algorithms based on Markov modeling</li>
-            <li>Predicts next candle based on AI prediction</li>
-            <li>Includes all stocks from Nasdaq100 and S&P 500</li>
-            <li>Shows stock highest probability to move up or down</li>
-            <li>Iterations up to 300 trading sessions</li>
-            <li>Interactive charts</li>
-            <li>You can resign at any time</li>
-            <li>Charged yearly</li>
-          </ul>
-          <button onClick={() => handleSubscribe("global_yearly")}>
-            Subscribe to Global Yearly – $1290.00
-          </button>
+        {/* PRAWA kolumna: box walut, na wysokości planów */}
+        <div style={{ flex: "0 0 360px" }}>
+          <CurrencyBox />
         </div>
       </div>
 
