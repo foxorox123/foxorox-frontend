@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import Footer from "../components/Footer";
+import TradingViewTicker from "../components/TradingViewTicker";
 
 function StarryBackground() {
   const particlesInit = async (main) => {
@@ -50,6 +51,9 @@ function PlansPage({ user, logout, subscribe }) {
   return (
     <div className="main-container aurora-background">
       <StarryBackground />
+
+      {/* Pasek indeksów TradingView */}
+      <TradingViewTicker />
 
       {/* Górny pasek */}
       <div
@@ -194,7 +198,9 @@ function PlansPage({ user, logout, subscribe }) {
           <h2>🟠 Global Monthly</h2>
           <ul>
             <li>Global markets + Markov modeling</li>
-            <li>Includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20</li>
+            <li>
+              Includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20
+            </li>
             <li>Includes advanced AI algorithms based on Markov modeling</li>
             <li>Predicts next candle based on AI prediction</li>
             <li>Includes all stocks from Nasdaq100 and S&P 500</li>
@@ -213,7 +219,9 @@ function PlansPage({ user, logout, subscribe }) {
           <h2>🔴 Global Yearly</h2>
           <ul>
             <li>Global markets + Markov modeling</li>
-            <li>Includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20</li>
+            <li>
+              Includes Nasdaq100, S&P500, NIKKEI225, CAC40, DAX40, FTS100, WIG20
+            </li>
             <li>Includes advanced AI algorithms based on Markov modeling</li>
             <li>Predicts next candle based on AI prediction</li>
             <li>Includes all stocks from Nasdaq100 and S&P 500</li>
