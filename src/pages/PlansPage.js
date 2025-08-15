@@ -6,13 +6,13 @@ import Footer from "../components/Footer";
 import TradingViewTicker from "../components/TradingViewTicker";
 
 /** =========================
- *  Box z walutami (TradingView) — WYŻSZY
+ *  Box z walutami (TradingView) — dopasowanie wysokości do planów
  *  ========================= */
-function CurrencyBox() {
+function CurrencyBox({ heightPx = 420, widthPx = 300 }) {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !heightPx) return;
 
     // Wyczyść poprzednią instancję
     containerRef.current.innerHTML = "";
@@ -27,14 +27,14 @@ function CurrencyBox() {
       "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
     script.async = true;
 
-    // Kompaktowa szerokość, DUŻA wysokość: 300x680
+    // Szerokość z kontenera (100%), wysokość = wysokość planów
     script.innerHTML = JSON.stringify({
       colorTheme: "dark",
       dateRange: "12M",
       showChart: true,
       locale: "en",
-      width: "300",
-      height: "680",
+      width: "100%",
+      height: String(heightPx),
       isTransparent: false,
       showSymbolLogo: true,
       tabs: [
@@ -53,21 +53,22 @@ function CurrencyBox() {
 
     containerRef.current.appendChild(script);
 
-    // Cleanup
     return () => {
       if (containerRef.current) containerRef.current.innerHTML = "";
     };
-  }, []);
+  }, [heightPx]);
 
   return (
     <div
       className="tradingview-widget-container"
       ref={containerRef}
       style={{
+        width: widthPx,
         background: "#1e1e1e",
         borderRadius: 10,
         overflow: "hidden",
-        boxShadow: "0 8px 28px rgba(0,0,0,0.35)"
+        boxShadow: "0 8px 28px rgba(0,0,0,0.35)",
+        minHeight: heightPx // unika skakania layoutu zanim załaduje się widget
       }}
     />
   );
@@ -101,6 +102,37 @@ function StarryBackground() {
 function PlansPage({ user, logout, subscribe }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  // >>> pomiar wysokości sekcji planów
+  const plansRowRef = useRef(null);
+  const [plansHeight, setPlansHeight] = useState(0);
+
+  useEffect(() => {
+    const measure = () => {
+      if (!plansRowRef.current) return;
+      const h = Math.round(plansRowRef.current.getBoundingClientRect().height);
+      if (h && h !== plansHeight) setPlansHeight(h);
+    };
+
+    // pierwszy pomiar po renderze
+    const t = setTimeout(measure, 0);
+
+    // reaguj na resize
+    window.addEventListener("resize", measure);
+
+    // obserwuj zmiany rozmiaru kontenera (bardziej niezawodne)
+    let ro;
+    if (typeof ResizeObserver !== "undefined" && plansRowRef.current) {
+      ro = new ResizeObserver(measure);
+      ro.observe(plansRowRef.current);
+    }
+
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("resize", measure);
+      if (ro) ro.disconnect();
+    };
+  }, [plansHeight]);
 
   const handleSubscribe = async (plan) => {
     if (!user || !user.email) {
@@ -219,18 +251,18 @@ function PlansPage({ user, logout, subscribe }) {
         </div>
       )}
 
-      {/* ====== DWIE KOLUMNY: LEWO (PLANY - 1 linia) | PRAWO (BOX WALUT - WYŻSZY) ====== */}
+      {/* ====== DWIE KOLUMNY: LEWO (PLANY - 1 linia) | PRAWO (BOX WALUT) ====== */}
       <div
         style={{
           display: "flex",
-          alignItems: "flex-start",
+          alignItems: "stretch",        // klucz: wyrównanie wysokości obu kolumn
           justifyContent: "center",
           gap: 24,
           padding: "0 30px",
           marginTop: 30
         }}
       >
-        {/* LEWA kolumna: plans row - bez zawijania, przewijanie poziome na małych szerokościach */}
+        {/* LEWA kolumna: plans row - bez zawijania + scroll poziomy na małych szerokościach */}
         <div
           style={{
             flex: "1 1 auto",
@@ -240,6 +272,7 @@ function PlansPage({ user, logout, subscribe }) {
           }}
         >
           <div
+            ref={plansRowRef}
             style={{
               display: "flex",
               flexWrap: "nowrap",
@@ -325,9 +358,9 @@ function PlansPage({ user, logout, subscribe }) {
           </div>
         </div>
 
-        {/* PRAWA kolumna: wyższy box walut */}
-        <div style={{ flex: "0 0 300px" }}>
-          <CurrencyBox />
+        {/* PRAWA kolumna: box walut o wysokości identycznej jak plany */}
+        <div style={{ flex: "0 0 300px", display: "flex" }}>
+          <CurrencyBox heightPx={plansHeight || 420} widthPx={300} />
         </div>
       </div>
 
