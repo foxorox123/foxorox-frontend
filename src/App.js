@@ -7,7 +7,7 @@ import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import Tips from "./pages/Tips";
 import Login from "./pages/Login";
 import PlansPage from "./pages/PlansPage";
-import Dashboard from "./pages/dashboard";
+import Dashboard from "./pages/dashboard"; // upewnij się, że plik ma dokładnie taką nazwę
 import DownloadsBasic from "./pages/DownloadsBasic";
 import DownloadsPremium from "./pages/DownloadsPremium";
 import About from "./pages/About";
@@ -18,7 +18,7 @@ import Privacy from "./pages/Privacy";
 import Processing from "./pages/Processing";
 import ExploreFeatures from "./pages/ExploreFeatures";
 import TipsNextMonth from "./pages/TipsNextMonth";
-import DownloadsForex from "./pages/DownloadsForex";
+import DownloadsForex from "./pages/DownloadsForex"; // ← tylko raz
 
 function App() {
   const [user, setUser] = useState(undefined);
@@ -168,7 +168,6 @@ function App() {
           )
         }
       />
-
       <Route path="/processing" element={<Processing />} />
       <Route path="/tips" element={<Tips />} />
       <Route path="/about" element={<About />} />
