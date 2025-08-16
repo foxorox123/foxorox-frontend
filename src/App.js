@@ -18,6 +18,7 @@ import Privacy from "./pages/Privacy";
 import Processing from "./pages/Processing";
 import ExploreFeatures from "./pages/ExploreFeatures";
 import TipsNextMonth from "./pages/TipsNextMonth";
+import DownloadsForex from "./pages/DownloadsForex";
 
 function App() {
   const [user, setUser] = useState(undefined);
@@ -157,6 +158,17 @@ function App() {
           )
         }
       />
+      <Route
+        path="/downloads/forex"
+        element={
+          user && !localStorage.getItem("postPaymentPlan") ? (
+            <DownloadsForex user={user} />
+          ) : (
+            <Navigate to="/processing" />
+          )
+        }
+      />
+
       <Route path="/processing" element={<Processing />} />
       <Route path="/tips" element={<Tips />} />
       <Route path="/about" element={<About />} />

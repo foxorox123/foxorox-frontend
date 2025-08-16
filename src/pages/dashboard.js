@@ -22,9 +22,7 @@ function Dashboard({ user, logout }) {
   const getDeviceId = () => {
     let id = localStorage.getItem("device_id");
     if (!id) {
-      id =
-        Math.random().toString(36).substring(2) +
-        Date.now().toString(36);
+      id = Math.random().toString(36).substring(2) + Date.now().toString(36);
       localStorage.setItem("device_id", id);
     }
     return id;
@@ -136,6 +134,7 @@ function Dashboard({ user, logout }) {
             basic_yearly: "Basic Yearly",
             global_monthly: "Global Monthly",
             global_yearly: "Global Yearly",
+            forex_monthly: "Forex Monthly",
           };
           setSubscriptionType(planMap[data.plan] || "Active");
         } else {
@@ -214,11 +213,18 @@ function Dashboard({ user, logout }) {
       {/* ▶ Download Section at Bottom */}
       {subscriptionType && (
         <div className="download-section">
-          <p style={{ textAlign: "center", marginBottom: "15px", fontWeight: "bold", color: "white" }}>
+          <p
+            style={{
+              textAlign: "center",
+              marginBottom: "15px",
+              fontWeight: "bold",
+              color: "white",
+            }}
+          >
             Please download your version of Foxorox.<br />
             Please copy your DEVICE ID during login to AI program.<br />
-            Please remember you DEVICE ID number and rewrite it in you passwords. <br />
-
+            Please remember your DEVICE ID number and rewrite it in your
+            passwords.
           </p>
 
           {subscriptionType.includes("Basic") ? (
@@ -242,6 +248,18 @@ function Dashboard({ user, logout }) {
               className="download-btn"
             >
               📥 Download Premium Version
+            </a>
+          ) : subscriptionType.includes("Forex") ? (
+            // ➕ Forex download
+            <a
+              href={`https://foxorox-backend.onrender.com/download/forex?email=${encodeURIComponent(
+                user.email
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="download-btn"
+            >
+              📥 Download Forex Version
             </a>
           ) : null}
 
