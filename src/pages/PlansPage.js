@@ -5,6 +5,10 @@ import { loadFull } from "tsparticles";
 import Footer from "../components/Footer";
 import TradingViewTicker from "../components/TradingViewTicker";
 
+// ⤵️ Direct-download link for the 7-day trial (your file ID)
+const TRIAL_URL =
+  "https://drive.google.com/uc?export=download&id=1j0pbE44xMXp-ZKJ9_7NxZbQwOPbRIhYb";
+
 /** =========================
  *  Box z walutami (TradingView) — dopasowanie wysokości do planów
  *  ========================= */
@@ -88,7 +92,7 @@ function StarryBackground() {
         particles: {
           number: { value: 150 },
           color: { value: "#ffffff" },
-          shape: { type: "circle" },
+        shape: { type: "circle" },
           opacity: { value: 0.8 },
           size: { value: 1 },
           move: { enable: true, speed: 0.2 }
@@ -371,30 +375,29 @@ function PlansPage({ user, logout, subscribe }) {
               <button onClick={() => handleSubscribe("forex_monthly")}>
                 Subscribe to Foxorox Forex Monthly – $8.99
               </button>
+
+              {/* ⤵️ Trial button tuż pod miesięcznym – czerwony hover inline, bez zmian globalnego CSS */}
+              <button
+                className="google-btn"
+                onClick={() => window.open(TRIAL_URL, "_blank")}
+                style={{
+                  marginTop: 10,
+                  backgroundColor: "#cc1f1f",
+                  color: "#fff"
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#a11616")}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#cc1f1f")}
+                title="7-day Trial – no payment"
+              >
+                ⏳ Try Foxorox Forex – 7 days (FREE)
+              </button>
             </div>
           </div>
         </div>
 
-        {/* PRAWA kolumna: box walut o wysokości identycznej jak plany + TRIAL BUTTON */}
-        <div
-          style={{
-            flex: "0 0 300px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "stretch"
-          }}
-        >
+        {/* PRAWA kolumna: box walut o wysokości identycznej jak plany */}
+        <div style={{ flex: "0 0 300px", display: "flex" }}>
           <CurrencyBox heightPx={plansHeight || 420} widthPx={300} />
-
-          {/* 🔻 Trial button pod widgetem */}
-          <button
-            className="trial-btn"
-            style={{ marginTop: 12 }}
-            onClick={() => navigate("/downloads/forex?trial=1")}
-            title="Download 7-day Forex Trial"
-          >
-            🎯 Download 7-day Forex Trial
-          </button>
         </div>
       </div>
 
