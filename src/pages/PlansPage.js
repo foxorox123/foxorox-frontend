@@ -369,6 +369,7 @@ function PlansPage({ user, logout, subscribe }) {
                 <li>AI next-candle prediction</li>
                 <li>Gap probability insights</li>
                 <li>Interactive charts</li>
+                <li>60 minutes interval</li>
                 <li>Cancel anytime</li>
                 <li>Charged monthly</li>
               </ul>
