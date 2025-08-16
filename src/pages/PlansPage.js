@@ -255,7 +255,7 @@ function PlansPage({ user, logout, subscribe }) {
       <div
         style={{
           display: "flex",
-          alignItems: "stretch",        // klucz: wyrównanie wysokości obu kolumn
+          alignItems: "stretch",
           justifyContent: "center",
           gap: 24,
           padding: "0 30px",
@@ -375,9 +375,26 @@ function PlansPage({ user, logout, subscribe }) {
           </div>
         </div>
 
-        {/* PRAWA kolumna: box walut o wysokości identycznej jak plany */}
-        <div style={{ flex: "0 0 300px", display: "flex" }}>
+        {/* PRAWA kolumna: box walut o wysokości identycznej jak plany + TRIAL BUTTON */}
+        <div
+          style={{
+            flex: "0 0 300px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "stretch"
+          }}
+        >
           <CurrencyBox heightPx={plansHeight || 420} widthPx={300} />
+
+          {/* 🔻 Trial button pod widgetem */}
+          <button
+            className="trial-btn"
+            style={{ marginTop: 12 }}
+            onClick={() => navigate("/downloads/forex?trial=1")}
+            title="Download 7-day Forex Trial"
+          >
+            🎯 Download 7-day Forex Trial
+          </button>
         </div>
       </div>
 
