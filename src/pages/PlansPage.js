@@ -8,7 +8,7 @@ import TradingViewTicker from "../components/TradingViewTicker";
 /** =========================
  *  Box z walutami (TradingView) — dopasowanie wysokości do planów
  *  ========================= */
-function CurrencyBox({ heightPx = 420, widthPx = 300 }) {
+function CurrencyBox({ heightPx = 410, widthPx = 300 }) {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -353,6 +353,23 @@ function PlansPage({ user, logout, subscribe }) {
               </ul>
               <button onClick={() => handleSubscribe("global_yearly")}>
                 Subscribe to Global Yearly – $1290.00
+              </button>
+            </div>
+
+            {/* NOWY PLAN: Foxorox Forex Monthly */}
+            <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
+              <h2>💹 Foxorox Forex Monthly</h2>
+              <ul>
+                <li>Major & popular FX pairs</li>
+                <li>Live rates + embedded charts</li>
+                <li>AI next-candle prediction</li>
+                <li>Gap probability insights</li>
+                <li>Interactive charts</li>
+                <li>Cancel anytime</li>
+                <li>Charged monthly</li>
+              </ul>
+              <button onClick={() => handleSubscribe("forex_monthly")}>
+                Subscribe to Foxorox Forex Monthly – $8.99
               </button>
             </div>
           </div>
