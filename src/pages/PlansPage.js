@@ -10,7 +10,51 @@ const TRIAL_URL =
   "https://drive.google.com/uc?export=download&id=1j0pbE44xMXp-ZKJ9_7NxZbQwOPbRIhYb";
 
 /** =========================
- *  Box z walutami (TradingView) — dopasowanie wysokości do planów
+ *  Uniwersalny, „bezpieczny” button z pewnym borderem i hoverem
+ *  ========================= */
+function PlanButton({
+  children,
+  onClick,
+  variant = "primary",
+  fullWidth = true,
+  style
+}) {
+  const [hover, setHover] = useState(false);
+
+  const bgBase =
+    variant === "danger" ? "#cc1f1f" : variant === "blue" ? "#1c4bff" : "#0f0f0f";
+  const bgHover =
+    variant === "danger" ? "#a11616" : variant === "blue" ? "#173fdb" : "#1a1a1a";
+
+  const baseStyle = {
+    width: fullWidth ? "100%" : undefined,
+    padding: "12px 14px",
+    borderRadius: 10,
+    border: "1px solid rgba(255,255,255,0.28)", // stały border (nie znika)
+    backgroundColor: hover ? bgHover : bgBase,
+    color: "#fff",
+    fontWeight: 600,
+    cursor: "pointer",
+    boxSizing: "border-box", // granica liczona w środku
+    position: "relative",
+    zIndex: 1, // ponad tłem karty (gdyby miała clip/warstwy)
+    outline: "none"
+  };
+
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{ ...baseStyle, ...style }}
+    >
+      {children}
+    </button>
+  );
+}
+
+/** =========================
+ *  Box z walutami (TradingView)
  *  ========================= */
 function CurrencyBox({ heightPx = 410, widthPx = 300 }) {
   const containerRef = useRef(null);
@@ -31,7 +75,6 @@ function CurrencyBox({ heightPx = 410, widthPx = 300 }) {
       "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
     script.async = true;
 
-    // Szerokość z kontenera (100%), wysokość = wysokość planów
     script.innerHTML = JSON.stringify({
       colorTheme: "dark",
       dateRange: "12M",
@@ -72,7 +115,7 @@ function CurrencyBox({ heightPx = 410, widthPx = 300 }) {
         borderRadius: 10,
         overflow: "hidden",
         boxShadow: "0 8px 28px rgba(0,0,0,0.35)",
-        minHeight: heightPx // unika skakania layoutu zanim załaduje się widget
+        minHeight: heightPx
       }}
     />
   );
@@ -92,7 +135,7 @@ function StarryBackground() {
         particles: {
           number: { value: 150 },
           color: { value: "#ffffff" },
-        shape: { type: "circle" },
+          shape: { type: "circle" },
           opacity: { value: 0.8 },
           size: { value: 1 },
           move: { enable: true, speed: 0.2 }
@@ -118,13 +161,9 @@ function PlansPage({ user, logout, subscribe }) {
       if (h && h !== plansHeight) setPlansHeight(h);
     };
 
-    // pierwszy pomiar po renderze
     const t = setTimeout(measure, 0);
-
-    // reaguj na resize
     window.addEventListener("resize", measure);
 
-    // obserwuj zmiany rozmiaru kontenera (bardziej niezawodne)
     let ro;
     if (typeof ResizeObserver !== "undefined" && plansRowRef.current) {
       ro = new ResizeObserver(measure);
@@ -195,44 +234,48 @@ function PlansPage({ user, logout, subscribe }) {
               >
                 {user.email}
               </span>
-              <button
-                className="google-btn"
+              <PlanButton
+                variant="blue"
+                fullWidth={false}
                 style={{ marginRight: 10 }}
                 onClick={() => navigate("/dashboard")}
               >
                 Go to Dashboard
-              </button>
-              <button className="google-btn" onClick={logout}>
+              </PlanButton>
+              <PlanButton fullWidth={false} onClick={logout}>
                 Sign out
-              </button>
+              </PlanButton>
             </>
           ) : (
             <>
-              <button
-                className="google-btn"
+              <PlanButton
+                variant="blue"
+                fullWidth={false}
                 onClick={() => {
                   localStorage.setItem("selectedPlan", "basic_monthly");
                   navigate("/login");
                 }}
               >
-                Sign in to Subscribe/ Log in
-              </button>
+                Sign in to Subscribe / Log in
+              </PlanButton>
 
               {/* ✅ Dodatkowe przyciski */}
               <div style={{ marginTop: 10 }}>
-                <button
-                  className="google-btn blue-btn"
+                <PlanButton
+                  variant="blue"
+                  fullWidth={false}
                   style={{ marginRight: 10 }}
                   onClick={() => navigate("/features")}
                 >
                   Explore Features
-                </button>
-                <button
-                  className="google-btn blue-btn"
+                </PlanButton>
+                <PlanButton
+                  variant="blue"
+                  fullWidth={false}
                   onClick={() => navigate("/tips-next-month")}
                 >
                   Tips for Next Month
-                </button>
+                </PlanButton>
               </div>
             </>
           )}
@@ -266,7 +309,7 @@ function PlansPage({ user, logout, subscribe }) {
           marginTop: 30
         }}
       >
-        {/* LEWA kolumna: plans row - bez zawijania + scroll poziomy na małych szerokościach */}
+        {/* LEWA kolumna: plans row */}
         <div
           style={{
             flex: "1 1 auto",
@@ -284,7 +327,10 @@ function PlansPage({ user, logout, subscribe }) {
               justifyContent: "flex-start"
             }}
           >
-            <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
+            <div
+              className="plan-card"
+              style={{ width: 250, textAlign: "left", overflow: "visible" }}
+            >
               <h2>🟢 Basic Monthly</h2>
               <ul>
                 <li>NASDAQ100 & S&P 500 – monthly access</li>
@@ -296,12 +342,15 @@ function PlansPage({ user, logout, subscribe }) {
                 <li>You can resign at any time</li>
                 <li>Charged monthly</li>
               </ul>
-              <button onClick={() => handleSubscribe("basic_monthly")}>
+              <PlanButton onClick={() => handleSubscribe("basic_monthly")}>
                 Subscribe to Basic Monthly – $79.99
-              </button>
+              </PlanButton>
             </div>
 
-            <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
+            <div
+              className="plan-card"
+              style={{ width: 250, textAlign: "left", overflow: "visible" }}
+            >
               <h2>🔵 Basic Yearly</h2>
               <ul>
                 <li>NASDAQ100 & S&P 500 – yearly access</li>
@@ -313,12 +362,15 @@ function PlansPage({ user, logout, subscribe }) {
                 <li>You can resign at any time</li>
                 <li>Charged once per year</li>
               </ul>
-              <button onClick={() => handleSubscribe("basic_yearly")}>
+              <PlanButton onClick={() => handleSubscribe("basic_yearly")}>
                 Subscribe to Basic Yearly – $790.00
-              </button>
+              </PlanButton>
             </div>
 
-            <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
+            <div
+              className="plan-card"
+              style={{ width: 250, textAlign: "left", overflow: "visible" }}
+            >
               <h2>🟠 Global Monthly</h2>
               <ul>
                 <li>Global markets + Markov modeling</li>
@@ -334,12 +386,15 @@ function PlansPage({ user, logout, subscribe }) {
                 <li>You can resign at any time</li>
                 <li>Charged monthly</li>
               </ul>
-              <button onClick={() => handleSubscribe("global_monthly")}>
+              <PlanButton onClick={() => handleSubscribe("global_monthly")}>
                 Subscribe to Global Monthly – $129.99
-              </button>
+              </PlanButton>
             </div>
 
-            <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
+            <div
+              className="plan-card"
+              style={{ width: 250, textAlign: "left", overflow: "visible" }}
+            >
               <h2>🔴 Global Yearly</h2>
               <ul>
                 <li>Global markets + Markov modeling</li>
@@ -355,13 +410,16 @@ function PlansPage({ user, logout, subscribe }) {
                 <li>You can resign at any time</li>
                 <li>Charged yearly</li>
               </ul>
-              <button onClick={() => handleSubscribe("global_yearly")}>
+              <PlanButton onClick={() => handleSubscribe("global_yearly")}>
                 Subscribe to Global Yearly – $1290.00
-              </button>
+              </PlanButton>
             </div>
 
             {/* NOWY PLAN: Foxorox Forex Monthly */}
-            <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
+            <div
+              className="plan-card"
+              style={{ width: 250, textAlign: "left", overflow: "visible" }}
+            >
               <h2>💹 Foxorox Forex Monthly</h2>
               <ul>
                 <li>Major & popular FX pairs</li>
@@ -373,25 +431,19 @@ function PlansPage({ user, logout, subscribe }) {
                 <li>Cancel anytime</li>
                 <li>Charged monthly</li>
               </ul>
-              <button onClick={() => handleSubscribe("forex_monthly")}>
-                Subscribe to Foxorox Forex Monthly – $8.99
-              </button>
 
-              {/* ⤵️ Trial button tuż pod miesięcznym – czerwony hover inline, bez zmian globalnego CSS */}
-              <button
-                className="google-btn"
+              <PlanButton onClick={() => handleSubscribe("forex_monthly")}>
+                Subscribe to Foxorox Forex Monthly – $8.99
+              </PlanButton>
+
+              {/* Trial */}
+              <PlanButton
+                variant="danger"
+                style={{ marginTop: 10 }}
                 onClick={() => window.open(TRIAL_URL, "_blank")}
-                style={{
-                  marginTop: 10,
-                  backgroundColor: "#cc1f1f",
-                  color: "#fff"
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#a11616")}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#cc1f1f")}
-                title="7-day Trial – no payment"
               >
                 ⏳ Try Foxorox Forex – 7 days (FREE)
-              </button>
+              </PlanButton>
             </div>
           </div>
         </div>
