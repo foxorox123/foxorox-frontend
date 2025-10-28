@@ -15,16 +15,42 @@ function Footer() {
         textAlign: "center",
       }}
     >
-      <nav style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "16px", marginBottom: "16px" }}>
+      <nav
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "16px",
+          marginBottom: "16px",
+        }}
+      >
         <Link to="/about" style={{ color: "#f0f0f0", textDecoration: "none" }}>About</Link>
         <Link to="/faq" style={{ color: "#f0f0f0", textDecoration: "none" }}>FAQ</Link>
         <Link to="/privacy" style={{ color: "#f0f0f0", textDecoration: "none" }}>Privacy</Link>
         <Link to="/terms" style={{ color: "#f0f0f0", textDecoration: "none" }}>Terms</Link>
         <Link to="/contact" style={{ color: "#f0f0f0", textDecoration: "none" }}>Contact</Link>
+        <a
+          href="/blog/"
+          style={{ color: "#f58220", textDecoration: "none", fontWeight: "bold" }}
+        >
+          Blog
+        </a>
       </nav>
 
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-        <img src={exanteLogo} alt="Exante Logo" style={{ width: "134px", height: "37px" }} />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "10px",
+          flexWrap: "wrap",
+        }}
+      >
+        <img
+          src={exanteLogo}
+          alt="Exante Logo"
+          style={{ width: "134px", height: "37px" }}
+        />
         <a
           href="https://exante.eu/p/39551/"
           target="_blank"
