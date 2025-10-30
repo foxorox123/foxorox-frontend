@@ -4,7 +4,8 @@ import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 
-import Tips from "./pages/Tips";
+import Blog from "./pages/Blog";
+
 import Login from "./pages/Login";
 import PlansPage from "./pages/PlansPage";
 import Dashboard from "./pages/dashboard"; // upewnij się, że plik ma dokładnie taką nazwę
@@ -177,6 +178,8 @@ function App() {
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/features" element={<ExploreFeatures />} />
       <Route path="/tips-next-month" element={<TipsNextMonth />} />
+      <Route path="/blog" element={<Blog />} />
+
     </Routes>
   );
 }
