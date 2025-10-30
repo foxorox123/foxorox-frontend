@@ -2,28 +2,33 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://foxorox.com/ai-stock-prediction.html</loc>
-    <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://foxorox.com/crypto-insights.html</loc>
-    <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://foxorox.com/us-market-tutorials.html</loc>
-    <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://foxorox.com/learn-etf-trading.html</loc>
-    <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://foxorox.com/</loc>
+    <loc>https://www.foxorox.com/</loc>
     <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.foxorox.com/ai-stock-prediction.html</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://www.foxorox.com/crypto-insights.html</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://www.foxorox.com/us-market-tutorials.html</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://www.foxorox.com/learn-etf-trading.html</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://www.foxorox.com/blog</loc>
+    <priority>1.0</priority>
   </url>
 
 </urlset>
