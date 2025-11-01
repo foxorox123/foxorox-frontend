@@ -35,7 +35,7 @@
     <a href="https://foxorox.com/us-market-tutorials">US Market Tutorials</a>
   </div>
 
-  <!-- Schema.org / Structured Data -->
+  <!-- ✅ Schema.org / Structured Data (merged and optimized) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -43,16 +43,34 @@
     "name": "Foxorox",
     "url": "https://foxorox.com",
     "logo": "https://foxorox.com/logo-foxorox.png",
+    "description": "Foxorox is an AI-powered market prediction platform providing daily forecasts and algorithmic insights for global markets including NASDAQ, NYSE, DAX, and FTSE.",
+    "foundingDate": "2024-01-01",
+    "founder": { "@type": "Person", "name": "Foxorox AI Team" },
     "sameAs": [
       "https://x.com/foxorox",
       "https://linkedin.com/company/foxorox",
-      "https://github.com/foxorox"
+      "https://github.com/foxorox",
+      "https://foxorox.com/blog/"
     ],
-    "description": "Foxorox is an AI-powered platform for financial forecasting and market predictions.",
-    "foundingDate": "2024-01-01",
-    "founder": {
-      "@type": "Person",
-      "name": "Foxorox AI Team"
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "email": "contact@foxorox.com",
+      "url": "https://foxorox.com"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Foxorox AI Market Prediction",
+    "url": "https://foxorox.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://foxorox.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
     }
   }
   </script>
