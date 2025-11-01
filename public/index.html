@@ -34,6 +34,28 @@
     <a href="https://foxorox.com/us-market-tutorials">US Market Tutorials</a>
   </div>
 
+  <!-- Schema.org / Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Foxorox",
+    "url": "https://foxorox.com",
+    "logo": "https://foxorox.com/logo-foxorox.png",
+    "sameAs": [
+      "https://x.com/foxorox",
+      "https://linkedin.com/company/foxorox",
+      "https://github.com/foxorox"
+    ],
+    "description": "Foxorox is an AI-powered platform for financial forecasting and market predictions.",
+    "foundingDate": "2024-01-01",
+    "founder": {
+      "@type": "Person",
+      "name": "Foxorox AI Team"
+    }
+  }
+  </script>
+
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
 
@@ -43,11 +65,41 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'AW-17427931114');
   </script>
 </head>
+
 <body>
   <div id="root"></div>
+
+  <!-- ✅ SEO fallback for Googlebot (visible even without JS) -->
+  <noscript>
+    <h1>Foxorox – AI Market Forecast Platform</h1>
+    <p>
+      Foxorox uses artificial intelligence to generate daily insights for NASDAQ, S&P 500, DAX, and more.
+      Follow global markets, ETFs, and crypto trends powered by advanced machine learning.
+    </p>
+  </noscript>
+
+  <!-- ✅ Hidden but indexable SEO content -->
+  <section style="display:none;">
+    <h2>About Foxorox</h2>
+    <p>
+      Foxorox provides AI-powered forecasts and trading analytics for institutional and retail investors.
+      Stay ahead of the market with predictive models trained on historical and real-time data.
+    </p>
+
+    <h2>Global Market Coverage</h2>
+    <p>
+      Our system analyzes NASDAQ, S&P 500, Dow Jones, DAX, FTSE, CAC, and Nikkei indices to deliver
+      probability-based trading insights and daily forecasts for stocks, ETFs, bonds, and crypto assets.
+    </p>
+
+    <h2>Trusted by Traders</h2>
+    <p>
+      Foxorox integrates with major brokers like Robinhood, eToro, Fidelity, and XTB to deliver
+      real-time AI-driven signals for smarter portfolio management and trading decisions.
+    </p>
+  </section>
 </body>
 </html>
