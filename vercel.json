@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "https://www.foxorox.com/(.*)",
+      "destination": "https://foxorox.com/$1",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
