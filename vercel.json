@@ -5,58 +5,9 @@
       "has": [{ "type": "host", "value": "www.foxorox.com" }],
       "destination": "https://foxorox.com/$1",
       "permanent": true
-    },
-    {
-      "source": "/(.*)",
-      "has": [{ "type": "protocol", "value": "http" }],
-      "destination": "https://foxorox.com/$1",
-      "permanent": true
     }
   ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600, must-revalidate"
-        },
-        {
-          "key": "Strict-Transport-Security",
-          "value": "max-age=63072000; includeSubDomains; preload"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; img-src 'self' https: data:; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self' https: data:; connect-src 'self' https://foxorox-backend.onrender.com https://www.google-analytics.com;"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        },
-        {
-          "key": "X-Robots-Tag",
-          "value": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        },
-        {
-          "key": "Permissions-Policy",
-          "value": "geolocation=(), microphone=(), camera=()"
-        }
-      ]
-    }
   ]
 }
