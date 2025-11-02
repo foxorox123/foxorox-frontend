@@ -5,6 +5,12 @@
       "has": [{ "type": "host", "value": "www.foxorox.com" }],
       "destination": "https://foxorox.com/$1",
       "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "protocol", "value": "http" }],
+      "destination": "https://foxorox.com/$1",
+      "permanent": true
     }
   ],
   "rewrites": [
@@ -21,6 +27,10 @@
         {
           "key": "Strict-Transport-Security",
           "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; img-src 'self' https: data:; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self' https: data:; connect-src 'self' https://foxorox-backend.onrender.com https://www.google-analytics.com;"
         },
         {
           "key": "X-Content-Type-Options",
