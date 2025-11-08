@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investment Profitability Methods | Foxorox</title>
+  <meta name="description" content="Comprehensive study on investment profitability methods: Payback Period, Accounting Rate of Return, Net Present Value, Internal Rate of Return, and probabilistic risk models using Cobb-Douglas function." />
+  <meta name="keywords" content="investment profitability methods, payback period, accounting rate of return, NPV, IRR, investment risk, Cobb-Douglas, expected return, probability, finance research, Foxorox" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <main style="padding: 2rem; max-width: 900px; margin: auto; font-family: sans-serif; line-height: 1.6;">
+    <h1>Investment Profitability Methods</h1>
+    <p>
+      This paper presents detailed methods for evaluating investment profitability. It includes the Payback Period Method, Accounting Rate of Return (ARR), Net Present Value (NPV), Internal Rate of Return (IRR), and approaches for investment risk estimation based on probabilistic models and the Cobb–Douglas production function.
+    </p>
+
+    <h2>4.1 Payback Period Method</h2>
+    <p>
+      The payback period method is the simplest approach to assessing investment profitability. It measures the period required for net cash inflows to cover the initial investment cost. A project is acceptable when the payback period is shorter than the predefined critical value.
+    </p>
+    <p>
+      Investment risk, expressed as a function \( E[X] \) and variance \( V[X] \), where \( E[X] \) is the expected value and \( X \) the examined population, depends on the interest rate \( i \), which justifies the payback period. It is assumed that all investment risk is included in the interest rate, meaning all risk factors are reflected within it.
+    </p>
+    <p>
+      Empirical evidence shows that countries with high investment risk—whether political or macroeconomic—maintain elevated interest rates to prevent capital outflows. In such circumstances, governments or central banks increase the interest rate \( I \). This action is usually preceded by currency depreciation or a decline in government bond prices (yield increase).
+    </p>
+
+    <p>
+      Let the minimum investment return rate \( r_i \) for a given period \( i \) be equal to the interest rate \( I_i \). Then:
+    </p>
+
+    <pre><code>E(r) = Σ₍ᵢ₌₁₎ⁿ (hᵢ · rᵢ)</code></pre>
+
+    <p>where:</p>
+    <ul>
+      <li><strong>E(r)</strong> – expected rate of return,</li>
+      <li><strong>hᵢ</strong> – probability of occurrence of a specific rate of return,</li>
+      <li><strong>rᵢ</strong> – rate of return in period i.</li>
+    </ul>
+
+    <p>
+      Assuming \( I_i = r_i \), the probabilities \( h_i \) can be modeled as determined by economic growth factors defined by the <strong>Cobb–Douglas production function</strong>:
+    </p>
+
+    <pre><code>F = f(A, K, L, R)</code></pre>
+
+    <p>where:</p>
+    <ul>
+      <li><strong>A</strong> – technological level,</li>
+      <li><strong>K</strong> – capital input,</li>
+      <li><strong>L</strong> – labor input,</li>
+      <li><strong>R</strong> – natural resource input.</li>
+    </ul>
+
+    <p>
+      Typically, the Cobb–Douglas function is presented with two variables:
+    </p>
+    <pre><code>F(K, L) = a · K^α · L^β,   K, L ≥ 0</code></pre>
+    <p>
+      where α and β are scaling parameters and α + β = 1 implies constant returns to scale.  
+      For α + β > 1, increasing returns to scale occur, and for α + β &lt; 1, diminishing returns.
+    </p>
+
+    <p>
+      In the general form:
+    </p>
+    <pre><code>F(X₁, X₂, …, Xₙ) = a · Π₍ᵢ₌₁₎ⁿ Xᵢ^(αᵢ),   Xᵢ ≥ 0</code></pre>
+    <p>
+      The function is non-negative and monotonically increasing.  
+      If Σαᵢ = 1, then the function is homogeneous of degree one:
+    </p>
+    <pre><code>∀z>0: F(zX₁, zX₂, …, zXₙ) = z · F(X₁, X₂, …, Xₙ)</code></pre>
+
+    <h3>Probabilistic Space</h3>
+    <p>
+      Define a probabilistic space (Ω, F, P), where F is a σ-algebra defined on Ω, and elements of F are pairs (Kᵢ, Lᵢ) representing productive capital and labor inputs for a given period i.
+    </p>
+    <p>
+      We can define a probability function P for which:
+    </p>
+    <pre><code>P(Kᵢ, Lᵢ) ≥ 0  for all (Kᵢ, Lᵢ) ∈ F
+P(Ω) = 1  for Ω ∈ F
+P(⋃₍ᵢ∈I₎ (Kᵢ, Lᵢ)) = Σ₍ᵢ∈I₎ P(Kᵢ, Lᵢ)  where (Kᵢ, Lᵢ) ∩ (Kⱼ, Lⱼ) = ∅ for i ≠ j</code></pre>
+
+    <p>
+      Thus, we define a proper probability measure function dependent on (K, L), allowing the modeling of productivity growth using the Cobb–Douglas function.
+    </p>
+
+    <pre><code>P(Kᵢ, Lᵢ) = hᵢ</code></pre>
+    <p>Then:</p>
+    <pre><code>E(r) = Σ₍ᵢ₌₁₎ⁿ P(Kᵢ, Lᵢ) · rᵢ</code></pre>
+
+    <p>
+      From this probabilistic model, we can forecast the expected return relative to the economic growth rate.  
+      For this report, a simplified assumption was used — probabilities are defined without direct reference to Kᵢ and Lᵢ.
+    </p>
+
+    <h3>Macroeconomic Scenarios</h3>
+    <ul>
+      <li>Hyperinflation – I &gt; 1000% per year</li>
+      <li>Controlled inflation – I ≤ 100% per year</li>
+      <li>Low inflation – I ≤ 10% per year</li>
+      <li>Stable inflation – I ≤ 2% per year</li>
+      <li>No inflation – I ≈ 0%</li>
+      <li>Deflation – I from -0.5% to -0.1%</li>
+      <li>High deflation – I ≈ -1%</li>
+      <li>Hyperdeflation – I ≈ -10% (theoretical)</li>
+    </ul>
+    <p>
+      States 7 and 8 are considered theoretical and rarely occur in modern economies. Historically, state 1 (hyperinflation) has occurred multiple times, so its probability is considered much higher.
+    </p>
+
+    <h2>4.2 Accounting Rate of Return (ARR)</h2>
+    <p>
+      The ARR method is based on a company’s accounting data and evaluates its financial performance fundamentals. ARR expresses the relationship between average net income (NI) obtained from an investment and its average book value (BV). A project is acceptable when ARR exceeds the company’s minimum acceptable rate of return.
+    </p>
+
+    <pre><code>NI = Σ₍ᵢ₌₁₎ᴺ NIᵢ / (N−1)
+BV = Σ₍ᵢ₌₁₎ᴺ BVᵢ / (N−1)
+rₐᵣᵣ = NI / BV = (Σ NIᵢ / (N−1)) / (Σ BVᵢ / (N−1))</code></pre>
+
+    <p>
+      The book value BVᵢ depends on income in the next period:
+    </p>
+    <pre><code>BVᵢ₊₁ = f(NIᵢ)</code></pre>
+    <p>
+      where f(NIᵢ) represents the growth function of income from the project. Since expected income E(NI) has an associated probability, we can write:
+    </p>
+    <pre><code>BVᵢ₊₁ = f(E(NI))</code></pre>
+    <p>and</p>
+    <pre><code>E(NI) = Σ₍ᵢ₌₁₎ⁿ P(Kᵢ, Lᵢ) · rᵢ</code></pre>
+    <p>thus:</p>
+    <pre><code>BVᵢ₊₁ = f(Σ₍ᵢ₌₁₎ⁿ P(Kᵢ, Lᵢ) · rᵢ)</code></pre>
+
+    <h2>4.3 Net Present Value (NPV)</h2>
+    <p>
+      NPV is the sum of discounted net cash flows (NCFₜ) generated by a project:
+    </p>
+    <pre><code>NPV = Σ₍ₜ₌₀₎ᴺ (NCFₜ / (1 + r)ᵗ)</code></pre>
+    <p>
+      For continuous distributions:
+    </p>
+    <pre><code>NPV(r) = ∫₀^∞ (1 + r)^(-t) · NCF(t) dt</code></pre>
+    <p>
+      where NCF(t) = 0 after the investment concludes.  
+      Using Laplace transformation:
+    </p>
+    <pre><code>F(s) = L{f(t)} = ∫₀^∞ e^(−st) · f(t) dt,   with   s = ln(1 + i)</code></pre>
+
+    <h2>4.4 Internal Rate of Return (IRR)</h2>
+    <p>
+      IRR is the discount rate at which NPV = 0:
+    </p>
+    <pre><code>Σ₍ₜ₌₀₎ᴺ (NCFₜ / (1 + IRR)ᵗ) = 0</code></pre>
+    <p>
+      For continuous cash flows:
+    </p>
+    <pre><code>NPV(IRR) = ∫₀^∞ (1 + IRR)^(-t) · NCF(t) dt</code></pre>
+
+    <h2>4.5 Investment Risk Estimation</h2>
+    <p>
+      Investment risk for a random variable X can be measured as a function of its expected value E[X]. The most common measure is the standard deviation σ, a function of variance V[X].
+    </p>
+    <h3>Discrete Distribution</h3>
+    <pre><code>σ = √(Σ₍ᵢ₌₁₎ⁿ ((xᵢ − E[X])² · pᵢ))
+E[X] = Σ₍ᵢ₌₁₎ⁿ (xᵢ · pᵢ)
+σ = √((Σ₍ᵢ₌₁₎ⁿ xᵢ² pᵢ) − (E[X])²)</code></pre>
+    <p>
+      The left expression represents variance V[X].
+    </p>
+    <h3>Continuous Distribution</h3>
+    <pre><code>σ = √(∫₋∞^+∞ (x − E(x))² f(x) dx)
+E(x) = ∫₋∞^+∞ x f(x) dx</code></pre>
+
+    <p>
+      In investment projects, the random variable X often represents profit levels, sales revenue, or net income.  
+      The probability of outcomes depends on economic growth, exchange rates, and less quantifiable risks such as political or technological uncertainty.
+    </p>
+
+    <footer style="margin-top: 3rem; font-size: 0.9rem;">
+      <p><strong>Foxorox Finance</strong> — Advanced financial and economic insights for modern investors.</p>
+      <p>Copyright &copy; 2025 Foxorox.com — All rights reserved.</p>
+    </footer>
+  </main>
+</body>
+</html>
