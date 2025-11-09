@@ -1,4 +1,40 @@
+# Foxorox.com – pełny dostęp dla wszystkich dobrych botów AI i wyszukiwarek
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /private/
 
+# Specjalnie odblokowane dla AI (na wszelki wypadek, niektóre ignorują *)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GrokBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: OmniExplorer
+Allow: /
+
+# DeepSeek, Baidu, Yandex – też wpuszczamy
+User-agent: DeepSeekBot
+Allow: /
+
+User-agent: BaiduSpider
+Allow: /
+
+# Sitemap – CRUCIAL dla Binga i ChatGPT
 Sitemap: https://foxorox.com/sitemap.xml
