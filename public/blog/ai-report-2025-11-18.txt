@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hedgehog Theory: A Geometric and Probabilistic Framework for Portfolios in a Multiverse of Markets</title>
+  <meta name="author" content="Paweł Demczuk, PhD" />
+  <meta name="description" content="A geometric and probabilistic theory of portfolios modeled as hedgehogs in n-dimensional space, extended to parallel markets inspired by multiverse and string-theoretic ideas." />
+  <!-- Optional: MathJax for LaTeX-style equations -->
+  <script>
+    window.MathJax = {
+      tex: {inlineMath: [['$', '$'], ['\\(', '\\)']]}
+    };
+  </script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    h1, h2, h3, h4 {
+      font-weight: 600;
+    }
+    code {
+      font-family: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.95em;
+      background: #f5f5f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    .abstract {
+      border-left: 4px solid #ccc;
+      padding-left: 1rem;
+      margin: 1rem 0 2rem;
+      font-size: 0.95em;
+      color: #333;
+    }
+    .author {
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    .date {
+      color: #555;
+      font-size: 0.9em;
+      margin-bottom: 1.5rem;
+    }
+    hr {
+      margin: 2rem 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Hedgehog Theory: A Geometric and Probabilistic Framework for Portfolios in a Multiverse of Markets</h1>
+
+  <div class="author">Paweł Demczuk, PhD</div>
+  <div class="date">Draft version</div>
+
+  <div class="abstract">
+    <strong>Abstract.</strong>
+    This paper introduces a new mathematical–financial structure called a <em>Hedgehog</em>.
+    A hedgehog is a representation of a portfolio in $\mathbb{R}^n$, where each financial instrument is modeled as a direction (a spine), and its weight in the portfolio is a coordinate along that direction. 
+    We allow both positive and negative weights, corresponding to long and short positions, and we keep the full $n$-dimensional geometry instead of projecting down to two dimensions (risk–return).
+    We then extend the construction to <em>parallel hedgehogs</em>, i.e., independent financial structures living on different time lines inspired by multiverse and string-theoretic interpretations.
+    We show that the algebraic combination of two hedgehogs again yields a hedgehog, now living in an extended space associated with alternative lines of time.
+  </div>
+
+  <hr />
+
+  <h2>1. Introduction</h2>
+
+  <p>
+    Classical portfolio models such as Markowitz's mean–variance framework typically compress all information about a set of instruments into a two-dimensional plane of expected return and risk (variance).
+    While analytically convenient, this projection hides the underlying geometric structure of portfolios in $\mathbb{R}^n$.
+  </p>
+
+  <p>
+    In this work we keep the full $n$-dimensional representation and interpret it as a geometric object that we call a <strong>Hedgehog</strong>.
+    Each financial instrument corresponds to a direction (spine) in $\mathbb{R}^n$, and each portfolio is a point in this space describing how far we extend along each spine (allowing both positive and negative extension).
+  </p>
+
+  <p>
+    The main contributions of this paper are:
+  </p>
+  <ul>
+    <li>the formal definition of a hedgehog as a geometric–probabilistic structure,</li>
+    <li>the description of its linear and quadratic functionals (expected return and variance),</li>
+    <li>the extension of the construction to parallel hedgehogs representing different “worlds” or time lines,</li>
+    <li>a numerical example in $\mathbb{R}^3$,</li>
+    <li>the discussion of optimization algorithms on hedgehog geometry, including both classical convex and heuristic methods.</li>
+  </ul>
+
+  <hr />
+
+  <h2>2. The Hedgehog: Basic Definitions</h2>
+
+  <h3>2.1. The weight space of a hedgehog</h3>
+
+  <p>
+    Let $S = \{S_1, \dots, S_n\}$ be a finite collection of financial instruments (e.g., stocks).
+    We define the <strong>weight space</strong> of the hedgehog as
+  </p>
+
+  <p style="text-align:center;">
+    $\mathcal{W} = \mathbb{R}^n.$
+  </p>
+
+  <p>
+    A vector
+    $$
+      w = (w_1, \dots, w_n) \in \mathbb{R}^n
+    $$
+    represents a portfolio state of the hedgehog, where $w_i$ is the weight of instrument $S_i$.
+    We allow $w_i \in \mathbb{R}$, so both long ($w_i &gt; 0$) and short ($w_i &lt; 0$) positions are possible.
+  </p>
+
+  <h3>2.2. Spines of the hedgehog</h3>
+
+  <p>
+    For each instrument $S_i$, define the standard basis vector
+  </p>
+
+  <p style="text-align:center;">
+    $e_i = (0, \dots, 0, 1, 0, \dots, 0)$,
+  </p>
+
+  <p>
+    with $1$ in the $i$-th coordinate and $0$ elsewhere. We call $e_i$ the <strong>unit spine</strong> corresponding to $S_i$.
+  </p>
+
+  <p>
+    The line
+  </p>
+
+  <p style="text-align:center;">
+    $L_i = \{\alpha e_i \mid \alpha \in \mathbb{R}\}$
+  </p>
+
+  <p>
+    represents all possible portfolios that only involve instrument $S_i$.
+    Geometrically, each line $L_i$ is a spine of the hedgehog, and a point on this line is the length and direction (sign) of that spine.
+  </p>
+
+  <h3>2.3. The head of the hedgehog</h3>
+
+  <p>
+    In practice, we often impose a budget (normalization) constraint
+  </p>
+
+  <p style="text-align:center;">
+    $\sum_{i=1}^n w_i = 1.$
+  </p>
+
+  <p>
+    The set of all portfolio states that satisfy this constraint is the affine hyperplane
+  </p>
+
+  <p style="text-align:center;">
+    $H = \{ w \in \mathbb{R}^n \mid \sum_{i=1}^n w_i = 1 \}.$
+  </p>
+
+  <p>
+    We call $H$ the <strong>head of the hedgehog</strong>.
+    It is an $(n-1)$-dimensional affine subspace living inside $\mathbb{R}^n$.
+  </p>
+
+  <hr />
+
+  <h2>3. Probabilistic Structure of the Hedgehog</h2>
+
+  <p>
+    Let $R_1, \dots, R_n$ be random variables representing (for instance) period returns of instruments $S_1, \dots, S_n$ on some probability space.
+  </p>
+
+  <h3>3.1. The tail space of the hedgehog</h3>
+
+  <p>
+    We define the <strong>tail space</strong> of the hedgehog as the linear span
+  </p>
+
+  <p style="text-align:center;">
+    $\mathcal{V} = \mathrm{span}\{ R_1, \dots, R_n \}.$
+  </p>
+
+  <p>
+    Any portfolio state $w \in \mathcal{W}$ induces a portfolio return via the linear combination
+  </p>
+
+  <p style="text-align:center;">
+    $R(w) = \sum_{i=1}^n w_i R_i.$
+  </p>
+
+  <h3>3.2. Linear mapping from weights to random returns</h3>
+
+  <p>
+    Consider the mapping
+  </p>
+
+  <p style="text-align:center;">
+    $T : \mathcal{W} \to \mathcal{V}, \quad T(w) = \sum_{i=1}^n w_i R_i.$
+  </p>
+
+  <h4>Theorem 1 (Linearity of the portfolio transform).</h4>
+  <p>
+    The mapping $T$ is linear.
+  </p>
+
+  <p><strong>Proof.</strong> This follows immediately from the definition of a linear combination:
+    for any $w, v \in \mathcal{W}$ and $\lambda \in \mathbb{R}$,
+  </p>
+
+  <p style="text-align:center;">
+    $T(w + v) = \sum_i (w_i + v_i) R_i = \sum_i w_i R_i + \sum_i v_i R_i = T(w) + T(v),$
+  </p>
+  <p style="text-align:center;">
+    $T(\lambda w) = \sum_i (\lambda w_i) R_i = \lambda \sum_i w_i R_i = \lambda T(w).$
+  </p>
+
+  <p>
+    Hence $T$ is linear. $\square$
+  </p>
+
+  <h3>3.3. Expected return and variance as fields on the hedgehog</h3>
+
+  <p>
+    Let
+  </p>
+
+  <p style="text-align:center;">
+    $\mu = ( \mathbb{E}[R_1], \dots, \mathbb{E}[R_n] )^\top$
+  </p>
+
+  <p>
+    be the vector of expected returns, and let $\Sigma \in \mathbb{R}^{n \times n}$ be the covariance matrix of $(R_1, \dots, R_n)$.
+  </p>
+
+  <p>
+    For a portfolio state $w \in \mathcal{W}$, we define:
+  </p>
+
+  <ul>
+    <li>
+      <strong>Expected return of the hedgehog state</strong>:
+      <p style="text-align:center;">
+        $\mathbb{E}[R(w)] = \mu^\top w.$
+      </p>
+    </li>
+    <li>
+      <strong>Risk energy of the hedgehog state (variance)</strong>:
+      <p style="text-align:center;">
+        $\mathrm{Var}(R(w)) = w^\top \Sigma w.$
+      </p>
+    </li>
+  </ul>
+
+  <p>
+    Thus, the hedgehog is equipped with:
+  </p>
+  <ul>
+    <li>a linear functional $w \mapsto \mu^\top w$ (profit field),</li>
+    <li>a quadratic form $w \mapsto w^\top \Sigma w$ (risk energy field).</li>
+  </ul>
+
+  <hr />
+
+  <h2>4. Parallel Hedgehogs and Multiverse Markets</h2>
+
+  <p>
+    We now extend the construction by assuming the existence of parallel financial worlds, inspired by multiverse and string-theoretic ideas.
+    Each “world” carries its own hedgehog, potentially with its own time line or dynamics.
+  </p>
+
+  <h3>4.1. Two parallel hedgehogs</h3>
+
+  <p>
+    Let
+  </p>
+
+  <p style="text-align:center;">
+    $\mathcal{W}_1 = \mathbb{R}^n, \quad \mathcal{W}_2 = \mathbb{R}^m$
+  </p>
+
+  <p>
+    be the weight spaces of two hedgehogs, associated with two parallel markets (or time lines).
+    For instance, $\mathcal{W}_1$ may correspond to our “current” universe, and $\mathcal{W}_2$ to a parallel financial universe in a different time branch.
+  </p>
+
+  <h3>4.2. The combined multiverse hedgehog</h3>
+
+  <p>
+    We define the combined weight space as the (external) direct sum
+  </p>
+
+  <p style="text-align:center;">
+    $\mathcal{W}_\oplus = \mathcal{W}_1 \oplus \mathcal{W}_2 \cong \mathbb{R}^{n+m}.$
+  </p>
+
+  <p>
+    A state in the multiverse hedgehog is written as
+  </p>
+
+  <p style="text-align:center;">
+    $\tilde{w} = \begin{pmatrix} w \\ w' \end{pmatrix} \in \mathbb{R}^{n+m},$
+  </p>
+
+  <p>
+    where $w \in \mathbb{R}^n$ is a state of the first hedgehog and $w' \in \mathbb{R}^m$ is a state of the second.
+  </p>
+
+  <h4>Theorem 2 (Stability of the hedgehog under direct sum).</h4>
+
+  <p>
+    If $\mathcal{W}_1$ and $\mathcal{W}_2$ are weight spaces of hedgehogs, then $\mathcal{W}_\oplus$ is also a hedgehog weight space.
+  </p>
+
+  <p><strong>Proof (sketch).</strong>
+    The basis spines of the two hedgehogs form a basis of $\mathbb{R}^{n+m}$ by concatenation, so the combined space is again isomorphic to a standard Euclidean space with independent directions (spines).
+    Each component space has its own return random variables and covariance structure; if we define:
+  </p>
+
+  <ul>
+    <li>a combined vector of expected returns $\tilde{\mu}$,</li>
+    <li>a combined covariance matrix $\tilde{\Sigma}$ (possibly including cross-covariances between worlds or time lines),</li>
+  </ul>
+
+  <p>
+    then the expected return and variance of $\tilde{w}$ again take the form
+  </p>
+
+  <p style="text-align:center;">
+    $\mathbb{E}[\tilde{R}(\tilde{w})] = \tilde{\mu}^\top \tilde{w}, \quad \mathrm{Var}(\tilde{R}(\tilde{w})) = \tilde{w}^\top \tilde{\Sigma} \tilde{w}.$
+  </p>
+
+  <p>
+    Hence the combined structure is again a hedgehog in an extended space.
+    Conceptually, we obtain a hedgehog that “projects” onto two (or more) time lines and markets at once.
+    $\square$
+  </p>
+
+  <p>
+    Intuitively, adding two hedgehogs yields a new hedgehog that operates on a different line of time, capturing positions across parallel worlds simultaneously.
+  </p>
+
+  <hr />
+
+  <h2>5. Numerical Example in $\mathbb{R}^3$</h2>
+
+  <p>
+    We now provide a concrete numerical example of a hedgehog with three instruments.
+  </p>
+
+  <h3>5.1. Market parameters</h3>
+
+  <p>
+    Consider a hedgehog with
+  </p>
+  <p style="text-align:center;">
+    $S = \{ S_1, S_2, S_3 \}.$
+  </p>
+
+  <p>
+    Suppose the expected returns are
+  </p>
+
+  <p style="text-align:center;">
+    $\mu = 
+      \begin{pmatrix}
+        0.08 \\
+        0.12 \\
+        0.15
+      \end{pmatrix},
+    $
+  </p>
+
+  <p>
+    and the covariance matrix is
+  </p>
+
+  <p style="text-align:center;">
+    $\Sigma =
+      \begin{pmatrix}
+        0.04 & 0.01 & 0.00 \\
+        0.01 & 0.09 & 0.02 \\
+        0.00 & 0.02 & 0.16
+      \end{pmatrix}.
+    $
+  </p>
+
+  <h3>5.2. A specific hedgehog state</h3>
+
+  <p>
+    Consider the portfolio weights
+  </p>
+
+  <p style="text-align:center;">
+    $w =
+      \begin{pmatrix}
+        0.5 \\
+        0.3 \\
+        0.2
+      \end{pmatrix},
+    \quad \sum_{i=1}^3 w_i = 1.$
+  </p>
+
+  <p>
+    This vector lies on the head of the hedgehog, since it satisfies the budget constraint.
+  </p>
+
+  <h3>5.3. Expected return</h3>
+
+  <p>
+    The expected return is given by
+  </p>
+
+  <p style="text-align:center;">
+    $\mathbb{E}[R(w)] = \mu^\top w.$
+  </p>
+
+  <p>
+    Computation:
+  </p>
+
+  <p style="text-align:center;">
+    $\mathbb{E}[R(w)]
+      = 0.08 \cdot 0.5
+      + 0.12 \cdot 0.3
+      + 0.15 \cdot 0.2
+      = 0.106.$
+  </p>
+
+  <p>
+    So this hedgehog state has an expected return of $10.6\%$.
+  </p>
+
+  <h3>5.4. Risk energy (variance)</h3>
+
+  <p>
+    The variance is
+  </p>
+
+  <p style="text-align:center;">
+    $\mathrm{Var}(R(w)) = w^\top \Sigma w.$
+  </p>
+
+  <p>
+    A straightforward matrix multiplication yields
+  </p>
+
+  <p style="text-align:center;">
+    $\mathrm{Var}(R(w)) \approx 0.0299,$
+  </p>
+
+  <p>
+    which gives a standard deviation of
+  </p>
+
+  <p style="text-align:center;">
+    $\sigma(w) = \sqrt{\mathrm{Var}(R(w))} \approx 0.173.$
+  </p>
+
+  <p>
+    Thus, the risk of this state of the hedgehog is approximately $17.3\%$.
+  </p>
+
+  <h3>5.5. Parallel hedgehogs: an illustrative extension</h3>
+
+  <p>
+    Assume now the existence of a second financial world with its own instruments
+  </p>
+
+  <p style="text-align:center;">
+    $S' = \{ S'_1, S'_2, S'_3 \},$
+  </p>
+
+  <p>
+    its own weight space $\mathcal{W}_2 = \mathbb{R}^3$, expected returns $\mu'$ and covariance matrix $\Sigma'$.
+  </p>
+
+  <p>
+    The first hedgehog lives in $\mathcal{W}_1 = \mathbb{R}^3$, the second in $\mathcal{W}_2 = \mathbb{R}^3$.
+    Their combined multiverse hedgehog resides in
+  </p>
+
+  <p style="text-align:center;">
+    $\mathcal{W}_\oplus = \mathbb{R}^3 \oplus \mathbb{R}^3 \cong \mathbb{R}^6.$
+  </p>
+
+  <p>
+    A multiverse state is
+  </p>
+
+  <p style="text-align:center;">
+    $\tilde{w} =
+      \begin{pmatrix}
+        w \\
+        w'
+      \end{pmatrix}
+    \in \mathbb{R}^6.$
+  </p>
+
+  <p>
+    If we define a combined expected return vector $\tilde{\mu}$ and a covariance matrix $\tilde{\Sigma}$ (which may encode cross-world correlations or time-line couplings),
+    then the expected return and variance retain the hedgehog form:
+  </p>
+
+  <p style="text-align:center;">
+    $\mathbb{E}[\tilde{R}(\tilde{w})] = \tilde{\mu}^\top \tilde{w},
+      \quad
+      \mathrm{Var}(\tilde{R}(\tilde{w})) = \tilde{w}^\top \tilde{\Sigma} \tilde{w}.$
+  </p>
+
+  <p>
+    The resulting object is a hedgehog acting simultaneously across two time lines or parallel financial worlds.
+  </p>
+
+  <hr />
+
+  <h2>6. Optimization Algorithms on Hedgehog Geometry</h2>
+
+  <p>
+    The hedgehog geometry is particularly suitable for optimization, because:
+  </p>
+  <ul>
+    <li>the weight space $\mathcal{W} = \mathbb{R}^n$ is linear,</li>
+    <li>expected return is a linear functional,</li>
+    <li>risk is a quadratic form,</li>
+    <li>practical constraints are often linear or convex.</li>
+  </ul>
+
+  <h3>6.1. Classical mean–variance optimization on the hedgehog</h3>
+
+  <p>
+    A standard Markowitz problem can be written as:
+  </p>
+
+  <p style="text-align:center;">
+    $\min_{w \in \mathcal{W}} \quad w^\top \Sigma w$
+  </p>
+
+  <p style="text-align:center;">
+    $\text{subject to} \quad \mu^\top w \ge r^\*, \quad \sum_{i=1}^n w_i = 1, \quad w \in \mathcal{C},$
+  </p>
+
+  <p>
+    where:
+  </p>
+  <ul>
+    <li>$r^\*$ is a target minimum expected return,</li>
+    <li>$\mathcal{C}$ encodes additional constraints (e.g., no-shorting constraints $w_i \ge 0$, sector limits, etc.).</li>
+  </ul>
+
+  <p>
+    This is a quadratic programming (QP) problem, which can be solved by:
+  </p>
+  <ul>
+    <li>Lagrange multipliers and KKT conditions,</li>
+    <li>interior-point methods,</li>
+    <li>other convex optimization algorithms.</li>
+  </ul>
+
+  <p>
+    Geometrically, the optimizer is a point on the head of the hedgehog that minimizes risk energy subject to a profit-level constraint.
+  </p>
+
+  <h3>6.2. Gradient-based methods on the hedgehog</h3>
+
+  <p>
+    The gradients of the main fields are:
+  </p>
+
+  <p style="text-align:center;">
+    $\nabla_w \big( \mu^\top w \big) = \mu,$
+  </p>
+
+  <p style="text-align:center;">
+    $\nabla_w \big( w^\top \Sigma w \big) = 2 \Sigma w.$
+  </p>
+
+  <p>
+    For example, when maximizing the Sharpe ratio relative to a risk-free rate $r_f$:
+  </p>
+
+  <p style="text-align:center;">
+    $\max_w \; \frac{\mu^\top w - r_f}{\sqrt{w^\top \Sigma w}},$
+  </p>
+
+  <p>
+    one can use:
+  </p>
+  <ul>
+    <li>gradient ascent,</li>
+    <li>projected gradient methods (projecting back onto $H$ to maintain $\sum w_i = 1$),</li>
+    <li>quasi-Newton methods (e.g., BFGS).</li>
+  </ul>
+
+  <p>
+    In hedgehog language, the gradient “pulls” the current portfolio state along the spines in directions that improve the desired metric (e.g., return-to-risk ratio).
+  </p>
+
+  <h3>6.3. Evolutionary and heuristic algorithms on hedgehogs</h3>
+
+  <p>
+    In realistic settings, constraints may be non-linear or the objective may be non-smooth (e.g., CVaR, drawdowns, path-dependent risk).
+    In such cases, evolutionary and heuristic algorithms are useful:
+  </p>
+  <ul>
+    <li>genetic algorithms,</li>
+    <li>simulated annealing,</li>
+    <li>particle swarm optimization (PSO),</li>
+    <li>other metaheuristics.</li>
+  </ul>
+
+  <p>
+    Interpreted through hedgehog geometry:
+  </p>
+  <ul>
+    <li>a population of individuals corresponds to a set of hedgehog states (or multiple hedgehogs),</li>
+    <li>crossover operators mix spines between hedgehogs,</li>
+    <li>mutation operators perturb the lengths of selected spines,</li>
+    <li>the fitness function is any functional of $(\mathbb{E}[R(w)], \mathrm{Var}(R(w)], \dots)$ on $\mathcal{W}$.</li>
+  </ul>
+
+  <h3>6.4. Multiverse optimization on parallel hedgehogs</h3>
+
+  <p>
+    When we consider multiple hedgehogs in parallel worlds, the optimization domain is
+  </p>
+
+  <p style="text-align:center;">
+    $\mathcal{W}_\oplus \cong \mathbb{R}^{n+m+\dots}.$
+  </p>
+
+  <p>
+    One may define a generalized utility function
+  </p>
+
+  <p style="text-align:center;">
+    $\max_{\tilde{w} \in \mathcal{W}_\oplus} \; U\big( \mathbb{E}[\tilde{R}(\tilde{w})], \mathrm{Var}(\tilde{R}(\tilde{w})], \dots \big),$
+  </p>
+
+  <p>
+    where $U$ encodes an investor’s preferences over outcomes that span several time lines or parallel markets.
+    Optimization algorithms (convex or heuristic) then search the extended hedgehog for the best configuration across multiple worlds.
+  </p>
+
+  <hr />
+
+  <h2>7. Conclusions and Future Work</h2>
+
+  <p>
+    We have introduced <strong>Hedgehog Theory</strong> as a geometric and probabilistic framework for portfolios:
+  </p>
+  <ul>
+    <li>Portfolios live in an $n$-dimensional Euclidean space with each instrument as a spine.</li>
+    <li>The head of the hedgehog is the affine hyperplane given by a budget constraint.</li>
+    <li>Expected return is a linear functional, and variance is a quadratic form on the hedgehog.</li>
+    <li>Parallel hedgehogs model portfolios in multiple financial worlds or time lines, and their direct sum is again a hedgehog.</li>
+    <li>Optimization algorithms can be naturally interpreted as movements on the hedgehog geometry.</li>
+  </ul>
+
+  <p>
+    Several directions for further research are immediate:
+  </p>
+  <ol>
+    <li>
+      <strong>Nonlinear and topological hedgehogs.</strong>
+      Extending the framework beyond linear spaces to manifolds or spaces with non-Euclidean geometry, capturing nonlinear constraints or non-Gaussian risk.
+    </li>
+    <li>
+      <strong>Relativistic hedgehogs.</strong>
+      Introducing time dilation or relativistic discounting of returns when time lines differ across parallel worlds.
+    </li>
+    <li>
+      <strong>Quantum hedgehogs.</strong>
+      Modeling spines as operators on a Hilbert space, allowing superpositions of portfolio states, and exploring quantum-like uncertainty in financial decision-making.
+    </li>
+    <li>
+      <strong>Algorithmic development.</strong>
+      Designing dedicated “hedgehog algorithms” that exploit the structure of linear and quadratic functionals, possibly under multiverse constraints.
+    </li>
+  </ol>
+
+  <p>
+    The hedgehog provides a compact but expressive language for thinking about portfolios in high-dimensional and even multi-world financial settings.
+  </p>
+
+</body>
+</html>
