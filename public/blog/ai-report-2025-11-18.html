@@ -48,7 +48,7 @@ src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
-<h1>Hedgehog Theory — A Geometric and Probabilistic Framework for Portfolios in a Multiverse of Markets</h1>
+<h1>Part 1 --- Hedgehog Theory — A Geometric and Probabilistic Framework for Portfolios in a Multiverse of Markets</h1>
 <p>Formal research model integrating geometry, probability, and multiverse financial structure modeling.</p>
 
 <div class="section">
@@ -164,7 +164,373 @@ Future directions include:
 <p>
 The theory suggests that portfolios may not be flat numerical entities — but cosmological geometric objects evolving through time and possibility.
 </p>
+<h1>Part 2 --- The Hedgehog Geometry of Financial Systems:<br>From Abelian Groups to Lie Algebras and Riemannian Risk Metrics</h1>
+  <div class="meta">
+    Paweł Demczuk, master &middot; 2025
+  </div>
 
+  <div class="abstract">
+    <strong>Abstract.</strong>
+    This paper introduces a novel mathematical framework for representing financial portfolios using a geometric object called a <em>Hedgehog</em>.
+    The Hedgehog formalism preserves the full dimensional structure of portfolios in $\mathbb{R}^n$, avoiding classical projection onto simplified two-dimensional risk–return space.
+    We demonstrate that the space of Hedgehogs forms an Abelian group under addition, extend the structure to a Lie algebra when non-commutative sequencing of portfolio transformations emerges, and finally endow the space with a Riemannian metric induced by covariance and correlation between financial instruments.
+    This establishes Hedgehog Theory as a geometric, algebraic, and differential model capable of describing both local and global dynamics of portfolios, including those evolving across multi-timeline or multiverse financial models.
+  </div>
+
+  <h2>1. Introduction</h2>
+
+  <p>
+    Classical portfolio theory, particularly Markowitz mean–variance optimization, projects high-dimensional financial information into a two-dimensional representation of expected return and variance.
+    This approach compresses structural relationships between assets, eliminating geometric and algebraic information inherent in the full space of exposures.
+  </p>
+
+  <p>
+    In contrast, <em>Hedgehog Theory</em> models a portfolio as a point in an $n$-dimensional Euclidean space
+    $\mathcal{W} = \mathbb{R}^n$, where each asset defines a direction (spine) and the associated weight determines its activation.
+    Both positive and negative coordinates are allowed, representing long and short positions.
+    This work develops the basic algebraic structure of Hedgehogs (Abelian group), a dynamic extension (Lie algebra) and a Riemannian metric derived from the risk structure.
+  </p>
+
+  <hr>
+
+  <h2>2. Definition of a Hedgehog</h2>
+
+  <p>
+    Let $S = \{S_1, \dots, S_n\}$ be a finite set of financial instruments.
+  </p>
+
+  <h3>2.1. Hedgehog weight space</h3>
+
+  <p>
+    The <em>weight space</em> of the Hedgehog is defined as
+  </p>
+
+  <p style="text-align:center;">
+    $\mathcal{W} = \mathbb{R}^n.$
+  </p>
+
+  <p>
+    Each vector $w = (w_1, \dots, w_n) \in \mathbb{R}^n$ represents a portfolio state of the Hedgehog, where $w_i$ is the weight of instrument $S_i$.
+    We allow $w_i \in \mathbb{R}$, so both long ($w_i &gt; 0$) and short ($w_i &lt; 0$) positions are possible.
+  </p>
+
+  <h3>2.2. Spines of the Hedgehog</h3>
+
+  <p>
+    For each instrument $S_i$, define the standard basis vector
+  </p>
+
+  <p style="text-align:center;">
+    $e_i = (0,\dots,0,1,0,\dots,0),$
+  </p>
+
+  <p>
+    with a $1$ in the $i$-th coordinate and $0$ elsewhere. The line
+  </p>
+
+  <p style="text-align:center;">
+    $L_i = \{ \alpha e_i \mid \alpha \in \mathbb{R} \}$
+  </p>
+
+  <p>
+    represents all possible portfolios that only involve instrument $S_i$.
+    Geometrically, each line $L_i$ is a spine of the Hedgehog, and a point on this line is the length and direction (sign) of that spine.
+  </p>
+
+  <h3>2.3. Head of the Hedgehog</h3>
+
+  <p>
+    In many settings, a budget (normalization) constraint is imposed:
+  </p>
+
+  <p style="text-align:center;">
+    $\sum_{i=1}^n w_i = 1.$
+  </p>
+
+  <p>
+    The set of all portfolio states that satisfy this constraint is the affine hyperplane
+  </p>
+
+  <p style="text-align:center;">
+    $H = \{ w \in \mathbb{R}^n \mid \sum_{i=1}^n w_i = 1 \}.$
+  </p>
+
+  <p>
+    We call $H$ the <em>head</em> of the Hedgehog.
+    It is an $(n-1)$-dimensional affine subspace living inside $\mathbb{R}^n$.
+  </p>
+
+  <hr>
+
+  <h2>3. Probabilistic Structure of a Hedgehog</h2>
+
+  <p>
+    Let $R_1, \dots, R_n$ be random variables representing returns of instruments $S_1, \dots, S_n$ on a given time horizon.
+    We define the random return space as
+  </p>
+
+  <p style="text-align:center;">
+    $\mathcal{V} = \mathrm{span}\{R_1,\dots,R_n\}.$
+  </p>
+
+  <p>
+    Any portfolio state $w \in \mathcal{W}$ induces a portfolio return via the linear combination
+  </p>
+
+  <p style="text-align:center;">
+    $R(w) = \sum_{i=1}^n w_i R_i.$
+  </p>
+
+  <p>
+    This defines a mapping
+  </p>
+
+  <p style="text-align:center;">
+    $T : \mathcal{W} \to \mathcal{V}, \quad T(w) = \sum_{i=1}^n w_i R_i.$
+  </p>
+
+  <h3>3.1. Linearity of the portfolio transform</h3>
+
+  <p><strong>Theorem 1.</strong> The mapping $T$ is linear.</p>
+  <p><strong>Proof.</strong>
+    For any $w, v \in \mathcal{W}$ and $\lambda \in \mathbb{R}$,
+  </p>
+
+  <p style="text-align:center;">
+    $T(w + v) = \sum_i (w_i + v_i) R_i = \sum_i w_i R_i + \sum_i v_i R_i = T(w) + T(v),$<br>
+    $T(\lambda w) = \sum_i (\lambda w_i) R_i = \lambda \sum_i w_i R_i = \lambda T(w).$
+  </p>
+
+  <p>
+    Hence, $T$ is linear. $\square$
+  </p>
+
+  <h3>3.2. Expected return and variance</h3>
+
+  <p>
+    Let
+  </p>
+
+  <p style="text-align:center;">
+    $\mu = (\mathbb{E}[R_1], \dots, \mathbb{E}[R_n])^\top$
+  </p>
+
+  <p>
+    be the vector of expected returns, and let $\Sigma \in \mathbb{R}^{n \times n}$ be the covariance matrix of $(R_1,\dots,R_n)$.
+    Then for any $w \in \mathcal{W}$:
+  </p>
+
+  <p style="text-align:center;">
+    $\mathbb{E}[R(w)] = \mu^\top w, \qquad \mathrm{Var}(R(w)) = w^\top \Sigma w.$
+  </p>
+
+  <p>
+    Thus, expected return is a linear functional on the Hedgehog space, while risk is represented as a quadratic form.
+  </p>
+
+  <hr>
+
+  <h2>4. Hedgehog Space as an Abelian Group</h2>
+
+  <p>
+    Let $\mathcal{H}$ denote the set of all Hedgehog states (e.g., $\mathcal{H} = \mathcal{W}$ or $\mathcal{H} = H$ with affine structure).
+    Consider vector addition as the group operation.
+  </p>
+
+  <p><strong>Theorem 2.</strong> $(\mathcal{H}, +)$ forms an Abelian group under vector addition.</p>
+
+  <p><strong>Sketch of proof.</strong></p>
+  <ul>
+    <li><em>Closure.</em> For $H_a, H_b \in \mathcal{H}$, their sum $H_a + H_b$ is still in $\mathcal{H}$ because $\mathbb{R}^n$ is closed under addition.</li>
+    <li><em>Identity.</em> The zero vector $H_0 = (0,\dots,0)$ acts as the identity: $H + H_0 = H$.</li>
+    <li><em>Inverse.</em> For $H = w$, the inverse is $-H = -w$, satisfying $H + (-H) = H_0$.</li>
+    <li><em>Associativity.</em> Follows from associativity of vector addition in $\mathbb{R}^n$.</li>
+    <li><em>Commutativity.</em> Follows from commutativity of vector addition: $H_a + H_b = H_b + H_a$.</li>
+  </ul>
+
+  <p>
+    Therefore, $(\mathcal{H}, +) \cong (\mathbb{R}^n, +)$ is an Abelian group representing static combinations of portfolios.
+  </p>
+
+  <hr>
+
+  <h2>5. Hedgehog Dynamics and Lie Algebra Structure</h2>
+
+  <p>
+    Static Hedgehogs capture only the combinatorial structure of portfolios.
+    To describe dynamical behavior, sequencing of transformations, and interacting markets, we introduce differential operators on Hedgehog space and a Lie algebra structure.
+  </p>
+
+  <h3>5.1. Differential operators</h3>
+
+  <p>
+    For each coordinate $w_i$, define the partial derivative operator:
+  </p>
+
+  <p style="text-align:center;">
+    $X_i = \frac{\partial}{\partial w_i}.$
+  </p>
+
+  <p>
+    Portfolio dynamics can be written as
+  </p>
+
+  <p style="text-align:center;">
+    $\dot{w}_i = f_i(w,t),$
+  </p>
+
+  <p>
+    which leads to a vector field on $\mathcal{W}$:
+  </p>
+
+  <p style="text-align:center;">
+    $\mathcal{X} = \sum_{i=1}^n f_i(w,t)\,\frac{\partial}{\partial w_i}.$
+  </p>
+
+  <h3>5.2. Lie bracket and non-commutativity</h3>
+
+  <p>
+    For two such vector fields $X$ and $Y$, define their Lie bracket as
+  </p>
+
+  <p style="text-align:center;">
+    $[X,Y] = XY - YX.$
+  </p>
+
+  <p>
+    In financial terms, $X$ and $Y$ can represent different rebalancing rules, risk constraints, or market-driven transformations.
+    When the order in which transformations are applied matters (e.g. due to leverage, liquidity or contagion effects),
+  </p>
+
+  <p style="text-align:center;">
+    $[X,Y] \neq 0.$
+  </p>
+
+  <p>
+    This non-commutativity motivates the introduction of a Lie algebra generated by such operators.
+  </p>
+
+  <h3>5.3. Hedgehog Lie algebra</h3>
+
+  <p>
+    Define
+  </p>
+
+  <p style="text-align:center;">
+    $\mathfrak{H} = \mathrm{span}\{X_1, \dots, X_n\}$
+  </p>
+
+  <p>
+    with the Lie bracket $[\cdot,\cdot]$ as above.
+    Under standard regularity conditions, $(\mathfrak{H}, [\cdot,\cdot])$ satisfies:
+  </p>
+
+  <ul>
+    <li>Antisymmetry: $[X,Y] = -[Y,X]$</li>
+    <li>Bilinearity: $[aX + bY,Z] = a[X,Z] + b[Y,Z]$</li>
+    <li>Jacobi identity: $[X,[Y,Z]] + [Y,[Z,X]] + [Z,[X,Y]] = 0$</li>
+  </ul>
+
+  <p>
+    Thus $\mathfrak{H}$ forms a Lie algebra describing the infinitesimal generators of Hedgehog dynamics in interacting markets.
+  </p>
+
+  <hr>
+
+  <h2>6. Riemannian Metric on Hedgehog Space</h2>
+
+  <p>
+    Risk and correlation between instruments can be interpreted as curvature of the Hedgehog space.
+    This suggests endowing $\mathcal{W}$ with a Riemannian metric induced by the covariance matrix.
+  </p>
+
+  <h3>6.1. Metric tensor</h3>
+
+  <p>
+    Define the metric tensor $g$ on $\mathcal{W}$ via
+  </p>
+
+  <p style="text-align:center;">
+    $g_{ij} = \Sigma_{ij}.$
+  </p>
+
+  <p>
+    Then, for an infinitesimal portfolio displacement $dw = (dw_1,\dots,dw_n)$, the squared line element is
+  </p>
+
+  <p style="text-align:center;">
+    $ds^2 = \sum_{i,j=1}^{n} \Sigma_{ij} \, dw_i \, dw_j.$
+  </p>
+
+  <p>
+    This provides a notion of distance in portfolio space shaped by variance and covariance.
+    Directions with high variance become “longer”, while strong correlations distort angles and distances.
+  </p>
+
+  <h3>6.2. Geodesics and optimal rebalancing</h3>
+
+  <p>
+    Given this Riemannian structure, natural rebalancing paths correspond to geodesics of the metric:
+  </p>
+
+  <p style="text-align:center;">
+    $\frac{d^2 w^k}{ds^2} + \Gamma^k_{ij}(w)\,\frac{dw^i}{ds}\frac{dw^j}{ds} = 0,$
+  </p>
+
+  <p>
+    where $\Gamma^k_{ij}$ are Christoffel symbols determined by $g$.
+    Intuitively, optimal portfolio transitions follow “shortest” or least-risk paths in a curved risk space rather than straight lines in $\mathbb{R}^n$.
+  </p>
+
+  <hr>
+
+  <h2>7. Multiverse Extension</h2>
+
+  <p>
+    To model multiple financial timelines or parallel markets, we extend the Hedgehog space as a direct sum of component spaces:
+  </p>
+
+  <p style="text-align:center;">
+    $\mathcal{W}_\oplus = \mathcal{W}_1 \oplus \mathcal{W}_2 \oplus \dots \cong \mathbb{R}^{n_1 + n_2 + \dots}.$
+  </p>
+
+  <p>
+    Each block $\mathcal{W}_k$ represents a distinct market, economic regime or hypothetical world.
+    The Riemannian metric generalizes to a block structure:
+  </p>
+
+  <p style="text-align:center;">
+    $g =
+    \begin{pmatrix}
+      \Sigma^{(1)} & C_{12} & \dots \\
+      C_{21} & \Sigma^{(2)} & \dots \\
+      \vdots & & \ddots
+    \end{pmatrix},$
+  </p>
+
+  <p>
+    where $\Sigma^{(k)}$ is the covariance matrix within world $k$ and $C_{ij}$ encodes cross-world covariances.
+    If $C_{ij} = 0$, markets are independent; if $C_{ij} \neq 0$, the worlds are probabilistically entangled.
+  </p>
+
+  <hr>
+
+  <h2>8. Conclusion</h2>
+
+  <p>
+    Hedgehog Theory reframes portfolio modeling as a geometric, algebraic and differential problem:
+  </p>
+
+  <ul>
+    <li>At the static level, Hedgehogs form an Abelian group under portfolio addition.</li>
+    <li>At the dynamical level, generators of portfolio transformations form a Lie algebra, capturing non-commutative effects.</li>
+    <li>At the geometric level, risk and correlation define a Riemannian metric on portfolio space, with geodesics describing natural rebalancing paths.</li>
+    <li>At the multiverse level, direct sums of spaces and block metrics model interdependent timelines or parallel financial worlds.</li>
+  </ul>
+
+  <p>
+    This structure opens a path towards quantum extensions, Hamiltonian formulations of portfolio dynamics, and deep integration with AI-based optimization in curved, multi-world financial geometries.
+  </p>
 </div>
 
 <div class="footer">
