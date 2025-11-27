@@ -75,7 +75,11 @@ From a valuation standpoint, Broadridge trades at a forward P/E ratio in the ran
 Bottom Line
 
 Broadridge isn’t a flashy high-growth tech stock — it’s a dependable financial infrastructure backbone with durable earnings, strong recurring revenue, consistent dividend growth, and deep integration into the regulated financial system. With mid-single-digit recurring revenue growth, double-digit EPS expansion, a secure dividend policy, and strong ROIC, Broadridge offers investors an attractive long-term profile built on stability, scale, and mission-critical relevance. For investors prioritizing resilience, predictable compounding, and exposure to long-term financial technology trends, Broadridge Financial Solutions stands out as a compelling candidate.</p>
+
 <h2>📊 Comparison – Key Financial Metrics + Live Charts</h2>
+
+<!-- REQUIRED SCRIPT FOR TRADINGVIEW WIDGETS -->
+<script src="https://s3.tradingview.com/tv.js"></script>
 
 <table border="1" cellspacing="0" cellpadding="6" style="border-collapse: collapse; width: 100%; max-width: 1100px;">
   <thead>
@@ -90,47 +94,43 @@ Broadridge isn’t a flashy high-growth tech stock — it’s a dependable finan
   </thead>
   <tbody>
 
-    <!-- BROADRIDGE -->
     <tr>
       <td><strong>Broadridge (BR)</strong></td>
       <td>ROIC around <strong>13%</strong></td>
       <td>~1.5–1.7%</td>
       <td>Moderate valuation</td>
       <td>Moderate</td>
-      <td style="width: 250px;">
-        <div class="tradingview-widget-container">
-          <div id="chart-br"></div>
-          <script type="text/javascript">
-            new TradingView.widget({
-              "width": 250,
-              "height": 140,
-              "symbol": "NYSE:BR",
-              "interval": "D",
-              "timezone": "Etc/UTC",
-              "theme": "dark",
-              "style": "1",
-              "hide_top_toolbar": true,
-              "hide_legend": true,
-              "container_id": "chart-br"
-            });
-          </script>
-        </div>
+      <td style="width: 300px;">
+        <div id="chart-br"></div>
+        <script>
+          new TradingView.widget({
+            "width": "100%",
+            "height": 160,
+            "symbol": "NYSE:BR",
+            "interval": "D",
+            "timezone": "Etc/UTC",
+            "theme": "dark",
+            "style": "1",
+            "hide_top_toolbar": true,
+            "hide_legend": true,
+            "container_id": "chart-br"
+          });
+        </script>
       </td>
     </tr>
 
-    <!-- MASTERCARD -->
     <tr>
       <td><strong>Mastercard (MA)</strong></td>
       <td>Very high profitability (scalable model)</td>
       <td>~0.5–0.6%</td>
       <td>High — growth premium</td>
       <td>High</td>
-      <td>
+      <td style="width: 300px;">
         <div id="chart-ma"></div>
-        <script type="text/javascript">
+        <script>
           new TradingView.widget({
-            "width": 250,
-            "height": 140,
+            "width": "100%",
+            "height": 160,
             "symbol": "NYSE:MA",
             "interval": "D",
             "timezone": "Etc/UTC",
@@ -144,19 +144,18 @@ Broadridge isn’t a flashy high-growth tech stock — it’s a dependable finan
       </td>
     </tr>
 
-    <!-- FIS -->
     <tr>
       <td><strong>FIS (Fidelity National Information Services)</strong></td>
       <td>Variable due to restructuring</td>
       <td>Moderate</td>
       <td>Moderate / conservative</td>
       <td>Medium</td>
-      <td>
+      <td style="width: 300px;">
         <div id="chart-fis"></div>
-        <script type="text/javascript">
+        <script>
           new TradingView.widget({
-            "width": 250,
-            "height": 140,
+            "width": "100%",
+            "height": 160,
             "symbol": "NYSE:FIS",
             "interval": "D",
             "timezone": "Etc/UTC",
@@ -170,29 +169,28 @@ Broadridge isn’t a flashy high-growth tech stock — it’s a dependable finan
       </td>
     </tr>
 
-    <!-- FISERV -->
     <tr>
       <td><strong>Fiserv (FI)</strong></td>
       <td>ROE ~ <strong>14%</strong></td>
       <td>~3%</td>
       <td>Attractive valuation</td>
       <td>Moderate</td>
-      <td>
-        <div id="chart-fi"></div>
-        <script type="text/javascript">
-          new TradingView.widget({
-            "width": 250,
-            "height": 140,
-            "symbol": "NYSE:FI",
-            "interval": "D",
-            "timezone": "Etc/UTC",
-            "theme": "dark",
-            "style": "1",
-            "hide_top_toolbar": true,
-            "hide_legend": true,
-            "container_id": "chart-fi"
-          });
-        </script>
+      <td style="width: 300px;">
+        <div id="chart-fiserv"></div>
+		<script>
+  			new TradingView.widget({
+    			"width": "100%",
+   			 "height": 160,
+   			 "symbol": "NASDAQ:FISV",
+  			  "interval": "D",
+   			 "timezone": "Etc/UTC",
+   			 "theme": "dark",
+   			 "style": "1",
+   			 "hide_top_toolbar": true,
+  			  "hide_legend": true,
+  			  "container_id": "chart-fiserv"
+  });
+</script>
       </td>
     </tr>
 
@@ -213,11 +211,12 @@ Broadridge isn’t a flashy high-growth tech stock — it’s a dependable finan
   <li><strong>Fiserv</strong> sits in the middle: healthy returns, appealing income profile, and fair valuation.</li>
 </ul>
 
-  <img src="images/2025-11-27_2.png" alt="Broadridge Financial Solutions chart">
+<img src="images/2025-11-27_2.png" alt="Broadridge Financial Solutions chart">
 </div>
 
 <div class="footer">
 Generated automatically by <b>Foxorox AI Analyzer</b>.<br>
 <a href="/blog/index.html">← Back to blog index</a>
 </div>
-</body></html>
+</body>
+</html>
