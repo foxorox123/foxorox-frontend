@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Foxorox AI Forecast – 2025-12-06</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 40px;
+  background: #0d0d0d;
+  color: #eee;
+}
+h1 { color: #f58220; }
+h2 { color: #ffb366; margin-top: 30px; }
+h3 { color: #ffd39e; margin-top: 22px; }
+p { line-height: 1.6; }
+a { color: #f58220; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img {
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(245,130,32,0.3);
+  margin-top: 10px;
+}
+
+.section {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.footer {
+  margin-top: 50px;
+  text-align: center;
+  color: #777;
+  font-size: 0.9em;
+}
+
+/* top charts */
+.chart-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap: 22px;
+  margin-top: 20px;
+}
+.chart-box{
+  background:#111;
+  border-radius:10px;
+  padding:10px;
+  border:1px solid #333;
+}
+
+/* article styling */
+.tagline {
+  color: #bbb;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+.emoji {
+  font-size: 1.2em;
+  margin-right: 0.25em;
+}
+
+/* tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+  background:#111;
+}
+table th, table td {
+  border: 1px solid #333;
+  padding: 0.5rem 0.6rem;
+  vertical-align: top;
+}
+table th {
+  background: #262626;
+  font-weight: 600;
+  text-align: left;
+  color:#f58220;
+}
+table tr:hover {
+  background:#222;
+}
+
+/* code + pre */
+code {
+  font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  background: #242428;
+  padding: 0.1rem 0.25rem;
+  border-radius: 3px;
+}
+pre {
+  background: #141418;
+  padding: 0.75rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 0.95rem;
+}
+
+/* lists */
+ul, ol {
+  padding-left: 1.4rem;
+}
+</style>
+
+<script src="https://s3.tradingview.com/tv.js"></script>
+</head>
+<body>
+
+<h1>Foxorox AI Market Forecast – 2025-12-06</h1>
+<p>AI-generated analysis combining predictive modeling, mega-cap tech sentiment and deep AI datacenter economics.</p>
+<p>Our simply caclulation shows that part of companies mentioned below that participate in AI RACE would go with hard cash problems during one-two years or so. Possible crash is coming of this AI hype</p>
+
+<!-- ============ TOP TRADINGVIEW PANEL ============ -->
+
+<h2>📊 Market Focus: US Tech Leaders</h2>
+<div class="chart-grid">
+  <div class="chart-box">
+    <h3>Microsoft (MSFT)</h3>
+    <div id="tv-msft"></div>
+  </div>
+  <div class="chart-box">
+    <h3>Amazon (AMZN)</h3>
+    <div id="tv-amzn"></div>
+  </div>
+  <div class="chart-box">
+    <h3>Alphabet A (GOOGL)</h3>
+    <div id="tv-googl"></div>
+  </div>
+  <div class="chart-box">
+    <h3>NVIDIA (NVDA)</h3>
+    <div id="tv-nvda"></div>
+  </div>
+</div>
+
+<script>
+const tvTech = [
+  { id: "tv-msft",  symbol: "NASDAQ:MSFT"  },
+  { id: "tv-amzn",  symbol: "NASDAQ:AMZN"  },
+  { id: "tv-googl", symbol: "NASDAQ:GOOGL" },
+  { id: "tv-nvda",  symbol: "NASDAQ:NVDA"  },
+];
+
+tvTech.forEach(w => {
+  new TradingView.widget({
+    "width": "100%",
+    "height": 260,
+    "symbol": w.symbol,
+    "interval": "D",
+    "theme": "dark",
+    "hide_top_toolbar": true,
+    "style": "1",
+    "container_id": w.id
+  });
+});
+</script>
+
+<!-- ============ SHORT FOXOROX HEADER SECTION ============ -->
+
+<div class="section">
+  <h2>GOOGLE, AMAZON, X, TESLA, META, ORACLE, MICROSOFT, NEBIUS AND BLACKROCK FUNDS,</h2>
+  <p><b>Gap:</b> 1.77% &nbsp; <b>Candle:</b> 69.79% (black)</p>
+  <p>
+    Capital markets are increasingly pricing not only earnings, but also who can afford to build and operate
+    multi-gigawatt AI datacenter infrastructure. Below is a full, bottom-up breakdown of what it means, in hard
+    numbers, to run a <strong>1-GW AI datacenter</strong> — the kind of asset that sits behind the tickers above.
+  </p>
+</div>
+
+<!-- ============ FULL DATACENTER ARTICLE (1–11) ============ -->
+
+<div class="section">
+  <h1><span class="emoji">🧠</span> Building a 1-Gigawatt AI Datacenter</h1>
+  <p class="tagline">
+    Bottom-up cost estimation from GPU power → full facility → operational cost → required revenue
+  </p>
+
+  <p>Here is the same breakdown, fully in English, calculated from the bottom up based on GPU power, cooling, infrastructure and operational costs – no local currencies, only USD/EUR.</p>
+
+  <h2>1. Base assumptions</h2>
+
+  <p>We model a large-scale AI-training datacenter using modern accelerators like NVIDIA H100-class GPUs:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Assumption</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Power per GPU</td>
+        <td>~700 W (0.7 kW)</td>
+      </tr>
+      <tr>
+        <td>Price per GPU</td>
+        <td>~30,000 USD</td>
+      </tr>
+      <tr>
+        <td>Target compute power</td>
+        <td><strong>1 GW of IT load (only GPUs)</strong></td>
+      </tr>
+      <tr>
+        <td>Datacenter efficiency</td>
+        <td><strong>PUE = 1.2</strong> (high-end liquid cooling)</td>
+      </tr>
+      <tr>
+        <td>Electricity price (wholesale long-term)</td>
+        <td>~0.15 EUR/kWh</td>
+      </tr>
+      <tr>
+        <td>GPUs are ~50% of total CAPEX</td>
+        <td>Rough industry average for AI datacenters</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>We calculate from <strong>1 GW IT load</strong>, meaning <strong>GPU power only</strong>. Facility power will be higher.</p>
+
+  <h2>2. Number of GPUs required for 1 GW</h2>
+
+  <pre><code>GPU count = 1,000,000 kW / 0.7 kW/GPU ≈ 1,428,571 GPUs</code></pre>
+
+  <p>👉 <strong>~1.43 million GPUs</strong>.</p>
+  <p>This scale aligns with public mega-cluster discussions (e.g. “million GPU clusters”).</p>
+
+  <h2>3. CAPEX — GPU hardware cost</h2>
+
+  <pre><code>GPU CAPEX ≈ 1,428,571 × 30,000 USD ≈ 42.9 billion USD</code></pre>
+
+  <p>👉 <strong>Just the GPUs: ~43 billion USD</strong></p>
+
+  <h2>4. Total infrastructure cost</h2>
+
+  <p>A datacenter needs much more than GPUs:</p>
+  <ul>
+    <li>servers, CPUs, RAM, motherboards</li>
+    <li>storage systems</li>
+    <li>networking (InfiniBand/Ethernet 400–800G fabric)</li>
+    <li>cooling infrastructure, pumps, CDUs, chillers</li>
+    <li>electrical systems, transformers, UPS</li>
+    <li>buildings, security, fire suppression</li>
+    <li>management software, racks, cabling</li>
+  </ul>
+
+  <p>Industry ratio: <strong>GPUs ≈ 50% of total CAPEX</strong> for AI-focused hyperscale builds.</p>
+
+  <pre><code>Total CAPEX ≈ 2 × 43 B USD ≈ 86 B USD</code></pre>
+
+  <p>👉 <strong>Estimated total build cost: ~80–90 billion USD</strong></p>
+  <p><em>(Lower PUE or cheaper GPUs can drop this, advanced high-redundancy build could raise it.)</em></p>
+
+  <h2>5. Facility power requirement (including cooling)</h2>
+
+  <p>IT load = <strong>1 GW</strong><br>
+     With <strong>PUE = 1.2</strong>:</p>
+
+  <pre><code>Total power consumption = 1 GW × 1.2 = 1.2 GW</code></pre>
+
+  <p>Split approx:</p>
+  <ul>
+    <li><strong>1.0 GW</strong> — GPUs + compute hardware</li>
+    <li><strong>0.2 GW</strong> — cooling, pumps, UPS overhead, lights, HVAC, misc</li>
+  </ul>
+
+  <h2>6. Annual electricity consumption &amp; cost</h2>
+
+  <pre><code>Energy/year = 1.2 GW × 8760 h ≈ 10.5 TWh/year</code></pre>
+
+  <p>Annual electricity cost:</p>
+
+  <pre><code>10.5×10⁹ kWh × 0.15 EUR/kWh ≈ 1.6 billion EUR/year</code></pre>
+
+  <p>👉 <strong>Electricity alone ≈ 1.5–2.0 billion EUR per year</strong></p>
+  <p>If energy price is 0.10–0.20 EUR/kWh, cost scales proportionally.</p>
+
+  <h2>7. Operational expenses (OPEX beyond electricity)</h2>
+
+  <h3>a) Personnel</h3>
+
+  <p>Assume ~500 employees (engineers, ops, tech, security, support)</p>
+
+  <pre><code>500 × 100,000 USD/year ≈ 50 million USD/year</code></pre>
+
+  <p>👉 <strong>~50 million USD/year for staffing</strong></p>
+  <p>Tiny compared to power &amp; hardware churn.</p>
+
+  <h3>b) Hardware maintenance &amp; replacement</h3>
+
+  <p>Hyperscale rule of thumb:</p>
+  <p><strong>4–6% of hardware value per year</strong> for replacements/maintenance.</p>
+
+  <p>If IT hardware ≈ 60B USD of total CAPEX:</p>
+
+  <pre><code>0.05 × 60 B USD ≈ 3 B USD/year</code></pre>
+
+  <p>👉 <strong>Maintenance &amp; refresh: ~3 billion USD/year</strong></p>
+  <p>Covers dead GPUs, swapping servers, new generations every 3–5 years.</p>
+
+  <h2>8. Summary</h2>
+
+  <h3>Build cost (CAPEX)</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Est. cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>GPUs (~1.43M units)</td>
+        <td><strong>~43B USD</strong></td>
+      </tr>
+      <tr>
+        <td>Servers, cooling, power infra, network, buildings</td>
+        <td><strong>~40–50B USD</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Total CAPEX</strong></td>
+        <td><strong>≈ 80–90B USD</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Annual operating cost (OPEX)</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Yearly cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Electricity (~10.5 TWh/year)</td>
+        <td><strong>~1.6B EUR/year</strong></td>
+      </tr>
+      <tr>
+        <td>Hardware servicing &amp; refresh</td>
+        <td><strong>~3B USD/year</strong></td>
+      </tr>
+      <tr>
+        <td>Staff &amp; operations</td>
+        <td><strong>~50M USD/year</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Total OPEX</strong></td>
+        <td><strong>several billion USD/EUR annually</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>9. Equations you can reuse</h2>
+
+  <pre><code>N_GPU = P_IT(kW) / P_GPU</code></pre>
+
+  <pre><code>GPU CAPEX = N_GPU × GPU price</code></pre>
+
+  <pre><code>Total CAPEX ≈ GPU CAPEX / (GPU share of CAPEX)</code></pre>
+
+  <pre><code>E_year = P_IT × PUE × 8760</code></pre>
+
+  <pre><code>Energy cost/year = E_year × energy price</code></pre>
+
+  <p>You can use these to recalculate costs for smaller or larger systems, different GPUs, PUE values or power prices.</p>
+
+  <h2>10. Public companies planning gigawatt-scale AI data centers</h2>
+
+  <p>Below is an extra section – a table showing which listed companies are planning / building <strong>gigawatt-scale AI data centers</strong>, with power, timing and location.</p>
+  <p><em>Note: most hyperscalers are listed on NASDAQ, not NYSE. I’ve included the big US-listed players (NYSE + NASDAQ) and highlighted the large NYSE-linked consortium via BlackRock.</em></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Company (ticker / exchange)</th>
+        <th>Planned / announced AI DC power (approx.)</th>
+        <th>When (online / build)</th>
+        <th>Where / project description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Microsoft (MSFT, NASDAQ)</strong></td>
+        <td><strong>Up to ~3.3 GW</strong> facility power for one campus</td>
+        <td>Fairwater campus reaching ~3.3 GW by <strong>late 2027</strong></td>
+        <td><strong>Fairwater AI datacenter</strong>, Mount Pleasant, Wisconsin – a multi-building AI campus projected to consume ~3.3 GW of power by 2027; part of a wider “AI superfactory” network including a similar architecture site in Atlanta.</td>
+      </tr>
+      <tr>
+        <td><strong>Amazon / AWS (AMZN, NASDAQ)</strong></td>
+        <td><strong>~1.3 GW</strong> new AI/HPC capacity (federal cloud)</td>
+        <td>Construction expected to <strong>start 2026</strong></td>
+        <td>AWS plans to invest up to <strong>$50B</strong> to add nearly <strong>1.3 GW</strong> of AI &amp; high-performance computing capacity across <strong>AWS GovCloud, Secret and Top Secret regions</strong> for U.S. government customers.</td>
+      </tr>
+      <tr>
+        <td><strong>Meta Platforms (META, NASDAQ)</strong></td>
+        <td><strong>1–1.4 GW</strong> per mega-campus; &gt;1 GW AI power overall by 2026</td>
+        <td>2026–2028</td>
+        <td>Meta is building multiple 1-GW-class AI campuses: <strong>El Paso, Texas</strong> data center (Meta’s 29th) is designed to scale to a <strong>1-GW site</strong> by ~<strong>2028</strong>; its <strong>Prometheus</strong> campus is expanding from ~319 MW to <strong>~1.36 GW by Oct 2026</strong>. Meta also plans to bring <strong>over 1 GW of AI computing power online by 2026</strong>, supported by over 1.3M GPUs.</td>
+      </tr>
+      <tr>
+        <td><strong>Artificial Intelligence Infrastructure Partnership (AIP) / Aligned Data Centers – led by BlackRock (BLK, NYSE), Nvidia (NVDA, NASDAQ), Microsoft, xAI</strong></td>
+        <td><strong>~5 GW</strong> operational + planned capacity</td>
+        <td>Deal announced Oct <strong>2025</strong>, closing expected in <strong>H1 2026</strong></td>
+        <td>AIP (BlackRock, Nvidia, Microsoft, xAI and others) agreed to acquire <strong>Aligned Data Centers</strong> for ~$40B. Aligned operates about <strong>80 data centers with ~5 GW of current and planned capacity</strong> across ~50 campuses in the <strong>U.S., Brazil, Mexico and Chile</strong>, explicitly aimed at AI infrastructure.</td>
+      </tr>
+      <tr>
+        <td><strong>Nebius Group N.V. (NBIS, NASDAQ)</strong></td>
+        <td><strong>2.5 GW</strong> power capacity target</td>
+        <td>By <strong>2026</strong></td>
+        <td>Netherlands-based, Nasdaq-listed “neocloud” provider. Nebius, backed by major contracts with Microsoft and Meta, plans to secure <strong>2.5 GW of power capacity by 2026</strong> for AI-intensive cloud services, with data centers across <strong>Europe</strong> and strong presence in the U.S. market.</td>
+      </tr>
+      <tr>
+        <td><strong>Alphabet / Google (GOOGL, NASDAQ)</strong></td>
+        <td>Indirect: <strong>8 GW</strong> of clean-energy generation contracts for its DC fleet</td>
+        <td>Contracts signed in <strong>2024</strong>, projects come online through <strong>late-2020s</strong></td>
+        <td>Google is one of the biggest data-center operators and corporate clean-energy buyers. In <strong>2024</strong> it signed contracts to purchase <strong>~8 GW of clean energy generation capacity</strong> to power its data centers globally. This doesn’t map 1:1 to IT load, but it illustrates <strong>multi-GW-scale infrastructure</strong> behind its AI &amp; cloud data centers.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ===== FULL SECTION 11 FROM YOUR TEXT ===== -->
+
+  <h2>11. Payback, required revenue and a 10% annual return</h2>
+
+  <p>Now, given such massive capital expenditure, what does the business need to earn each year so that the investment “pays back”? Let’s build a simple financial model assuming:</p>
+
+  <ul>
+    <li><strong>10% required annual return on capital</strong> (ROI target)</li>
+    <li><strong>10% annual amortization of hardware</strong> (roughly a 10-year economic lifetime for the IT stack)</li>
+    <li>Operating costs as estimated above (power, staff, facility operations)</li>
+  </ul>
+
+  <h3>11.1. Capital base and hardware share</h3>
+
+  <p>From earlier sections:</p>
+
+  <ul>
+    <li>Total CAPEX: <strong>≈ 86B USD</strong></li>
+    <li>IT hardware (GPUs + servers + network + storage): assume <strong>≈ 60B USD</strong> of that</li>
+    <li>Non-IT infrastructure (buildings, power, cooling, land, etc.): the remaining ~26B USD</li>
+  </ul>
+
+  <h3>11.2. Required annual return on capital (10% ROI)</h3>
+
+  <p>With a 10% target rate of return on the total capital invested:</p>
+
+  <pre><code>Required return (ROI) = 10% × 86B USD ≈ 8.6B USD per year</code></pre>
+
+  <p>This is what investors would want to earn <em>on top of</em> merely covering operating costs and hardware replacement.</p>
+
+  <h3>11.3. Hardware amortization at 10% per year</h3>
+
+  <p>If we assume the hardware base of ~60B USD is amortized over 10 years (straight-line):</p>
+
+  <pre><code>Hardware amortization = 10% × 60B USD ≈ 6.0B USD per year</code></pre>
+
+  <p>This 6B USD/year represents the “budget” for replacing and upgrading IT hardware on a 10-year schedule. In practice, GPUs may be refreshed faster (3–5 years), but other equipment lasts longer, so 10% is a clean high-level assumption.</p>
+
+  <h3>11.4. Operating expenses (cash costs)</h3>
+
+  <p>From our previous estimates:</p>
+
+  <ul>
+    <li>Electricity: ~<strong>1.6B EUR/year</strong>. If we approximate 1 EUR ≈ 1.1 USD:</li>
+  </ul>
+
+  <pre><code>Power OPEX ≈ 1.6B EUR × 1.1 ≈ 1.8B USD per year</code></pre>
+
+  <ul>
+    <li>Staff &amp; operations: <strong>~0.05B USD/year</strong> (50M USD)</li>
+    <li>Facility operations, licenses, non-IT maintenance, taxes, etc.: let’s assume an additional <strong>≈ 1B USD/year</strong> for a campus of this scale</li>
+  </ul>
+
+  <p>Putting those operating costs together:</p>
+
+  <pre><code>Operating costs (cash) ≈ 1.8B + 0.05B + 1.0B ≈ 2.85B USD/year</code></pre>
+
+  <p>(You can tweak this number depending on real-world tax regimes, labor markets, and energy contracts.)</p>
+
+  <h3>11.5. Total annual “nut” – how much revenue is needed?</h3>
+
+  <p>To hit the 10% return target and keep the hardware on a 10-year refresh cycle, the datacenter has to cover:</p>
+
+  <ul>
+    <li>Operating costs (cash): ~<strong>2.85B USD/year</strong></li>
+    <li>Hardware amortization: ~<strong>6.0B USD/year</strong></li>
+    <li>Required ROI on capital: ~<strong>8.6B USD/year</strong></li>
+  </ul>
+
+  <pre><code>Total required "economic cost" per year
+≈ 2.85B + 6.0B + 8.6B
+≈ 17.45B USD/year</code></pre>
+
+  <p>👉 So, <strong>a 1-GW AI datacenter on this model needs to generate on the order of 17–18 billion USD in revenue per year</strong> to:</p>
+
+  <ul>
+    <li>pay for power, staff, and non-IT operations,</li>
+    <li>amortize hardware at 10% per year,</li>
+    <li>and deliver a 10% return on the 86B USD invested capital.</li>
+  </ul>
+
+  <h3>11.6. Revenue per GPU and per month</h3>
+
+  <p>We previously found that a 1-GW AI facility corresponds to about <strong>1.43M GPUs</strong>.</p>
+
+  <pre><code>Required revenue per GPU per year
+≈ 17.5B USD / 1,428,571 GPUs
+≈ 12,250 USD per GPU per year</code></pre>
+
+  <p>On a monthly basis:</p>
+
+  <pre><code>≈ 12,250 USD / 12 ≈ ~1,020 USD per GPU per month</code></pre>
+
+  <p>So very roughly, each GPU in the cluster must generate on the order of <strong>~1,000 USD/month in revenue</strong> to make the economics work under these assumptions (10% return on 86B USD CAPEX and 10% annual hardware amortization).</p>
+
+  <p>Of course, real projects will vary: some will aim for higher returns, some will accept lower; energy prices, hardware prices and utilization rates will also move these numbers significantly. But this gives a clear order-of-magnitude view of what a 1-GW AI super-datacenter must earn to “pay for itself”.
+
+Using futrher simply math. It looks that they need for each center at least 17bln USD revenues to keep it going so assuming USD10  mothnly bill per user they need 141mln users per one 1GW of AI Center. All toghether they plan to build 22GW AI centers so simply it looks that AI Centers need to have 3.116bln users which is half o the Earth population.  </p>
+<p>SO, YOU READER JUDGE IF IT IS POSSIBLE.</p>
+</div>
+
+<div class="footer">
+Generated automatically by <b>Foxorox AI Analyzer</b>.<br>
+<a href="/blog/index.html">← Back to blog index</a>
+</div>
+
+</body>
+</html>
