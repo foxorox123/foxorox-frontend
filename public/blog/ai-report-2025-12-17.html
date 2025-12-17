@@ -124,20 +124,20 @@ pre {
 
 <div class="chart-grid">
   <div class="chart-box"><h3>Silver (XAGUSD)</h3><div id="tv-silver"></div></div>
-  <div class="chart-box"><h3>KGHM (GPW:KGH)</h3><div id="tv-kghm"></div></div>
-  <div class="chart-box"><h3>Rio Tinto (LSE:RIO)</h3><div id="tv-rio"></div></div>
-  <div class="chart-box"><h3>Fresnillo (LSE:FRES)</h3><div id="tv-fresnillo"></div></div>
+  <div class="chart-box"><h3>KGHM (WSE:KGH)</h3><div id="tv-kghm"></div></div>
+  <div class="chart-box"><h3>Rio Tinto (ASX:RIO)</h3><div id="tv-rio"></div></div>
+  <div class="chart-box"><h3>Fresnillo (OTC:FRESF)</h3><div id="tv-fresnillo"></div></div>
   <div class="chart-box"><h3>Freeport-McMoRan (NYSE:FCX)</h3><div id="tv-fcx"></div></div>
 </div>
 
 <script>
 [
   { id:"tv-silver",    symbol:"FX_IDC:XAGUSD" },
-  { id:"tv-kghm",      symbol:"GPW:KGH" },      // ← TO BYŁ PROBLEM
-  { id:"tv-rio",       symbol:"LSE:RIO" },
-  { id:"tv-fresnillo", symbol:"LSE:FRES" },
+  { id:"tv-kghm",      symbol:"WSE:KGH" },
+  { id:"tv-rio",       symbol:"ASX:RIO" },
+  { id:"tv-fresnillo", symbol:"OTC:FRESF" },
   { id:"tv-fcx",       symbol:"NYSE:FCX" }
-].forEach(w => {
+].forEach(w=>{
   new TradingView.widget({
     width: "100%",
     height: 260,
