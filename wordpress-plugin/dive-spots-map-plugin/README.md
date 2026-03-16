@@ -132,6 +132,19 @@ Jeżeli widzisz komunikat „Brak opublikowanych miejsc nurkowych”, wykonaj te
 
 Uwaga: dopóki wpis ma status `pending`, nie będzie widoczny publicznie na mapie i liście.
 
+
+## Nie działa? Szybka diagnostyka (5 minut)
+1. Sprawdź czy plugin jest aktywny: **Wtyczki → Dive Spots World Map**.
+2. Sprawdź shortcode na stronie:
+   - all-in-one: `[dive_spots_home]`
+   - osobno: `[dive_spots_map]` oraz `[dive_spot_submission_form]`
+3. Włącz przyjazne linki i zapisz ponownie:
+   - **Ustawienia → Bezpośrednie odnośniki → Zapisz zmiany**.
+4. Dodaj testowe miejsce jako zalogowany użytkownik i ustaw status na `publish`.
+5. Jeśli mapa nadal pusta, otwórz endpoint REST w przeglądarce:
+   - `https://twojadomena.pl/wp-json/dive-spots/v1/approved`
+   - powinien zwrócić tablicę JSON.
+
 ## Dodatkowe wskazówki
 - Jeśli mapa nie pokazuje punktów, sprawdź czy wpisy mają status `publish` i poprawne współrzędne lat/lng.
 - Jeśli endpoint nie działa, odśwież bezpośrednie odnośniki: **Ustawienia → Bezpośrednie odnośniki → Zapisz zmiany**.

@@ -313,24 +313,33 @@ class Dive_Spots_World_Map_Plugin
 
         $attachment_ids = [];
 
-        foreach ($_FILES[$input_name]['name'] as $index => $name) {
-            if (empty($name)) {
+        $normalized = [];
+        foreach ($_FILES[$input_name] as $key => $values) {
+            foreach ($values as $index => $value) {
+                $normalized[$index][$key] = $value;
+            }
+        }
+
+        foreach ($normalized as $file) {
+            if (empty($file['name'])) {
                 continue;
             }
 
-            $file_array = [
-                'name' => sanitize_file_name((string) $name),
-                'type' => $_FILES[$input_name]['type'][$index],
-                'tmp_name' => $_FILES[$input_name]['tmp_name'][$index],
-                'error' => $_FILES[$input_name]['error'][$index],
-                'size' => $_FILES[$input_name]['size'][$index],
+            $_FILES['dive_spot_single_upload'] = [
+                'name' => sanitize_file_name((string) $file['name']),
+                'type' => (string) ($file['type'] ?? ''),
+                'tmp_name' => (string) ($file['tmp_name'] ?? ''),
+                'error' => (int) ($file['error'] ?? UPLOAD_ERR_NO_FILE),
+                'size' => (int) ($file['size'] ?? 0),
             ];
 
-            $attachment_id = media_handle_sideload($file_array, $post_id);
+            $attachment_id = media_handle_upload('dive_spot_single_upload', $post_id);
             if (! is_wp_error($attachment_id)) {
                 $attachment_ids[] = (int) $attachment_id;
             }
         }
+
+        unset($_FILES['dive_spot_single_upload']);
 
         return $attachment_ids;
     }
@@ -344,21 +353,35 @@ class Dive_Spots_World_Map_Plugin
 
         ob_start();
         ?>
-        <div id="dive-spots-map" style="height: 560px; width: 100%;"></div>
+        <?php $map_id = "dive-spots-map-" . wp_generate_uuid4(); ?>
+        <div id="<?php echo esc_attr($map_id); ?>" style="height: 560px; width: 100%;"></div>
+        <div id="<?php echo esc_attr($map_id); ?>-notice" style="display:none; margin-top:10px;"></div>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                var map = L.map('dive-spots-map').setView([20, 0], 2);
+                var map = L.map('<?php echo esc_js($map_id); ?>').setView([20, 0], 2);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; OpenStreetMap contributors'
                 }).addTo(map);
 
                 fetch('<?php echo $endpoint; ?>')
                     .then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('HTTP ' + response.status);
+                        }
                         return response.json();
                     })
                     .then(function (spots) {
+                        if (!Array.isArray(spots)) {
+                            throw new Error('Invalid API response');
+                        }
+
+                        var pointsCount = 0;
                         spots.forEach(function (spot) {
-                            if (!spot.lat || !spot.lng) {
+                            if (typeof spot.lat !== 'number' || typeof spot.lng !== 'number') {
+                                return;
+                            }
+
+                            if (!isFinite(spot.lat) || !isFinite(spot.lng)) {
                                 return;
                             }
 
@@ -368,7 +391,23 @@ class Dive_Spots_World_Map_Plugin
                                 '<em>' + (spot.country || '') + '</em><br/>' +
                                 '<a href="' + spot.link + '">Szczegóły</a>'
                             );
+                            pointsCount += 1;
                         });
+
+                        if (pointsCount === 0) {
+                            var notice = document.getElementById('<?php echo esc_js($map_id); ?>-notice');
+                            if (notice) {
+                                notice.textContent = 'Brak opublikowanych miejsc nurkowych do wyświetlenia.';
+                                notice.style.display = 'block';
+                            }
+                        }
+                    })
+                    .catch(function () {
+                        var notice = document.getElementById('<?php echo esc_js($map_id); ?>-notice');
+                        if (notice) {
+                            notice.textContent = 'Nie udało się pobrać danych mapy. Sprawdź ustawienia bezpośrednich odnośników i endpoint REST.';
+                            notice.style.display = 'block';
+                        }
                     });
             });
         </script>
