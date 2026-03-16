@@ -445,12 +445,14 @@ class Dive_Spots_World_Map_Plugin
             'latest_limit' => 6,
             'show_form_link' => 'yes',
             'form_page_url' => '',
+            'show_inline_form' => 'yes',
         ], (array) $atts, 'dive_spots_home');
 
         $title = sanitize_text_field((string) $atts['title']);
         $latest_limit = max(1, min(24, absint($atts['latest_limit'])));
         $show_form_link = sanitize_text_field((string) $atts['show_form_link']) === 'yes';
         $form_page_url = esc_url_raw((string) $atts['form_page_url']);
+        $show_inline_form = sanitize_text_field((string) $atts['show_inline_form']) === 'yes';
 
         if ($form_page_url === '' && function_exists('get_permalink')) {
             $form_page = get_page_by_path('dodaj-miejsce-nurkowe');
@@ -479,10 +481,16 @@ class Dive_Spots_World_Map_Plugin
                 <?php echo do_shortcode($latest_shortcode); ?>
             </div>
 
-            <?php if ($show_form_link && $form_page_url !== '') : ?>
+            <?php if ($show_form_link) : ?>
                 <p class="dive-spots-home-cta">
-                    <a href="<?php echo esc_url($form_page_url); ?>"><?php esc_html_e('Dodaj nowe miejsce nurkowe', 'dive-spots-world-map'); ?></a>
+                    <a href="<?php echo esc_url($form_page_url !== '' ? $form_page_url : '#dive-spot-submission'); ?>"><?php esc_html_e('Dodaj nowe miejsce nurkowe', 'dive-spots-world-map'); ?></a>
                 </p>
+            <?php endif; ?>
+
+            <?php if ($show_inline_form && $form_page_url === '') : ?>
+                <div id="dive-spot-submission" class="dive-spots-home-form">
+                    <?php echo do_shortcode('[dive_spot_submission_form]'); ?>
+                </div>
             <?php endif; ?>
         </section>
         <?php

@@ -84,10 +84,13 @@ Parametry opcjonalne:
 - `latest_limit` – ile pozycji pokazać na liście (1–24)
 - `show_form_link` – `yes` / `no`
 - `form_page_url` – własny URL do strony z formularzem
+- `show_inline_form` – `yes` / `no` (domyślnie `yes`, pokazuje formularz na tej samej stronie, gdy `form_page_url` nie jest ustawiony)
 
 Przykład:
 
 `[dive_spots_home title="Nurkowiska świata" latest_limit="8" show_form_link="yes" form_page_url="https://twojadomena.pl/dodaj-miejsce-nurkowe/"]`
+
+Jeśli nie podasz `form_page_url`, przycisk **Dodaj nowe miejsce nurkowe** będzie widoczny i przewinie do formularza osadzonego niżej na tej samej stronie (all-in-one).
 
 ## Jak dodać miejsca nurkowe na stronie głównej
 
