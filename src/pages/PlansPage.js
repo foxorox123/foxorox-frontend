@@ -438,5 +438,11 @@ function PlansPage({ user, logout, subscribe }) {
     </div>
   );
 }
+<h2>FAQ</h2>
 
+<h3>What is Foxorox?</h3>
+<p>Foxorox is an AI-powered platform for market prediction...</p>
+
+<h3>How does AI prediction work?</h3>
+<p>The system analyzes historical and real-time data...</p>
 export default PlansPage;
