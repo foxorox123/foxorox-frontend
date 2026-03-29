@@ -170,6 +170,7 @@ function PlansPage({ user, logout, subscribe }) {
       >
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
           <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 200 }} />
+          <h1
           <div
             style={{
               fontFamily: "'Segoe UI', sans-serif",
@@ -180,6 +181,7 @@ function PlansPage({ user, logout, subscribe }) {
             }}
           >
             AI Powered Market Intelligence
+          </h1>
           </div>
         </div>
 
