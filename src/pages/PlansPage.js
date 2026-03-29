@@ -457,6 +457,19 @@ function PlansPage({ user, logout, subscribe }) {
             insights and AI-assisted forecasting tools.
           </p>
         </div>
+
+        <div style={{ marginBottom: 24 }}>
+          <h4>Our best picks you can find in blog</h4>
+          <p style={{ color: "#ccc", lineHeight: 1.7 }}>
+            Under the address {" "}
+            <a href="/blog" style={{ color: "#f58220" }}>
+            https://foxorox.com/blog/index.html
+            </a>{" "} you can find our best picks
+            that give extraordinary returns and good accuracy. Our probability model
+            is based on Markowitz optimization and on recent AI tools that use 
+            large models and CUDA matrix. 
+          </p>
+        </div>
       </section>
 
       <Footer />
