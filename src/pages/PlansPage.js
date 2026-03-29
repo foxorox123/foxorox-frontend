@@ -18,10 +18,8 @@ function CurrencyBox({ heightPx = 410, widthPx = 300 }) {
   useEffect(() => {
     if (!containerRef.current || !heightPx) return;
 
-    // Wyczyść poprzednią instancję
     containerRef.current.innerHTML = "";
 
-    // Placeholder wymagany przez TradingView
     const widgetHost = document.createElement("div");
     widgetHost.className = "tradingview-widget-container__widget";
     containerRef.current.appendChild(widgetHost);
@@ -31,7 +29,6 @@ function CurrencyBox({ heightPx = 410, widthPx = 300 }) {
       "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
     script.async = true;
 
-    // Szerokość z kontenera (100%), wysokość = wysokość planów
     script.innerHTML = JSON.stringify({
       colorTheme: "dark",
       dateRange: "12M",
@@ -72,7 +69,7 @@ function CurrencyBox({ heightPx = 410, widthPx = 300 }) {
         borderRadius: 10,
         overflow: "hidden",
         boxShadow: "0 8px 28px rgba(0,0,0,0.35)",
-        minHeight: heightPx // unika skakania layoutu zanim załaduje się widget
+        minHeight: heightPx
       }}
     />
   );
@@ -92,7 +89,7 @@ function StarryBackground() {
         particles: {
           number: { value: 150 },
           color: { value: "#ffffff" },
-        shape: { type: "circle" },
+          shape: { type: "circle" },
           opacity: { value: 0.8 },
           size: { value: 1 },
           move: { enable: true, speed: 0.2 }
@@ -107,7 +104,6 @@ function PlansPage({ user, logout, subscribe }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  // >>> pomiar wysokości sekcji planów
   const plansRowRef = useRef(null);
   const [plansHeight, setPlansHeight] = useState(0);
 
@@ -118,13 +114,10 @@ function PlansPage({ user, logout, subscribe }) {
       if (h && h !== plansHeight) setPlansHeight(h);
     };
 
-    // pierwszy pomiar po renderze
     const t = setTimeout(measure, 0);
 
-    // reaguj na resize
     window.addEventListener("resize", measure);
 
-    // obserwuj zmiany rozmiaru kontenera (bardziej niezawodne)
     let ro;
     if (typeof ResizeObserver !== "undefined" && plansRowRef.current) {
       ro = new ResizeObserver(measure);
@@ -156,10 +149,8 @@ function PlansPage({ user, logout, subscribe }) {
     <div className="main-container aurora-background">
       <StarryBackground />
 
-      {/* Pasek indeksów TradingView */}
       <TradingViewTicker />
 
-      {/* Górny pasek */}
       <div
         style={{
           display: "flex",
@@ -171,18 +162,17 @@ function PlansPage({ user, logout, subscribe }) {
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
           <img src="/logo-foxorox.png" alt="Foxorox" style={{ height: 200 }} />
           <h1
-          
             style={{
               fontFamily: "'Segoe UI', sans-serif",
               fontWeight: "bold",
               fontSize: "2.3em",
               color: "#f58220",
-              letterSpacing: "0.5px"
+              letterSpacing: "0.5px",
+              margin: 0
             }}
           >
             AI Powered Market Intelligence
           </h1>
-          
         </div>
 
         <div>
@@ -220,7 +210,6 @@ function PlansPage({ user, logout, subscribe }) {
                 Sign in to Subscribe/ Log in
               </button>
 
-              {/* ✅ Dodatkowe przyciski */}
               <div style={{ marginTop: 10 }}>
                 <button
                   className="google-btn blue-btn"
@@ -257,7 +246,6 @@ function PlansPage({ user, logout, subscribe }) {
         </div>
       )}
 
-      {/* ====== DWIE KOLUMNY: LEWO (PLANY - 1 linia) | PRAWO (BOX WALUT) ====== */}
       <div
         style={{
           display: "flex",
@@ -268,7 +256,6 @@ function PlansPage({ user, logout, subscribe }) {
           marginTop: 30
         }}
       >
-        {/* LEWA kolumna: plans row - bez zawijania + scroll poziomy na małych szerokościach */}
         <div
           style={{
             flex: "1 1 auto",
@@ -362,7 +349,6 @@ function PlansPage({ user, logout, subscribe }) {
               </button>
             </div>
 
-            {/* NOWY PLAN: Foxorox Forex Monthly */}
             <div className="plan-card" style={{ width: 250, textAlign: "left" }}>
               <h2>💹 Foxorox Forex Monthly</h2>
               <ul>
@@ -379,7 +365,6 @@ function PlansPage({ user, logout, subscribe }) {
                 Subscribe to Foxorox Forex Monthly – $8.99
               </button>
 
-              {/* ⤵️ Trial button tuż pod miesięcznym – czerwony hover inline, bez zmian globalnego CSS */}
               <button
                 className="google-btn"
                 onClick={() => window.open(TRIAL_URL, "_blank")}
@@ -398,13 +383,11 @@ function PlansPage({ user, logout, subscribe }) {
           </div>
         </div>
 
-        {/* PRAWA kolumna: box walut o wysokości identycznej jak plany */}
         <div style={{ flex: "0 0 300px", display: "flex" }}>
           <CurrencyBox heightPx={plansHeight || 420} widthPx={300} />
         </div>
       </div>
 
-      {/* Screenshots Section */}
       <div style={{ marginTop: 49, textAlign: "center" }}>
         <h2 style={{ color: "#fff", marginBottom: 20 }}>Foxorox AI Screenshots</h2>
         <div
@@ -433,8 +416,49 @@ function PlansPage({ user, logout, subscribe }) {
         </div>
       </div>
 
-      {/* Footer */}
-      
+      <section
+        style={{
+          maxWidth: 1000,
+          margin: "60px auto 0",
+          padding: "0 30px",
+          color: "#fff"
+        }}
+      >
+        <h2 style={{ textAlign: "center", marginBottom: 30 }}>FAQ</h2>
+
+        <div style={{ marginBottom: 24 }}>
+          <h3>What is Foxorox?</h3>
+          <p style={{ color: "#ccc", lineHeight: 1.7 }}>
+            Foxorox is an AI-powered platform for market prediction and trading insights
+            across stocks, indices and selected crypto markets.
+          </p>
+        </div>
+
+        <div style={{ marginBottom: 24 }}>
+          <h3>How does AI prediction work?</h3>
+          <p style={{ color: "#ccc", lineHeight: 1.7 }}>
+            The platform analyzes historical market behavior and current market data
+            to identify probability-based trading opportunities and forecast patterns.
+          </p>
+        </div>
+
+        <div style={{ marginBottom: 24 }}>
+          <h3>Which markets does Foxorox cover?</h3>
+          <p style={{ color: "#ccc", lineHeight: 1.7 }}>
+            Foxorox covers markets such as NASDAQ, S&amp;P 500, DAX, selected global
+            indices and forex instruments.
+          </p>
+        </div>
+
+        <div style={{ marginBottom: 24 }}>
+          <h3>Who is Foxorox for?</h3>
+          <p style={{ color: "#ccc", lineHeight: 1.7 }}>
+            Foxorox is designed for traders and investors looking for data-driven market
+            insights and AI-assisted forecasting tools.
+          </p>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
