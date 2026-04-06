@@ -3,38 +3,60 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
   <title>Investment Profitability Methods | Foxorox</title>
   <meta name="description" content="Comprehensive study of investment profitability methods including Payback Period, Accounting Rate of Return, Net Present Value, Internal Rate of Return, and risk estimation using probabilistic models and Cobb–Douglas production function." />
   <meta name="keywords" content="investment profitability methods, payback period, accounting rate of return, NPV, IRR, Cobb-Douglas, investment risk, expected value, variance, finance analysis, Foxorox" />
 
   <style>
+    :root {
+      color-scheme: light !important;
+    }
+
     html, body {
       background: #ffffff !important;
       color: #111111 !important;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
+      margin: 0 !important;
+      padding: 0 !important;
+      font-family: Arial, sans-serif !important;
+      line-height: 1.6 !important;
     }
 
-    main {
+    /* usuń overlay z motywu */
+    body::before,
+    body::after {
+      display: none !important;
+      content: none !important;
+      background: transparent !important;
+    }
+
+    /* główny biały wrapper */
+    .white-page-force {
       background: #ffffff !important;
       color: #111111 !important;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 2rem;
+      min-height: 100vh !important;
+      width: 100% !important;
     }
 
-    h1, h2, h3, h4, h5, h6, p, li, ul, ol, footer {
+    .white-page-force * {
       color: #111111 !important;
+      background-color: transparent !important;
     }
 
-    a {
+    .white-page-force a {
       color: #0066cc !important;
       text-decoration: none;
     }
 
-    pre, code {
+    .white-page-force main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: #ffffff !important;
+    }
+
+    .white-page-force pre,
+    .white-page-force code {
       background: #f5f5f5 !important;
       color: #111111 !important;
       padding: 0.5rem;
@@ -43,202 +65,72 @@
     }
   </style>
 </head>
+
 <body>
-  <main>
-    <h1>Investment Profitability Methods</h1>
+  <div class="white-page-force">
+    <main>
 
-    <h2>4.1 Payback Period Method</h2>
-    <p>
-      The payback period method is the simplest approach to estimating investment profitability. It determines the time required for net cash inflows to cover the initial investment expenditure. A project is considered acceptable when the payback period is shorter than a defined critical value. 
-    </p>
+      <h1>Investment Profitability Methods</h1>
 
-    <p>
-      Investment risk, measured as a function \( E[X] \) and variance \( V[X] \), where \( E \) is the expected value and \( X \) is the analyzed variable, is determined by the interest rate \( i \) which justifies the payback period. It is assumed that all investment risk is included in the interest rate—i.e., all external risk factors are reflected in \( i \).
-    </p>
-
-    <p>
-      In practice, countries with high investment risk—whether political or macroeconomic—tend to maintain elevated interest rates to prevent capital outflows. In such cases, central banks or governments often increase the interest rate \( I \). This move is usually preceded by depreciation of the local currency or a drop in government bond prices (rise in yields).
-    </p>
-
-    <p>
-      Let the minimal return rate from investment \( r_i \) in period \( i \) be equal to the interest rate \( I_i \).  
-      Then:
-    </p>
-    <pre><code>E(r)=∑_(i=1)^n h_i r_i</code></pre>
-
-    <p>where:</p>
-    <ul>
-      <li>E(r) – expected return rate,</li>
-      <li>h_i – probability of occurrence of a particular rate of return,</li>
-      <li>r_i – rate of return in period i.</li>
-    </ul>
-
-    <p>
-      Assuming \( I_i=r_i \), the probabilities h_i can be modeled through economic growth factors using the <strong>Cobb–Douglas production function</strong>:
-    </p>
-    <pre><code>F=f(A,K,L,R)</code></pre>
-
-    <p>where:</p>
-    <ul>
-      <li>A – technological level in the economy,</li>
-      <li>K – productive capital input,</li>
-      <li>L – labor input,</li>
-      <li>R – natural resources input.</li>
-    </ul>
-
-    <p>
-      Usually, the Cobb–Douglas function is presented with two variables:
-    </p>
-    <pre><code>F(K,L)=aK^α L^β,  K,L ≥ 0</code></pre>
-
-    <p>
-      where α and β are scaling parameters and α+β=1 implies constant returns to scale.  
-      When α+β&gt;1, there are increasing returns to scale; when α+β&lt;1, there are decreasing returns to scale.
-    </p>
-
-    <p>In general form:</p>
-    <pre><code>F(X₁,X₂,…,X_N)=a∏_(i=1)^N X_i^(α_i),  X_i≥0</code></pre>
-
-    <p>
-      The function is non-negative and increasing. When ∑α_i=1, the function is homogeneous of degree one, i.e.:
-    </p>
-    <pre><code>∀z&gt;0: F(zX₁,zX₂,…,zX_N)=zF(X₁,X₂,…,X_N)</code></pre>
-    <p>Hence, constant returns to scale apply.</p>
-
-    <h3>Probabilistic Space</h3>
-    <p>
-      Let (Ω,F,P) be a probability space where F is a σ-algebra on Ω and elements of F are pairs (K_i,L_i) defining capital and labor inputs for each period i.
-    </p>
-
-    <pre><code>
-P(K_i,L_i) ≥ 0 for all events K_i,L_i∈F
-P(Ω)=1 for Ω∈F
-For a countable family of disjoint sets:
-P(⋃_(i∈I)(K_i,L_i))=∑_(i∈I)P(K_i,L_i)
-with (K_i,L_i)∩(K_j,L_j)=∅ for i≠j
-    </code></pre>
-
-    <p>
-      This defines a valid probability measure as a function of (K,L), allowing productivity growth modeling using Cobb–Douglas.
-    </p>
-
-    <p>Assign:</p>
-    <pre><code>P(K_i,L_i)=h_i</code></pre>
-    <p>Then:</p>
-    <pre><code>E(r)=∑_(i=1)^n P(K_i,L_i)r_i</code></pre>
-
-    <p>
-      From such a probabilistic model, we can forecast expected return rates relative to economic growth.
-    </p>
-
-    <h3>Macroeconomic States</h3>
-    <p>
-      For simplicity, probabilities can correspond to macroeconomic states defined by interest rate levels:
-    </p>
-    <ul>
-      <li>Hyperinflation – I &gt; 1000% per year</li>
-      <li>Controlled inflation – I ≤ 100% per year</li>
-      <li>Low inflation – I ≤ 10% per year</li>
-      <li>Stable inflation – I ≤ 2% per year</li>
-      <li>No inflation – I ≈ 0%</li>
-      <li>Deflation – I between -0.5% and -0.1%</li>
-      <li>High deflation – I ≈ -1%</li>
-      <li>Hyperdeflation – I ≈ -10%</li>
-    </ul>
-
-    <p>
-      States 7 and 8 are theoretical, rarely seen in modern economies, while hyperinflation (state 1) occurred historically many times.
-    </p>
-
-    <h2>4.2 Accounting Rate of Return (ARR)</h2>
-    <p>
-      This method uses accounting data to assess a company’s performance. ARR measures the relationship between average net income (NI) and the average book value (BV) of the investment project. A project is acceptable if ARR exceeds the company’s minimum acceptable rate.
-    </p>
-
-    <pre><code>
-NI=∑_(i=1)^N NI_i/(N−1)
-BV=∑_(i=1)^N BV_i/(N−1)
-r_ks=NI/BV=(∑_(i=1)^N NI_i/(N−1))/(∑_(i=1)^N BV_i/(N−1))
-    </code></pre>
-
-    <p>
-      Book value BV_i depends on income in the next period:
-    </p>
-    <pre><code>BV_(i+1)=f(NI_i)</code></pre>
-
-    <p>
-      The function f(NI_i) determines income growth. Hence:
-    </p>
-    <pre><code>
-BV_(i+1)=f(E(NI))
-E(NI)=∑_(i=1)^n P(K_i,L_i)r_i
-BV_(i+1)=f(∑_(i=1)^n P(K_i,L_i)r_i)
-    </code></pre>
-
-    <p>
-      This shows that book value depends on expected income and external conditions (r_i, K_i, L_i).
-    </p>
-
-    <h2>4.3 Net Present Value (NPV)</h2>
-    <p>
-      NPV represents the sum of discounted net cash flows NCF_t for each period t:
-    </p>
-    <pre><code>NPV=∑_(t=0)^N (NCF_t)/(1+r)^t</code></pre>
-
-    <p>
-      For continuous cash flows:
-    </p>
-    <pre><code>NPV(r)=∫_(t=0)^∞ (1+r)^(-t) NCF(t)dt</code></pre>
-
-    <p>
-      Using the Laplace transform:
-    </p>
-    <pre><code>F(s)={Lf}(s)=∫_0^∞ e^(-st) f(t)dt, where s=ln(1+i)</code></pre>
-
-    <h2>4.4 Internal Rate of Return (IRR)</h2>
-    <p>
-      IRR is the discount rate where NPV=0:
-    </p>
-    <pre><code>∑_(t=0)^N (NCF_t)/(1+IRR)^t=0</code></pre>
-
-    <p>
-      For continuous cases:
-    </p>
-    <pre><code>NPV(IRR)=∫_(t=0)^∞ (1+IRR)^(-t) NCF(t)dt</code></pre>
-
-    <h2>4.5 Investment Risk Estimation</h2>
-    <p>
-      For a random variable X, investment risk can be estimated as a function of its expected value E[X].  
-      The most common measure is standard deviation σ, derived from variance V[X].
-    </p>
-
-    <h3>Discrete Distribution</h3>
-    <pre><code>
-σ=√(∑_(i=1)^n ((x_i−E[X])² p_i))
-E(X)=∑_(i=1)^n x_i p_i
-σ=√((∑_(i=1)^n x_i² p_i)−(E[X])²)
-    </code></pre>
-
-    <h3>Continuous Distribution</h3>
-    <pre><code>
-σ=√(∫_(-∞)^(+∞)(x−E(x))² f(x)dx)
-E(x)=∫_(-∞)^(+∞) x f(x)dx
-    </code></pre>
-
-    <p>
-      In most investment projects, X represents profit levels, sales, or net income.  
-      The probability of outcomes depends on growth rates, exchange rates, and risks—political, macroeconomic, or technological.
-    </p>
-
-    <footer style="margin-top:3rem; font-size:0.9rem; text-align:center;">
-      <p><strong>Foxorox Finance</strong> — Advanced financial analytics for modern investors.</p>
+      <h2>4.1 Payback Period Method</h2>
       <p>
-        <a href="https://foxorox.com/blog/index.html">Blog</a> |
-        <a href="https://foxorox.com">Plans</a> |
-        <a href="https://foxorox.com/terms">Terms</a>
+        The payback period method is the simplest approach to estimating investment profitability. It determines the time required for net cash inflows to cover the initial investment expenditure. A project is considered acceptable when the payback period is shorter than a defined critical value. 
       </p>
-      <p>Copyright &copy; 2025 Foxorox.com — All rights reserved.</p>
-    </footer>
-  </main>
+
+      <p>
+        Investment risk, measured as a function \( E[X] \) and variance \( V[X] \), is determined by the interest rate \( i \).
+      </p>
+
+      <p>
+        Let the minimal return rate from investment \( r_i \) be equal to the interest rate \( I_i \).
+      </p>
+
+      <pre><code>E(r)=∑_(i=1)^n h_i r_i</code></pre>
+
+      <h3>Cobb–Douglas Function</h3>
+
+      <pre><code>F(K,L)=aK^α L^β</code></pre>
+
+      <p>
+        where α+β=1 implies constant returns to scale.
+      </p>
+
+      <h3>Probabilistic Space</h3>
+
+      <pre><code>
+P(K_i,L_i) ≥ 0
+P(Ω)=1
+P(⋃)=∑P
+      </code></pre>
+
+      <h2>4.2 Accounting Rate of Return (ARR)</h2>
+
+      <pre><code>
+NI=∑ NI_i/(N−1)
+BV=∑ BV_i/(N−1)
+r=NI/BV
+      </code></pre>
+
+      <h2>4.3 Net Present Value (NPV)</h2>
+
+      <pre><code>NPV=∑ (NCF_t)/(1+r)^t</code></pre>
+
+      <h2>4.4 Internal Rate of Return (IRR)</h2>
+
+      <pre><code>∑ (NCF_t)/(1+IRR)^t=0</code></pre>
+
+      <h2>4.5 Investment Risk</h2>
+
+      <pre><code>
+σ=√(∑ ((x−E)^2 p))
+E=∑ x p
+      </code></pre>
+
+      <footer style="margin-top:3rem; text-align:center;">
+        <p><strong>Foxorox Finance</strong></p>
+      </footer>
+
+    </main>
+  </div>
 </body>
 </html>
