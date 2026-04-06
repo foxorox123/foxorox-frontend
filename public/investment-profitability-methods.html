@@ -5,106 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light" />
   <title>Investment Profitability Methods | Foxorox</title>
-  <meta name="description" content="Comprehensive study of investment profitability methods including Payback Period, Accounting Rate of Return, Net Present Value, Internal Rate of Return, and risk estimation using probabilistic models and Cobb–Douglas production function." />
-  <meta name="keywords" content="investment profitability methods, payback period, accounting rate of return, NPV, IRR, Cobb-Douglas, investment risk, expected value, variance, finance analysis, Foxorox" />
 
   <style>
-    :root {
-      color-scheme: light !important;
+    .force-red {
+      color: red !important;
     }
 
-    html, body {
-      background: #ffffff !important;
-      color: #111111 !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      font-family: Arial, sans-serif !important;
-      line-height: 1.6 !important;
+    .force-red * {
+      color: red !important;
     }
 
-    /* usuń overlay z motywu */
-    body::before,
-    body::after {
-      display: none !important;
-      content: none !important;
-      background: transparent !important;
+    .force-red a {
+      color: red !important;
     }
 
-    /* główny biały wrapper */
-    .white-page-force {
-      background: #ffffff !important;
-      color: #111111 !important;
-      min-height: 100vh !important;
-      width: 100% !important;
+    .force-red pre,
+    .force-red code {
+      color: red !important;
+      background: #fff0f0 !important;
     }
 
-    .white-page-force * {
-      color: #111111 !important;
-      background-color: transparent !important;
-    }
-
-    .white-page-force a {
-      color: #0066cc !important;
-      text-decoration: none;
-    }
-
-    .white-page-force main {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 2rem;
-      background: #ffffff !important;
-    }
-
-    .white-page-force pre,
-    .white-page-force code {
-      background: #f5f5f5 !important;
-      color: #111111 !important;
-      padding: 0.5rem;
-      border-radius: 6px;
-      white-space: pre-wrap;
+    .force-red h1,
+    .force-red h2,
+    .force-red h3,
+    .force-red p,
+    .force-red li {
+      color: red !important;
     }
   </style>
 </head>
 
 <body>
-  <div class="white-page-force">
-    <main>
+  <div class="force-red">
+
+    <main style="max-width:900px; margin:auto; padding:2rem;">
 
       <h1>Investment Profitability Methods</h1>
 
       <h2>4.1 Payback Period Method</h2>
       <p>
-        The payback period method is the simplest approach to estimating investment profitability. It determines the time required for net cash inflows to cover the initial investment expenditure. A project is considered acceptable when the payback period is shorter than a defined critical value. 
+        The payback period method is the simplest approach to estimating investment profitability.
       </p>
 
       <p>
-        Investment risk, measured as a function \( E[X] \) and variance \( V[X] \), is determined by the interest rate \( i \).
-      </p>
-
-      <p>
-        Let the minimal return rate from investment \( r_i \) be equal to the interest rate \( I_i \).
+        Investment risk, measured as a function \( E[X] \) and variance \( V[X] \).
       </p>
 
       <pre><code>E(r)=∑_(i=1)^n h_i r_i</code></pre>
 
       <h3>Cobb–Douglas Function</h3>
-
       <pre><code>F(K,L)=aK^α L^β</code></pre>
 
-      <p>
-        where α+β=1 implies constant returns to scale.
-      </p>
-
-      <h3>Probabilistic Space</h3>
-
-      <pre><code>
-P(K_i,L_i) ≥ 0
-P(Ω)=1
-P(⋃)=∑P
-      </code></pre>
-
       <h2>4.2 Accounting Rate of Return (ARR)</h2>
-
       <pre><code>
 NI=∑ NI_i/(N−1)
 BV=∑ BV_i/(N−1)
@@ -112,15 +64,12 @@ r=NI/BV
       </code></pre>
 
       <h2>4.3 Net Present Value (NPV)</h2>
-
       <pre><code>NPV=∑ (NCF_t)/(1+r)^t</code></pre>
 
       <h2>4.4 Internal Rate of Return (IRR)</h2>
-
       <pre><code>∑ (NCF_t)/(1+IRR)^t=0</code></pre>
 
       <h2>4.5 Investment Risk</h2>
-
       <pre><code>
 σ=√(∑ ((x−E)^2 p))
 E=∑ x p
@@ -131,6 +80,7 @@ E=∑ x p
       </footer>
 
     </main>
+
   </div>
 </body>
 </html>
