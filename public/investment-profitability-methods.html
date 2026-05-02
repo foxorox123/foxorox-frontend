@@ -1,86 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="color-scheme" content="light" />
+  <meta charset="UTF-8">
   <title>Investment Profitability Methods | Foxorox</title>
-
-  <style>
-    .force-red {
-      color: red !important;
-    }
-
-    .force-red * {
-      color: red !important;
-    }
-
-    .force-red a {
-      color: red !important;
-    }
-
-    .force-red pre,
-    .force-red code {
-      color: red !important;
-      background: #fff0f0 !important;
-    }
-
-    .force-red h1,
-    .force-red h2,
-    .force-red h3,
-    .force-red p,
-    .force-red li {
-      color: red !important;
-    }
-  </style>
 </head>
 
 <body>
-  <div class="force-red">
 
-    <main style="max-width:900px; margin:auto; padding:2rem;">
+<main>
 
-      <h1>Investment Profitability Methods</h1>
+  <h1>Investment Profitability Methods</h1>
 
-      <h2>4.1 Payback Period Method</h2>
-      <p>
-        The payback period method is the simplest approach to estimating investment profitability.
-      </p>
+  <h2>4.1 Payback Period Method</h2>
+  <p>
+    The payback period method is the simplest approach to estimating investment profitability.
+  </p>
 
-      <p>
-        Investment risk, measured as a function \( E[X] \) and variance \( V[X] \).
-      </p>
+  <p>
+    Investment risk, measured as a function E[X] and variance V[X].
+  </p>
 
-      <pre><code>E(r)=∑_(i=1)^n h_i r_i</code></pre>
+  <pre>E(r) = sum(i=1..n) h_i * r_i</pre>
 
-      <h3>Cobb–Douglas Function</h3>
-      <pre><code>F(K,L)=aK^α L^β</code></pre>
+  <h3>Cobb–Douglas Function</h3>
+  <pre>F(K,L) = a * K^alpha * L^beta</pre>
 
-      <h2>4.2 Accounting Rate of Return (ARR)</h2>
-      <pre><code>
-NI=∑ NI_i/(N−1)
-BV=∑ BV_i/(N−1)
-r=NI/BV
-      </code></pre>
+  <h2>4.2 Accounting Rate of Return (ARR)</h2>
+  <pre>
+NI = sum(NI_i)/(N-1)
+BV = sum(BV_i)/(N-1)
+r = NI / BV
+  </pre>
 
-      <h2>4.3 Net Present Value (NPV)</h2>
-      <pre><code>NPV=∑ (NCF_t)/(1+r)^t</code></pre>
+  <h2>4.3 Net Present Value (NPV)</h2>
+  <pre>NPV = sum(NCF_t / (1+r)^t)</pre>
 
-      <h2>4.4 Internal Rate of Return (IRR)</h2>
-      <pre><code>∑ (NCF_t)/(1+IRR)^t=0</code></pre>
+  <h2>4.4 Internal Rate of Return (IRR)</h2>
+  <pre>sum(NCF_t / (1+IRR)^t) = 0</pre>
 
-      <h2>4.5 Investment Risk</h2>
-      <pre><code>
-σ=√(∑ ((x−E)^2 p))
-E=∑ x p
-      </code></pre>
+  <h2>4.5 Investment Risk</h2>
+  <pre>
+sigma = sqrt(sum((x - E)^2 * p))
+E = sum(x * p)
+  </pre>
 
-      <footer style="margin-top:3rem; text-align:center;">
-        <p><strong>Foxorox Finance</strong></p>
-      </footer>
+  <footer>
+    <p><strong>Foxorox Finance</strong></p>
+  </footer>
 
-    </main>
+</main>
 
-  </div>
 </body>
 </html>
