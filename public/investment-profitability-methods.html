@@ -1,14 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Investment Profitability Methods | Foxorox</title>
+  <meta name="description" content="Learn investment profitability methods including Payback Period, ARR, NPV, IRR and investment risk analysis." />
+  <link rel="canonical" href="https://foxorox.com/investment-profitability-methods" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://foxorox.com/investment-profitability-methods" />
+  <meta property="og:title" content="Investment Profitability Methods | Foxorox" />
+  <meta property="og:description" content="Payback Period, ARR, NPV, IRR and investment risk explained." />
+  <meta property="og:image" content="https://foxorox.com/logo-foxorox.png" />
+
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #111111;
+      line-height: 1.6;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h1, h2, h3 {
+      color: #111111;
+    }
+
+    pre {
+      background: #f4f4f4;
+      color: #111111;
+      padding: 16px;
+      overflow-x: auto;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    footer {
+      margin-top: 50px;
+      text-align: center;
+      border-top: 1px solid #ddd;
+      padding-top: 20px;
+    }
+  </style>
 </head>
 
 <body>
 
 <main>
-
   <h1>Investment Profitability Methods</h1>
 
   <h2>4.1 Payback Period Method</h2>
@@ -17,7 +64,7 @@
   </p>
 
   <p>
-    Investment risk, measured as a function E[X] and variance V[X].
+    Investment risk is measured using expected value E[X] and variance V[X].
   </p>
 
   <pre>E(r) = sum(i=1..n) h_i * r_i</pre>
@@ -26,11 +73,9 @@
   <pre>F(K,L) = a * K^alpha * L^beta</pre>
 
   <h2>4.2 Accounting Rate of Return (ARR)</h2>
-  <pre>
-NI = sum(NI_i)/(N-1)
+  <pre>NI = sum(NI_i)/(N-1)
 BV = sum(BV_i)/(N-1)
-r = NI / BV
-  </pre>
+r = NI / BV</pre>
 
   <h2>4.3 Net Present Value (NPV)</h2>
   <pre>NPV = sum(NCF_t / (1+r)^t)</pre>
@@ -39,15 +84,12 @@ r = NI / BV
   <pre>sum(NCF_t / (1+IRR)^t) = 0</pre>
 
   <h2>4.5 Investment Risk</h2>
-  <pre>
-sigma = sqrt(sum((x - E)^2 * p))
-E = sum(x * p)
-  </pre>
+  <pre>sigma = sqrt(sum((x - E)^2 * p))
+E = sum(x * p)</pre>
 
   <footer>
     <p><strong>Foxorox Finance</strong></p>
   </footer>
-
 </main>
 
 </body>
