@@ -177,7 +177,7 @@ function App() {
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/features" element={<ExploreFeatures />} />
       <Route path="/tips-next-month" element={<TipsNextMonth />} />
-      <Route path="*" element={<NotFound />} />
+
     </Routes>
   );
 }
