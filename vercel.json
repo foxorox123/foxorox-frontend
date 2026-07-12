@@ -1,38 +1,15 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "routes": [
-    {
-      "src": "^/(?!blog(?:/.*)?$|favicon\\.ico$|robots\\.txt$|sitemap\\.xml$|manifest\\.json$|.*\\.(js|css|png|jpg|jpeg|gif|svg|webp|ico|json|txt|map|xml|woff|woff2|ttf|eot)$)(.*)$",
-      "has": [
-        {
-          "type": "header",
-          "key": "user-agent",
-          "value": ".*(googlebot|bingbot|yandex|duckduckbot|baiduspider|twitterbot|slackbot|facebookexternalhit|linkedinbot).*"
-        }
-      ],
-      "dest": "https://service.prerender.io/https://foxorox.com/$1",
-      "transforms": [
-        {
-          "type": "request.headers",
-          "op": "set",
-          "target": {
-            "key": "X-Prerender-Token"
-          },
-          "args": "FPah0DVPHFZT63YErm1x"
-        }
-      ]
-    }
-  ],
   "redirects": [
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "has": [
         {
           "type": "host",
           "value": "www.foxorox.com"
         }
       ],
-      "destination": "https://foxorox.com/$1",
+      "destination": "https://foxorox.com/:path*",
       "permanent": true
     }
   ],
@@ -44,15 +21,11 @@
     {
       "source": "/blog",
       "destination": "/blog/index.html"
-    },
-    {
-      "source": "/blog/:path*",
-      "destination": "/blog/:path*"
     }
   ],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "headers": [
         {
           "key": "Cache-Control",
