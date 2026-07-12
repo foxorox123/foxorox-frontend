@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
   "redirects": [
     {
       "source": "/:path*",
@@ -14,14 +15,22 @@
     }
   ],
   "rewrites": [
-    {
-      "source": "/",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/blog",
-      "destination": "/blog/index.html"
-    }
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/login", "destination": "/index.html" },
+    { "source": "/dashboard", "destination": "/index.html" },
+    { "source": "/downloads/basic", "destination": "/index.html" },
+    { "source": "/downloads/premium", "destination": "/index.html" },
+    { "source": "/downloads/forex", "destination": "/index.html" },
+    { "source": "/processing", "destination": "/index.html" },
+    { "source": "/tips", "destination": "/index.html" },
+    { "source": "/tips-next-month", "destination": "/index.html" },
+    { "source": "/about", "destination": "/index.html" },
+    { "source": "/contact", "destination": "/index.html" },
+    { "source": "/faq", "destination": "/index.html" },
+    { "source": "/terms", "destination": "/index.html" },
+    { "source": "/privacy", "destination": "/index.html" },
+    { "source": "/features", "destination": "/index.html" },
+    { "source": "/blog", "destination": "/blog/index.html" }
   ],
   "headers": [
     {
