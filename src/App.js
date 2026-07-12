@@ -18,6 +18,7 @@ import Privacy from "./pages/Privacy";
 import Processing from "./pages/Processing";
 import ExploreFeatures from "./pages/ExploreFeatures";
 import TipsNextMonth from "./pages/TipsNextMonth";
+import NotFound from "./pages/NotFound";
 import DownloadsForex from "./pages/DownloadsForex"; // ← tylko raz
 
 function App() {
