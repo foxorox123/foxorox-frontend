@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<title>Foxorox Research – Why AMD Helios Is Unlikely to Overtake NVIDIA</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+:root {
+  --bg:#0d0d0d;
+  --panel:#1a1a1a;
+  --panel2:#202020;
+  --line:#333;
+  --text:#eee;
+  --muted:#aaa;
+  --accent:#f58220;
+  --accent2:#ffb366;
+  --good:#b9ffb9;
+  --bad:#ffb9b9;
+}
+
+* {
+  box-sizing:border-box;
+}
+
+body {
+  font-family:'Segoe UI',Arial,sans-serif;
+  margin:40px;
+  background:var(--bg);
+  color:var(--text);
+}
+
+h1 {
+  color:var(--accent);
+  line-height:1.2;
+}
+
+h2 {
+  color:var(--accent2);
+  margin-top:32px;
+}
+
+h3 {
+  color:var(--accent2);
+  margin-top:27px;
+}
+
+a {
+  color:var(--accent);
+  text-decoration:none;
+}
+
+a:hover {
+  text-decoration:underline;
+}
+
+.section {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:20px;
+  margin-bottom:30px;
+}
+
+.article-text {
+  line-height:1.68;
+}
+
+.article-text p {
+  margin:0 0 16px;
+}
+
+.small {
+  font-size:.88em;
+  color:#bbb;
+}
+
+.warning {
+  background:#21160f;
+  border-left:4px solid var(--accent);
+  padding:14px 16px;
+  border-radius:8px;
+  color:#ddd;
+  margin:18px 0;
+}
+
+.info {
+  background:#111b21;
+  border-left:4px solid #53b7d5;
+  padding:14px 16px;
+  border-radius:8px;
+  color:#ddd;
+  margin:18px 0;
+}
+
+.good {
+  color:var(--good);
+}
+
+.bad {
+  color:var(--bad);
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-top:16px;
+}
+
+.card {
+  background:var(--panel2);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:15px;
+}
+
+.card strong {
+  display:block;
+  color:var(--accent2);
+  margin-bottom:6px;
+}
+
+/* 3 charts: AMD | NVIDIA | CEREBRAS */
+.charts-row {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin:20px 0 28px;
+}
+
+.chart-panel {
+  min-width:0;
+  background:#111;
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.chart-title {
+  padding:10px 12px;
+  font-weight:600;
+  font-size:.92rem;
+  border-bottom:1px solid var(--line);
+  background:#171717;
+}
+
+.chart-title span {
+  float:right;
+  color:var(--muted);
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+  font-size:.78rem;
+  font-weight:400;
+}
+
+.chart-widget {
+  width:100%;
+  height:430px;
+  background:#0d0d0d;
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:16px;
+  margin-bottom:22px;
+  font-size:.94em;
+}
+
+th,
+td {
+  border:1px solid var(--line);
+  padding:10px;
+  text-align:left;
+  vertical-align:top;
+}
+
+thead {
+  background:#262626;
+}
+
+tbody tr:nth-child(even) {
+  background:#1f1f1f;
+}
+
+.highlight-number {
+  font-size:1.3em;
+  color:#ffb366;
+  font-weight:600;
+}
+
+.footer {
+  margin-top:50px;
+  text-align:center;
+  color:#777;
+  font-size:.9em;
+}
+
+@media (max-width:950px) {
+
+  body {
+    margin:18px;
+  }
+
+  .grid,
+  .charts-row {
+    grid-template-columns:1fr;
+  }
+
+  .chart-widget {
+    height:480px;
+  }
+
+  table {
+    display:block;
+    overflow-x:auto;
+  }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<h1>
+Why AMD Helios Is Unlikely to Overtake NVIDIA – Even If MI455X Is Competitive
+</h1>
+
+<p>
+Foxorox AI Infrastructure Research – engineering and investment analysis.
+Data and public specifications reviewed as of August 2026 and developed by Aerga Sp. z o.o.
+</p>
+
+
+<div class="section">
+
+<div class="charts-row">
+
+
+<!-- AMD -->
+
+<div class="chart-panel">
+
+  <div class="chart-title">
+    AMD
+    <span>NASDAQ:AMD</span>
+  </div>
+
+  <div class="chart-widget">
+
+    <div
+      class="tradingview-widget-container"
+      style="height:100%;width:100%;"
+    >
+
+      <div
+        class="tradingview-widget-container__widget"
+        style="height:100%;width:100%;"
+      ></div>
+
+      <script
+        type="text/javascript"
+        src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
+        async
+      >
+      {
+        "autosize": true,
+        "symbol": "NASDAQ:AMD",
+        "interval": "D",
+        "timezone": "Etc/UTC",
+        "theme": "dark",
+        "style": "1",
+        "locale": "en",
+        "backgroundColor": "rgba(13,13,13,1)",
+        "gridColor": "rgba(42,46,57,0.4)",
+        "allow_symbol_change": false,
+        "hide_top_toolbar": false,
+        "hide_legend": false,
+        "save_image": false,
+        "support_host": "https://www.tradingview.com"
+      }
+      </script>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- NVIDIA -->
+
+<div class="chart-panel">
+
+  <div class="chart-title">
+    NVIDIA
+    <span>NASDAQ:NVDA</span>
+  </div>
+
+  <div class="chart-widget">
+
+    <div
+      class="tradingview-widget-container"
+      style="height:100%;width:100%;"
+    >
+
+      <div
+        class="tradingview-widget-container__widget"
+        style="height:100%;width:100%;"
+      ></div>
+
+      <script
+        type="text/javascript"
+        src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
+        async
+      >
+      {
+        "autosize": true,
+        "symbol": "NASDAQ:NVDA",
+        "interval": "D",
+        "timezone": "Etc/UTC",
+        "theme": "dark",
+        "style": "1",
+        "locale": "en",
+        "backgroundColor": "rgba(13,13,13,1)",
+        "gridColor": "rgba(42,46,57,0.4)",
+        "allow_symbol_change": false,
+        "hide_top_toolbar": false,
+        "hide_legend": false,
+        "save_image": false,
+        "support_host": "https://www.tradingview.com"
+      }
+      </script>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- CEREBRAS -->
+
+<div class="chart-panel">
+
+  <div class="chart-title">
+    Cerebras Systems
+    <span>NASDAQ:CBRS</span>
+  </div>
+
+  <div class="chart-widget">
+
+    <div
+      class="tradingview-widget-container"
+      style="height:100%;width:100%;"
+    >
+
+      <div
+        class="tradingview-widget-container__widget"
+        style="height:100%;width:100%;"
+      ></div>
+
+      <script
+        type="text/javascript"
+        src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
+        async
+      >
+      {
+        "autosize": true,
+        "symbol": "NASDAQ:CBRS",
+        "interval": "D",
+        "timezone": "Etc/UTC",
+        "theme": "dark",
+        "style": "1",
+        "locale": "en",
+        "backgroundColor": "rgba(13,13,13,1)",
+        "gridColor": "rgba(42,46,57,0.4)",
+        "allow_symbol_change": false,
+        "hide_top_toolbar": false,
+        "hide_legend": false,
+        "save_image": false,
+        "support_host": "https://www.tradingview.com"
+      }
+      </script>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+</div>
+
+
+<div class="article-text">
+
+<div class="section article-text">
+
+<h2>Valuation & Financial Metrics</h2>
+
+<p>
+The three companies represent very different stages of the AI infrastructure
+investment cycle. NVIDIA is already a highly profitable global platform,
+AMD is transitioning toward much greater AI and data-center exposure,
+while Cerebras remains an early-stage, high-growth challenger.
+For this reason, traditional valuation multiples should not be interpreted
+identically across all three companies.
+</p>
+
+<table>
+
+<thead>
+<tr>
+  <th>Metric</th>
+  <th>AMD</th>
+  <th>NVIDIA</th>
+  <th>Cerebras</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+  <td><b>Ticker</b></td>
+  <td>NASDAQ: AMD</td>
+  <td>NASDAQ: NVDA</td>
+  <td>NASDAQ: CBRS</td>
+</tr>
+
+<tr>
+  <td><b>Business profile</b></td>
+  <td>CPU + GPU + Data Center</td>
+  <td>AI Compute + Networking + Software</td>
+  <td>Wafer-Scale AI Compute</td>
+</tr>
+
+<tr>
+  <td><b>P/E – TTM</b></td>
+  <td>High / growth valuation</td>
+  <td>~30–35×*</td>
+  <td>N/M</td>
+</tr>
+
+<tr>
+  <td><b>Forward P/E</b></td>
+  <td>~40–50×*</td>
+  <td>~21×*</td>
+  <td>N/M</td>
+</tr>
+
+<tr>
+  <td><b>EV / EBITDA</b></td>
+  <td>~35–45×*</td>
+  <td>~25–30×*</td>
+  <td>N/M</td>
+</tr>
+
+<tr>
+  <td><b>Price / Sales</b></td>
+  <td>~15–20×*</td>
+  <td>~11–13× Forward*</td>
+  <td>Very high / early-stage</td>
+</tr>
+
+<tr>
+  <td><b>Revenue growth</b></td>
+  <td class="good">
+    Strong – AI/Data Center accelerating
+  </td>
+  <td class="good">
+    Exceptional at mega-cap scale
+  </td>
+  <td class="good">
+    +92% YoY core revenue in Q1 2026
+  </td>
+</tr>
+
+<tr>
+  <td><b>Latest Data Center revenue</b></td>
+  <td>
+    $6.7B
+  </td>
+  <td>
+    $75.2B
+  </td>
+  <td>
+    Not directly comparable
+  </td>
+</tr>
+
+<tr>
+  <td><b>Latest Cerebras quarterly revenue</b></td>
+  <td>—</td>
+  <td>—</td>
+  <td>
+    $193.4M GAAP
+  </td>
+</tr>
+
+<tr>
+  <td><b>Free Cash Flow</b></td>
+  <td class="good">
+    Positive
+  </td>
+  <td class="good">
+    Extremely strong – approximately $100B+ annual scale*
+  </td>
+  <td class="bad">
+    Negative / investment phase
+  </td>
+</tr>
+
+<tr>
+  <td><b>FCF Margin</b></td>
+  <td>
+    Positive but materially below NVIDIA
+  </td>
+  <td class="good">
+    Exceptional
+  </td>
+  <td class="bad">
+    Negative
+  </td>
+</tr>
+
+<tr>
+  <td><b>Gross Margin</b></td>
+  <td>
+    ~50% range*
+  </td>
+  <td class="good">
+    ~70%+ range*
+  </td>
+  <td>
+    47% core – Q1 2026
+  </td>
+</tr>
+
+<tr>
+  <td><b>Operating profitability</b></td>
+  <td class="good">
+    Profitable
+  </td>
+  <td class="good">
+    Extremely profitable
+  </td>
+  <td class="bad">
+    GAAP operating loss of $15M in Q1 2026
+  </td>
+</tr>
+
+<tr>
+  <td><b>Net income profile</b></td>
+  <td class="good">
+    Profitable
+  </td>
+  <td class="good">
+    Very high profitability
+  </td>
+  <td class="bad">
+    $14M GAAP net loss – Q1 2026
+  </td>
+</tr>
+
+<tr>
+  <td><b>Balance sheet</b></td>
+  <td>
+    Strong
+  </td>
+  <td class="good">
+    Very strong / net cash
+  </td>
+  <td class="good">
+    $3.3B cash, restricted cash and short-term investments at Q1 end
+  </td>
+</tr>
+
+<tr>
+  <td><b>Capital intensity</b></td>
+  <td>
+    Medium
+  </td>
+  <td class="good">
+    Relatively asset-light – manufacturing outsourced
+  </td>
+  <td class="bad">
+    High during infrastructure expansion
+  </td>
+</tr>
+
+<tr>
+  <td><b>AI infrastructure maturity</b></td>
+  <td>
+    Scaling rapidly
+  </td>
+  <td class="good">
+    Established global leader
+  </td>
+  <td>
+    Early commercial scale
+  </td>
+</tr>
+
+<tr>
+  <td><b>Primary valuation driver</b></td>
+  <td>
+    Helios / Instinct growth + EPYC
+  </td>
+  <td>
+    Blackwell + Rubin + networking + CUDA
+  </td>
+  <td>
+    Revenue growth + OpenAI contract + inference adoption
+  </td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+<div class="info">
+
+<b>How to read the table:</b>
+
+NVIDIA combines a premium absolute valuation with extraordinary profitability
+and free cash-flow generation. AMD trades primarily on expectations that
+Instinct and Helios will significantly increase its share of global AI
+infrastructure spending.
+
+Cerebras should not currently be valued using P/E or EV/EBITDA because
+earnings and EBITDA remain negative. Revenue growth, gross margin,
+cash consumption, backlog and future contract conversion are more useful
+metrics for the company at its present stage.
+
+</div>
+
+
+<h3>Foxorox valuation interpretation</h3>
+
+<p>
+The comparison produces an important result. NVIDIA may appear expensive
+when judged against the broader semiconductor market, but its valuation
+is supported by a level of profitability that neither AMD nor Cerebras
+currently approaches.
+</p>
+
+<p>
+NVIDIA is generating enormous free cash flow while simultaneously maintaining
+very high revenue growth. This combination explains why the company can trade
+at a substantial premium to conventional semiconductor manufacturers.
+</p>
+
+<p>
+AMD presents a different valuation case. Investors are paying today for a
+significant increase in future AI accelerator revenue. If Helios and the
+MI450/MI455X generation successfully convert announced hyperscaler deployments
+into revenue, AMD's earnings could grow into the current valuation.
+If adoption is slower than expected, however, multiple compression becomes
+a significant risk.
+</p>
+
+<p>
+Cerebras represents the most speculative valuation of the three.
+The company reported Q1 2026 GAAP revenue of $193.4 million and a GAAP
+net loss of $14.0 million. Core revenue increased 92% year over year,
+demonstrating exceptional growth, but profitability has not yet been
+established.
+</p>
+
+<p class="warning">
+
+<b>Foxorox conclusion:</b>
+
+NVIDIA currently has the strongest relationship between valuation,
+profitability and cash generation.
+
+AMD offers potentially greater percentage upside if it captures a meaningful
+share of NVIDIA's AI accelerator market, but that opportunity comes with
+greater execution risk.
+
+Cerebras offers the highest technological optionality and potentially the
+highest growth rate, but traditional earnings multiples are not yet useful.
+Its valuation depends primarily on future revenue conversion, particularly
+large AI infrastructure contracts, and on the company's ability to convert
+rapid growth into sustainable positive free cash flow.
+
+</p>
+
+
+<p class="small">
+* Valuation multiples change continuously with share prices, earnings estimates
+and analyst revisions. Approximate market ranges are shown for comparative
+research purposes and should be refreshed before publication. N/M = not
+meaningful because the relevant denominator is negative.
+</p>
+
+</div>
+<h2>Executive thesis</h2>
+
+<p>
+AMD Helios is probably the most important attempt yet to create a credible
+open alternative to NVIDIA's rack-scale AI architecture.
+The platform is technically serious.
+It combines 72 AMD Instinct MI455X accelerators,
+EPYC Venice CPUs, Pensando networking, UALink-over-Ethernet
+and the ROCm software ecosystem in a single rack-scale architecture.
+</p>
+
+<p>
+This should allow AMD to gain meaningful share of the AI accelerator market.
+It does not, however, automatically mean that AMD will overtake NVIDIA.
+</p>
+
+<p class="warning">
+<b>Foxorox thesis:</b>
+The competitive battle is no longer GPU versus GPU.
+It is AI factory versus AI factory.
+A modern hyperscale customer is buying compute, memory,
+scale-up networking, scale-out networking, software,
+libraries, orchestration, support and a deployment roadmap.
+NVIDIA currently controls substantially more of this stack.
+Therefore even an AMD accelerator that is competitive,
+or superior in selected specifications, does not by itself eliminate
+NVIDIA's structural advantage.
+</p>
+
+
+<h2>1. AMD Helios is a real rack-scale competitor</h2>
+
+<p>
+AMD Helios should not be dismissed as simply another GPU server.
+AMD designed the platform as a complete rack-scale architecture
+for frontier AI training and inference.
+</p>
+
+<p>
+The official AMD Helios configuration integrates
+72 AMD Instinct MI455X GPUs into a single scale-up domain.
+The platform provides up to 260 TB/s of aggregate scale-up bandwidth
+and up to 43 TB/s of scale-out bandwidth.
+So the problem maybe is the price of Helios and recend Blackwell chips launched by Nvidia. Both companies have almost same price for computing unit but of course AMD looks a little but cheaper then Nvidia and it must be cheaper beacouse only marketing get biral information that it could be better then NVIDIA. So in conlusion we live only in NVIDIA world at all. It could be also Cerebras that would come to compete with those two and of course chineese GPU developers  but still race is only beetwen this two GPU producers. 
+</p>
+
+<div class="grid">
+
+<div class="card">
+<strong>GPUs per Helios rack</strong>
+<span class="highlight-number">72</span>
+<br>
+AMD Instinct MI455X
+</div>
+
+<div class="card">
+<strong>HBM4 capacity</strong>
+<span class="highlight-number">up to 31 TB</span>
+<br>
+per Helios rack
+</div>
+
+<div class="card">
+<strong>Scale-up bandwidth</strong>
+<span class="highlight-number">260 TB/s</span>
+<br>
+across the rack
+</div>
+
+</div>
+
+
+<p>
+Each MI455X accelerator provides up to 432 GB of HBM4 memory
+and up to 19.6 TB/s of peak memory bandwidth.
+At rack scale AMD specifies up to approximately
+2.9 exaFLOPS of OCP MXFP4 performance
+and approximately 1.4 exaFLOPS of OCP MXFP8 performance.
+</p>
+
+<p>
+The architecture is aligned with Meta's Open Rack Wide concept
+and Open Compute Project standards.
+AMD also uses liquid cooling and open networking technologies
+instead of attempting to reproduce NVIDIA's proprietary NVLink architecture.
+</p>
+
+<p class="small">
+Source:
+<a href="https://www.amd.com/en/products/rackscale-solutions/helios.html"
+target="_blank" rel="noopener">
+AMD Helios
+</a>
+and
+<a href="https://www.amd.com/content/dam/amd/en/documents/solutions/ai/amd-helios-bro.pdf"
+target="_blank" rel="noopener">
+AMD Helios Rackscale Solution brochure
+</a>.
+</p>
+
+
+<h2>2. Engineering case study – 125 MW AI Data Center</h2>
+
+<p>
+The physical implications of adopting Helios become particularly
+interesting when the architecture is examined at data-center scale.
+</p>
+
+<p>
+The following Foxorox engineering case study considers
+a 125 MW IT facility.
+</p>
+
+<div class="info">
+
+<b>Important engineering note:</b>
+
+The values of approximately 140 kW per Helios rack
+and the detailed ORW physical dimensions used below
+are concept-design assumptions developed from preliminary
+platform and integration information.
+
+AMD's current public Helios materials confirm the
+72-GPU architecture, Open Rack Wide alignment,
+liquid cooling, memory and network specifications,
+but final electrical, mechanical and installation parameters
+must be confirmed with AMD or the selected OEM/integrator
+before detailed design.
+
+</div>
+
+
+<h3>Rack count</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Conventional AI rack</th>
+<th>AMD Helios concept</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Assumed rack IT power</td>
+<td>100 kW</td>
+<td>~140 kW</td>
+</tr>
+
+<tr>
+<td>Total IT capacity</td>
+<td>125 MW</td>
+<td>125 MW</td>
+</tr>
+
+<tr>
+<td>Required rack count</td>
+<td>1,250</td>
+<td>~893</td>
+</tr>
+
+<tr>
+<td>Rack-count reduction</td>
+<td>Base</td>
+<td class="good">~29%</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+<p>
+At first sight this appears to produce a substantial
+real-estate advantage.
+Approximately 893 Helios racks can theoretically provide
+the same IT power that requires 1,250 conventional
+100 kW racks.
+</p>
+
+<p>
+But rack count is only one dimension of data-center density.
+</p>
+
+
+<h3>The double-width problem</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Parameter</th>
+<th>100 kW rack</th>
+<th>Helios concept</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Conceptual footprint</td>
+<td>0.72 m²</td>
+<td>~1.46 m²</td>
+</tr>
+
+<tr>
+<td>Rack count</td>
+<td>1,250</td>
+<td>~893</td>
+</tr>
+
+<tr>
+<td>Total rack footprint</td>
+<td>~900 m²</td>
+<td>~1,306 m²</td>
+</tr>
+
+<tr>
+<td>IT power / rack footprint</td>
+<td>~138.9 kW/m²</td>
+<td>~95.9 kW/m²</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+<p>
+This produces an important engineering conclusion.
+</p>
+
+<p class="warning">
+<b>Fewer racks do not automatically mean a smaller data center.</b>
+In this conceptual comparison the Helios rack count falls by approximately
+29%, yet the physical floor area occupied by the racks themselves
+increases because the Open Rack Wide architecture is materially wider.
+</p>
+
+<p>
+Consequently, replacing a conventional rack architecture with Helios
+does not justify automatically reducing the external dimensions
+of a previously designed AI data center.
+</p>
+
+<p>
+The additional space may actually be valuable for
+service aisles, CDU infrastructure, maintenance access,
+future expansion and hydraulic distribution.
+</p>
+
+
+<h2>3. Liquid cooling is an advantage – but not an NVIDIA killer</h2>
+
+<p>
+Helios provides a very high degree of direct liquid cooling.
+The architecture supplies liquid cooling to the compute infrastructure
+and is designed as a rack-scale liquid-cooled system.
+</p>
+
+<p>
+For a conceptual 125 MW installation,
+a design previously based on an 85/15 split between
+direct-to-chip cooling and residual air cooling could potentially
+move toward approximately 90/10,
+subject to confirmation from the final equipment supplier.
+</p>
+
+<table>
+
+<thead>
+<tr>
+<th>Cooling split</th>
+<th>Residual CRAH load</th>
+<th>122.9 kW CRAH units</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>85% liquid / 15% air</td>
+<td>18.75 MW</td>
+<td>~153</td>
+</tr>
+
+<tr>
+<td><b>90% liquid / 10% air</b></td>
+<td><b>~13.1 MW</b></td>
+<td><b>~107</b></td>
+</tr>
+
+<tr>
+<td>95% liquid / 5% air</td>
+<td>~6.6 MW</td>
+<td>~54</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+<p>
+The reduction in air-side cooling infrastructure can be material.
+But NVIDIA is moving in exactly the same direction.
+</p>
+
+<p>
+Vera Rubin NVL72 is also designed around direct liquid cooling,
+rack-scale power management and increasingly sophisticated
+energy-buffering architecture.
+NVIDIA is therefore not standing still while AMD catches up.
+</p>
+
+
+<h2>4. The real problem for AMD: NVIDIA is not selling a GPU anymore</h2>
+
+<p>
+The largest misconception in comparing AMD and NVIDIA
+is to look only at theoretical accelerator performance.
+</p>
+
+<p>
+NVIDIA now sells an integrated AI factory architecture.
+</p>
+
+<p>
+Vera Rubin NVL72 combines:
+</p>
+
+<ul>
+<li>72 Rubin GPUs,</li>
+<li>36 Vera CPUs,</li>
+<li>NVLink 6 scale-up networking,</li>
+<li>ConnectX-9 SuperNICs,</li>
+<li>BlueField-4 DPUs,</li>
+<li>Spectrum-X Ethernet and Quantum InfiniBand scale-out networking,</li>
+<li>CUDA, CUDA-X and NVIDIA AI Enterprise software,</li>
+<li>rack management and orchestration,</li>
+<li>and a large OEM and infrastructure partner ecosystem.</li>
+</ul>
+
+<p>
+This makes the relevant comparison much larger than
+MI455X versus Rubin GPU.
+</p>
+
+<p class="warning">
+AMD has to compete simultaneously against NVIDIA's GPU,
+NVLink, networking, CUDA software, libraries,
+cluster orchestration, OEM ecosystem and deployment experience.
+</p>
+
+<p class="small">
+Source:
+<a href="https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/"
+target="_blank" rel="noopener">
+NVIDIA Vera Rubin NVL72
+</a>.
+</p>
+
+
+<h2>5. CUDA remains NVIDIA's strongest moat</h2>
+
+<p>
+Hardware performance changes every generation.
+Software ecosystems change far more slowly.
+</p>
+
+<p>
+CUDA has been developed for nearly two decades
+and has become embedded in the workflows of
+AI researchers, universities, hyperscalers,
+engineering organizations and software companies.
+</p>
+
+<p>
+NVIDIA's CUDA-X ecosystem now includes hundreds of
+GPU-accelerated libraries spanning AI,
+data science, mathematics, scientific computing,
+simulation, communications and other specialized workloads.
+</p>
+
+<p>
+NVIDIA has previously disclosed an ecosystem containing
+more than six million developers and thousands of
+GPU-accelerated applications.
+</p>
+
+<p>
+ROCm has improved substantially.
+AMD now supports PyTorch, TensorFlow, JAX,
+ONNX Runtime, vLLM, SGLang and other important frameworks,
+and the gap is significantly smaller than several years ago.
+</p>
+
+<p>
+But compatibility is not identical to ecosystem dominance.
+</p>
+
+<p>
+Large AI operators care about:
+</p>
+
+<ul>
+
+<li>debugging tools,</li>
+
+<li>optimized kernels,</li>
+
+<li>distributed training libraries,</li>
+
+<li>inference runtimes,</li>
+
+<li>profilers,</li>
+
+<li>cluster management,</li>
+
+<li>documentation,</li>
+
+<li>developer experience,</li>
+
+<li>technical support,</li>
+
+<li>and the availability of engineers who already know the stack.</li>
+
+</ul>
+
+<p>
+Migration therefore has a cost even when the alternative hardware
+offers an attractive price/performance ratio.
+</p>
+
+<p class="small">
+Sources:
+<a href="https://www.nvidia.com/en-us/technologies/cuda-x/"
+target="_blank" rel="noopener">
+NVIDIA CUDA-X
+</a>
+and
+<a href="https://www.amd.com/en/products/rackscale-solutions/helios.html"
+target="_blank" rel="noopener">
+AMD ROCm / Helios
+</a>.
+</p>
+
+
+<h2>6. The revenue gap illustrates the installed-base problem</h2>
+
+<p>
+The strongest evidence of NVIDIA's advantage is not a benchmark.
+It is revenue.
+</p>
+
+<table>
+
+<thead>
+<tr>
+<th>Company</th>
+<th>Latest reported Data Center revenue</th>
+<th>Period</th>
+<th>Important caveat</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td><b>NVIDIA</b></td>
+<td><b>$75.2B</b></td>
+<td>FY2027 Q1</td>
+<td>
+Includes NVIDIA Data Center compute and networking.
+</td>
+</tr>
+
+<tr>
+<td><b>AMD</b></td>
+<td><b>$6.7B</b></td>
+<td>Q2 2026</td>
+<td>
+Includes EPYC server CPUs as well as Instinct accelerators,
+so it is not a pure GPU comparison.
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+<p>
+The periods and segment definitions are not perfectly comparable,
+but the order-of-magnitude difference remains strategically important.
+</p>
+
+<p>
+NVIDIA's Data Center revenue is currently more than ten times
+AMD's entire Data Center segment revenue on this simple quarterly comparison.
+</p>
+
+<p>
+That scale creates several reinforcing advantages:
+</p>
+
+<ul>
+
+<li>more production volume,</li>
+
+<li>larger engineering budgets,</li>
+
+<li>greater software investment,</li>
+
+<li>more customer deployments,</li>
+
+<li>more operational data,</li>
+
+<li>stronger supplier relationships,</li>
+
+<li>and faster feedback between customers and product development.</li>
+
+</ul>
+
+<p>
+This is a classic flywheel.
+The largest installed base attracts developers,
+developers improve the ecosystem,
+the ecosystem attracts customers,
+and customers justify further hardware investment.
+</p>
+
+
+<h2>7. Networking may be more important than the GPU benchmark</h2>
+
+<p>
+At small scale, individual accelerator performance matters greatly.
+At tens of thousands of GPUs, network architecture becomes
+equally important.
+</p>
+
+<p>
+A trillion-parameter training workload must continuously exchange
+large quantities of data between accelerators.
+The performance of the complete cluster therefore depends on
+communication latency, bandwidth, congestion control,
+collective operations and software orchestration.
+</p>
+
+<p>
+NVIDIA owns much of this path through NVLink,
+NVSwitch, ConnectX, Spectrum-X,
+Quantum InfiniBand and BlueField.
+</p>
+
+<p>
+AMD is pursuing a different strategy:
+open standards.
+Helios uses UALink over Ethernet for scale-up
+and standards-based Ethernet for scale-out,
+supported by Pensando networking.
+</p>
+
+<p>
+This is strategically attractive because hyperscalers
+often dislike vendor lock-in.
+</p>
+
+<p>
+But openness also creates an integration challenge.
+A vertically integrated system can often be optimized more quickly
+than a multivendor architecture.
+</p>
+
+<p class="warning">
+AMD's open architecture may ultimately be one of its strongest advantages,
+but in the short term NVIDIA's vertical integration reduces deployment risk
+for customers building multi-billion-dollar AI clusters.
+</p>
+
+
+<h2>8. NVIDIA controls the upgrade path</h2>
+
+<p>
+Another important advantage is product cadence.
+</p>
+
+<p>
+NVIDIA customers that deployed Hopper,
+Grace Hopper, Blackwell and Blackwell Ultra
+can move toward Vera Rubin within an ecosystem
+that preserves many elements of the software,
+networking and operational model.
+</p>
+
+<p>
+Vera Rubin NVL72 uses the third generation
+of NVIDIA's MGX NVL72 rack architecture.
+NVIDIA states that more than 80 MGX ecosystem partners
+support the platform.
+</p>
+
+<p>
+This matters because hyperscalers do not rebuild
+their entire infrastructure strategy every year.
+</p>
+
+<p>
+They prefer a roadmap.
+</p>
+
+<p>
+The winning platform must therefore demonstrate
+not only today's accelerator,
+but the next several generations of:
+</p>
+
+<ul>
+
+<li>compute,</li>
+<li>memory,</li>
+<li>networking,</li>
+<li>power delivery,</li>
+<li>cooling,</li>
+<li>software,</li>
+<li>and rack architecture.</li>
+
+</ul>
+
+
+<h2>9. The power problem is becoming a platform problem</h2>
+
+<p>
+At hundreds of megawatts,
+AI infrastructure design increasingly begins with electricity
+rather than processors.
+</p>
+
+<p>
+A 125 MW IT facility cannot simply increase accelerator density indefinitely.
+</p>
+
+<p>
+The limits become:
+</p>
+
+<ul>
+
+<li>utility connection capacity,</li>
+<li>transformer capacity,</li>
+<li>busbar current,</li>
+<li>UPS and energy-storage architecture,</li>
+<li>liquid distribution,</li>
+<li>heat rejection,</li>
+<li>and transient power behavior.</li>
+
+</ul>
+
+<p>
+NVIDIA is already developing an 800 VDC architecture
+for future AI factories and megawatt-class rack concepts.
+</p>
+
+<p>
+Vera Rubin also introduces local energy buffering
+and power smoothing designed to reduce rapid rack-level
+power fluctuations.
+</p>
+
+<p>
+This is important because AI workloads can produce
+extremely rapid changes in electrical demand.
+At gigawatt scale these transients become a grid
+and data-center electrical-design problem.
+</p>
+
+<p>
+The competitive advantage therefore shifts again:
+from GPU efficiency to complete electrical-system integration.
+</p>
+
+
+<h2>10. Helios can gain market share without overtaking NVIDIA</h2>
+
+<p>
+None of this means AMD will fail.
+In fact, the opposite may be true.
+</p>
+
+<p>
+AMD is building the strongest AI accelerator position
+in its history.
+</p>
+
+<p>
+The company has publicly announced major commitments
+from some of the world's most important AI organizations.
+OpenAI expects AMD Helios deployments through multiple partners,
+while AMD and Anthropic announced plans involving
+up to 2 GW of AMD Instinct infrastructure.
+</p>
+
+<p>
+AMD also states that Oracle Cloud Infrastructure
+plans to deploy 50,000 MI455X GPUs beginning in 2026.
+</p>
+
+<p>
+These are not experimental installations.
+They indicate that AMD is becoming a legitimate
+second platform for hyperscale AI.
+</p>
+
+<p class="info">
+The most realistic outcome may therefore not be
+"AMD defeats NVIDIA."
+It may be the creation of a two-platform accelerator market
+in which AMD captures a meaningful share while NVIDIA remains
+the dominant ecosystem.
+</p>
+
+
+<h2>11. Why hyperscalers actually want AMD to succeed</h2>
+
+<p>
+There is another reason AMD can grow rapidly.
+NVIDIA's customers do not necessarily want NVIDIA
+to maintain near-total control over AI infrastructure.
+</p>
+
+<p>
+Hyperscalers have several reasons to encourage an alternative:
+</p>
+
+<ul>
+
+<li>lower accelerator prices,</li>
+
+<li>greater negotiating leverage,</li>
+
+<li>diversified supply chains,</li>
+
+<li>reduced dependence on proprietary interconnects,</li>
+
+<li>greater control over networking architecture,</li>
+
+<li>and reduced vendor lock-in.</li>
+
+</ul>
+
+<p>
+AMD's open strategy directly addresses these concerns.
+</p>
+
+<p>
+Therefore AMD does not need to replicate NVIDIA's ecosystem
+perfectly to become extremely successful.
+</p>
+
+<p>
+It only needs to be sufficiently competitive
+that large customers can economically operate a second platform.
+</p>
+
+
+<h2>12. Helios versus Vera Rubin – strategic comparison</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Area</th>
+<th>AMD Helios</th>
+<th>NVIDIA Vera Rubin</th>
+<th>Strategic advantage</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>GPU domain</td>
+<td>72 MI455X</td>
+<td>72 Rubin GPUs</td>
+<td>Comparable rack-scale concept</td>
+</tr>
+
+<tr>
+<td>CPU</td>
+<td>EPYC Venice</td>
+<td>Vera CPU</td>
+<td>Both vertically optimized</td>
+</tr>
+
+<tr>
+<td>HBM</td>
+<td>HBM4, up to 31 TB/rack</td>
+<td>High-capacity next-generation HBM architecture</td>
+<td>Workload dependent</td>
+</tr>
+
+<tr>
+<td>Scale-up</td>
+<td>UALink over Ethernet</td>
+<td>NVLink 6</td>
+<td>NVIDIA maturity / AMD openness</td>
+</tr>
+
+<tr>
+<td>Scale-out</td>
+<td>Pensando + Ethernet / UEC</td>
+<td>Spectrum-X / InfiniBand</td>
+<td>NVIDIA integrated stack</td>
+</tr>
+
+<tr>
+<td>Software</td>
+<td>ROCm</td>
+<td>CUDA + CUDA-X + AI Enterprise</td>
+<td class="good">NVIDIA</td>
+</tr>
+
+<tr>
+<td>Architecture philosophy</td>
+<td>Open ecosystem</td>
+<td>Vertically integrated</td>
+<td>Different strategic models</td>
+</tr>
+
+<tr>
+<td>Developer ecosystem</td>
+<td>Rapidly expanding</td>
+<td>Large established ecosystem</td>
+<td class="good">NVIDIA</td>
+</tr>
+
+<tr>
+<td>Vendor lock-in</td>
+<td>Lower by design</td>
+<td>Higher</td>
+<td class="good">AMD</td>
+</tr>
+
+<tr>
+<td>Deployment maturity</td>
+<td>Beginning major Helios ramp</td>
+<td>Multiple generations of rack-scale deployments</td>
+<td class="good">NVIDIA</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+<h2>13. The 125 MW data-center conclusion</h2>
+
+<p>
+From an engineering perspective,
+the analysis of a 125 MW installation produces an important result.
+</p>
+
+<p>
+The accelerator architecture does not fundamentally change
+the electrical capacity required by the site.
+</p>
+
+<p>
+Whether the 125 MW is delivered by approximately
+1,250 conventional 100 kW racks or roughly
+893 conceptual 140 kW Helios racks,
+the facility still has to provide approximately 125 MW
+of IT power and reject approximately the corresponding
+amount of heat.
+</p>
+
+<p>
+Therefore the following major systems do not disappear:
+</p>
+
+<ul>
+
+<li>high-voltage grid connection,</li>
+
+<li>HV/MV transformers,</li>
+
+<li>medium-voltage distribution,</li>
+
+<li>large pumping systems,</li>
+
+<li>heat exchangers,</li>
+
+<li>dry coolers or cooling towers,</li>
+
+<li>emergency power systems,</li>
+
+<li>and substantial hydraulic infrastructure.</li>
+
+</ul>
+
+<p>
+Higher compute density changes the internal topology
+of the data halls much more than it changes
+the fundamental physics of a 125 MW site.
+</p>
+
+
+<h2>14. Why AMD is unlikely to overtake NVIDIA in the current cycle</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Factor</th>
+<th>AMD position</th>
+<th>NVIDIA position</th>
+<th>Importance</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Accelerator hardware</td>
+<td class="good">Highly competitive</td>
+<td class="good">Highly competitive</td>
+<td>Very high</td>
+</tr>
+
+<tr>
+<td>HBM capacity</td>
+<td class="good">Very strong</td>
+<td class="good">Very strong</td>
+<td>High</td>
+</tr>
+
+<tr>
+<td>Software ecosystem</td>
+<td>Improving rapidly</td>
+<td class="good">Deeply established</td>
+<td>Extremely high</td>
+</tr>
+
+<tr>
+<td>Scale-up networking</td>
+<td>UALink / open</td>
+<td class="good">NVLink / mature</td>
+<td>Extremely high</td>
+</tr>
+
+<tr>
+<td>Scale-out networking</td>
+<td>Pensando / Ethernet</td>
+<td class="good">Spectrum-X / InfiniBand</td>
+<td>Very high</td>
+</tr>
+
+<tr>
+<td>Installed base</td>
+<td>Growing</td>
+<td class="good">Massive</td>
+<td>Extremely high</td>
+</tr>
+
+<tr>
+<td>Developer ecosystem</td>
+<td>Growing</td>
+<td class="good">Dominant</td>
+<td>Extremely high</td>
+</tr>
+
+<tr>
+<td>OEM ecosystem</td>
+<td>Expanding</td>
+<td class="good">Highly developed</td>
+<td>High</td>
+</tr>
+
+<tr>
+<td>Open standards</td>
+<td class="good">Core advantage</td>
+<td>More proprietary</td>
+<td>Potential long-term AMD advantage</td>
+</tr>
+
+<tr>
+<td>Current business scale</td>
+<td>Significantly smaller</td>
+<td class="good">Much larger</td>
+<td>Extremely high</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+<h2>15. Bull case for AMD</h2>
+
+<p>
+The strongest AMD scenario is not based on beating NVIDIA
+on every benchmark.
+</p>
+
+<p>
+It is based on customers deciding that diversification
+is strategically necessary.
+</p>
+
+<p>
+If ROCm continues improving,
+UALink becomes a widely adopted industry standard,
+and large deployments by OpenAI, Anthropic, Oracle
+and other operators prove reliable,
+the perceived risk of choosing AMD can fall sharply.
+</p>
+
+<p>
+Under that scenario AMD can potentially capture
+a materially larger portion of future accelerator spending
+without becoming the number-one supplier.
+</p>
+
+
+<h2>16. Bear case for NVIDIA</h2>
+
+<p>
+NVIDIA's greatest strength can also become a vulnerability.
+</p>
+
+<p>
+Its highly integrated architecture generates strong customer lock-in,
+but very large customers increasingly have an economic incentive
+to avoid dependence on a single supplier.
+</p>
+
+<p>
+An open ecosystem built around AMD,
+UALink and Ethernet could gradually reduce NVIDIA's control
+over the infrastructure stack.
+</p>
+
+<p>
+Custom accelerators from Google, Amazon and other hyperscalers
+increase this pressure further.
+</p>
+
+<p>
+The most important long-term threat to NVIDIA may therefore
+not be a single competing GPU.
+It may be the gradual commoditization of the entire AI accelerator stack.
+</p>
+
+
+<h2>17. Foxorox conclusion</h2>
+
+<p>
+AMD Helios changes the competitive landscape.
+</p>
+
+<p>
+MI455X provides enough memory,
+bandwidth and rack-scale compute to make AMD a serious
+candidate for frontier AI deployments.
+ROCm has improved substantially,
+AMD has credible networking technology,
+and major AI companies are committing
+to large Instinct deployments.
+</p>
+
+<p>
+But this is not yet enough to conclude that AMD will overtake NVIDIA.
+</p>
+
+<p class="warning">
+
+<b>Foxorox final thesis:</b>
+
+NVIDIA's competitive advantage is no longer located only inside the GPU.
+
+It exists across the complete AI factory:
+
+GPU + CPU + HBM + NVLink + Ethernet/InfiniBand +
+DPU + CUDA + libraries + orchestration +
+OEM ecosystem + installed base + deployment experience.
+
+AMD Helios attacks almost every layer of this architecture,
+which makes AMD a much more dangerous competitor than before.
+
+But closing a hardware-performance gap can happen in one generation.
+
+Closing an ecosystem gap takes considerably longer.
+
+</p>
+
+<p>
+For this reason, the most probable scenario is not that
+AMD replaces NVIDIA as the dominant AI infrastructure platform
+during the current generation.
+</p>
+
+<p>
+A more realistic scenario is that AMD becomes
+a powerful number-two supplier,
+captures a meaningful portion of hyperscale deployments,
+forces NVIDIA to compete more aggressively on price and openness,
+and gradually weakens NVIDIA's near-monopoly economics.
+</p>
+
+<p>
+That outcome could still be extremely valuable for AMD shareholders.
+AMD does not have to overtake NVIDIA
+to become one of the largest beneficiaries
+of global AI infrastructure investment.
+What about Cerebras? We think that this company can suprise with some extraordinary gains as it start to use less power and less machinery( optics, memory, etc) to compute on the same level as Nvidia and AMD GPU chips. We receon that If hyperscalers will adopt new langages and LLM models to Cerebras wafers ot couldd be killer for Nvidia pricing for new products as this is new player on the market with extraordianry technology. 
+</p>
+
+<p>
+<b>Written by Pawel Demczuk, MSc</b><br>
+<b>Foxorox AI Analyzer</b>
+</p>
+
+
+</div>
+</div>
+
+
+<div class="section article-text">
+
+<h2>Source Appendix</h2>
+
+<p class="small">
+
+<b>AMD Helios:</b><br>
+<a href="https://www.amd.com/en/products/rackscale-solutions/helios.html"
+target="_blank" rel="noopener">
+https://www.amd.com/en/products/rackscale-solutions/helios.html
+</a>
+
+<br><br>
+
+<b>AMD Helios Rackscale Solution brochure:</b><br>
+<a href="https://www.amd.com/content/dam/amd/en/documents/solutions/ai/amd-helios-bro.pdf"
+target="_blank" rel="noopener">
+AMD technical brochure
+</a>
+
+<br><br>
+
+<b>AMD Instinct MI455X:</b><br>
+<a href="https://www.amd.com/en/products/accelerators/instinct/mi400.html"
+target="_blank" rel="noopener">
+AMD Instinct MI400 / MI455X
+</a>
+
+<br><br>
+
+<b>AMD Q2 2026 results:</b><br>
+<a href="https://ir.amd.com/news-events/press-releases/detail/1295/amd-reports-second-quarter-2026-financial-results"
+target="_blank" rel="noopener">
+AMD Investor Relations
+</a>
+
+<br><br>
+
+<b>AMD and OpenAI:</b><br>
+<a href="https://newsroom.amd.com/news/aai-2026-openai-update/"
+target="_blank" rel="noopener">
+AMD / OpenAI Helios deployment
+</a>
+
+<br><br>
+
+<b>AMD and Anthropic:</b><br>
+<a href="https://ir.amd.com/news-events/press-releases/detail/1292/amd-and-anthropic-announce-strategic-partnership-to-deploy-up-to-2-gigawatts-of-amd-instinct-mi450-series-gpus"
+target="_blank" rel="noopener">
+AMD / Anthropic strategic partnership
+</a>
+
+<br><br>
+
+<b>NVIDIA Vera Rubin NVL72:</b><br>
+<a href="https://www.nvidia.com/en-us/data-center/vera-rubin-nvl72/"
+target="_blank" rel="noopener">
+NVIDIA Vera Rubin NVL72
+</a>
+
+<br><br>
+
+<b>NVIDIA CUDA-X:</b><br>
+<a href="https://www.nvidia.com/en-us/technologies/cuda-x/"
+target="_blank" rel="noopener">
+NVIDIA CUDA-X
+</a>
+
+<br><br>
+
+<b>NVIDIA Q1 FY2027 results:</b><br>
+<a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Announces-Financial-Results-for-First-Quarter-Fiscal-2027/default.aspx"
+target="_blank" rel="noopener">
+NVIDIA Investor Relations
+</a>
+
+<br><br>
+
+<b>NVIDIA 800 VDC AI infrastructure:</b><br>
+<a href="https://developer.nvidia.com/blog/nvidia-800-v-hvdc-architecture-will-power-the-next-generation-of-ai-factories/"
+target="_blank" rel="noopener">
+NVIDIA 800 VDC architecture
+</a>
+
+</p>
+
+<p class="small">
+The 125 MW data-center calculations and the approximately
+140 kW Helios rack assumption represent conceptual Foxorox
+engineering analysis based on preliminary platform information.
+They are not final AMD design specifications.
+Final rack power, dimensions, coolant parameters,
+heat-load distribution and installation requirements
+must be confirmed directly with AMD and the selected OEM/integrator
+before use in detailed engineering.
+</p>
+
+<p class="small">
+This article is provided for informational and analytical purposes only
+and does not constitute investment advice.
+Performance figures published by AMD and NVIDIA
+are vendor-specific and may use different workloads,
+precision formats and benchmark methodologies.
+They should not be interpreted as directly comparable
+unless tested under identical conditions.
+</p>
+
+</div>
+
+
+<div class="footer">
+
+Generated and edited by
+<b>MSc Pawel Demczuk</b>
+and
+<b>Foxorox AI Analyzer</b>.
+
+<br>
+
+<a href="/blog/index.html">
+← Back to blog index
+</a>
+
+</div>
+
+
+</body>
+</html>
