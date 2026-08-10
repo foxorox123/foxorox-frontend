@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<title>Foxorox Research – Palantir After Q2 2026: How Much Growth Is Already Priced In?</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description"
+content="Foxorox Research analysis of Palantir Technologies after Q2 2026 earnings, including FY2026 valuation, revenue growth, free cash flow and reverse DCF analysis.">
+
+<style>
+
+:root {
+  --bg:#0d0d0d;
+  --panel:#1a1a1a;
+  --panel2:#202020;
+  --line:#333;
+  --text:#eee;
+  --muted:#aaa;
+  --accent:#f58220;
+  --accent2:#ffb366;
+  --good:#b9ffb9;
+  --bad:#ffb9b9;
+}
+
+* {
+  box-sizing:border-box;
+}
+
+body {
+  font-family:'Segoe UI',Arial,sans-serif;
+  margin:40px;
+  background:var(--bg);
+  color:var(--text);
+}
+
+h1 {
+  color:var(--accent);
+  line-height:1.2;
+}
+
+h2 {
+  color:var(--accent2);
+  margin-top:32px;
+}
+
+h3 {
+  color:var(--accent2);
+  margin-top:27px;
+}
+
+a {
+  color:var(--accent);
+  text-decoration:none;
+}
+
+a:hover {
+  text-decoration:underline;
+}
+
+.section {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:20px;
+  margin-bottom:30px;
+}
+
+.article-text {
+  line-height:1.68;
+}
+
+.article-text p {
+  margin:0 0 16px;
+}
+
+.small {
+  font-size:.88em;
+  color:#bbb;
+}
+
+.warning {
+  background:#21160f;
+  border-left:4px solid var(--accent);
+  padding:14px 16px;
+  border-radius:8px;
+  color:#ddd;
+  margin:18px 0;
+}
+
+.info {
+  background:#111b21;
+  border-left:4px solid #53b7d5;
+  padding:14px 16px;
+  border-radius:8px;
+  color:#ddd;
+  margin:18px 0;
+}
+
+.good {
+  color:var(--good);
+}
+
+.bad {
+  color:var(--bad);
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-top:16px;
+}
+
+.card {
+  background:var(--panel2);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:15px;
+}
+
+.card strong {
+  display:block;
+  color:var(--accent2);
+  margin-bottom:6px;
+}
+
+/* PALANTIR CHART */
+
+.charts-row {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+  margin:20px 0 28px;
+}
+
+.chart-panel {
+  min-width:0;
+  background:#111;
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.chart-title {
+  padding:10px 12px;
+  font-weight:600;
+  font-size:.92rem;
+  border-bottom:1px solid var(--line);
+  background:#171717;
+}
+
+.chart-title span {
+  float:right;
+  color:var(--muted);
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+  font-size:.78rem;
+  font-weight:400;
+}
+
+.chart-widget {
+  width:100%;
+  height:520px;
+  background:#0d0d0d;
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:16px;
+  margin-bottom:22px;
+  font-size:.94em;
+}
+
+th,
+td {
+  border:1px solid var(--line);
+  padding:10px;
+  text-align:left;
+  vertical-align:top;
+}
+
+thead {
+  background:#262626;
+}
+
+tbody tr:nth-child(even) {
+  background:#1f1f1f;
+}
+
+.highlight-number {
+  font-size:1.3em;
+  color:#ffb366;
+  font-weight:600;
+}
+
+.footer {
+  margin-top:50px;
+  text-align:center;
+  color:#777;
+  font-size:.9em;
+}
+
+@media (max-width:950px) {
+
+  body {
+    margin:18px;
+  }
+
+  .grid,
+  .charts-row {
+    grid-template-columns:1fr;
+  }
+
+  .chart-widget {
+    height:480px;
+  }
+
+  table {
+    display:block;
+    overflow-x:auto;
+  }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<h1>
+Palantir After Q2 2026 – Extraordinary Growth, but How Much Is Already Priced In?
+</h1>
+
+<p>
+Foxorox AI & Equity Research – fundamental, valuation and artificial intelligence analysis.
+Data reviewed as of August 2026.
+</p>
+
+
+<!-- ========================================================= -->
+<!-- PALANTIR CHART -->
+<!-- ========================================================= -->
+
+<div class="section">
+
+<div class="charts-row">
+
+<div class="chart-panel">
+
+  <div class="chart-title">
+    Palantir Technologies
+    <span>NASDAQ:PLTR</span>
+  </div>
+
+  <div class="chart-widget">
+
+    <div
+      class="tradingview-widget-container"
+      style="height:100%;width:100%;"
+    >
+
+      <div
+        class="tradingview-widget-container__widget"
+        style="height:100%;width:100%;"
+      ></div>
+
+      <script
+        type="text/javascript"
+        src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
+        async
+      >
+      {
+        "autosize": true,
+        "symbol": "NASDAQ:PLTR",
+        "interval": "D",
+        "timezone": "Etc/UTC",
+        "theme": "dark",
+        "style": "1",
+        "locale": "en",
+        "backgroundColor": "rgba(13,13,13,1)",
+        "gridColor": "rgba(42,46,57,0.4)",
+        "allow_symbol_change": false,
+        "hide_top_toolbar": false,
+        "hide_legend": false,
+        "save_image": false,
+        "support_host": "https://www.tradingview.com"
+      }
+      </script>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+
+<div class="article-text">
+
+
+<!-- ========================================================= -->
+<!-- VALUATION -->
+<!-- ========================================================= -->
+
+<div class="section article-text">
+
+<h2>Valuation & Financial Metrics</h2>
+
+<p>
+Palantir Technologies represents one of the most unusual valuation cases
+in the current U.S. technology market.
+The company combines hyper-growth, exceptionally high software margins,
+rapidly increasing free cash flow and exposure to both enterprise AI
+and government / defense artificial intelligence.
+</p>
+
+<p>
+The problem is that the market is already assigning an extraordinary
+valuation to this combination.
+At a reference share price of approximately $156,
+Palantir's equity valuation approaches approximately $400 billion.
+</p>
+
+
+<table>
+
+<thead>
+<tr>
+  <th>Metric</th>
+  <th>Palantir FY2026</th>
+  <th>Foxorox Interpretation</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+  <td><b>Ticker</b></td>
+  <td>NASDAQ: PLTR</td>
+  <td>Enterprise AI / Government AI</td>
+</tr>
+
+<tr>
+  <td><b>Reference Share Price</b></td>
+  <td>~$156</td>
+  <td>Used for valuation analysis</td>
+</tr>
+
+<tr>
+  <td><b>Approx. Market Capitalization</b></td>
+  <td>~$400B</td>
+  <td class="bad">Very high absolute valuation</td>
+</tr>
+
+<tr>
+  <td><b>FY2026 Revenue Guidance</b></td>
+  <td class="good">~$8.15–8.16B</td>
+  <td class="good">~82% YoY growth</td>
+</tr>
+
+<tr>
+  <td><b>Price / Sales FY2026</b></td>
+  <td class="bad">~49×</td>
+  <td>One of the highest large-cap software valuations</td>
+</tr>
+
+<tr>
+  <td><b>Estimated FY2026 FCF</b></td>
+  <td class="good">~$3.6–3.8B</td>
+  <td>Exceptional cash conversion</td>
+</tr>
+
+<tr>
+  <td><b>FCF Yield</b></td>
+  <td class="bad">~0.9%</td>
+  <td>Current cash generation alone does not justify valuation</td>
+</tr>
+
+<tr>
+  <td><b>Revenue Growth</b></td>
+  <td class="good">~82% FY2026</td>
+  <td>Exceptional at Palantir's scale</td>
+</tr>
+
+<tr>
+  <td><b>Primary Growth Drivers</b></td>
+  <td>AIP + U.S. Commercial + Government</td>
+  <td>Two major structural AI markets</td>
+</tr>
+
+<tr>
+  <td><b>Balance Sheet</b></td>
+  <td class="good">Very strong</td>
+  <td>Low financial leverage</td>
+</tr>
+
+<tr>
+  <td><b>Primary Valuation Risk</b></td>
+  <td class="bad">Multiple compression</td>
+  <td>Growth expectations are extremely high</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+<div class="info">
+
+<b>How to read the valuation:</b>
+
+Palantir's approximately 49× FY2026 Price / Sales multiple
+means investors are effectively paying roughly $49 for every
+$1 of revenue expected during 2026.
+
+This does not automatically make the stock overvalued.
+However, it means that a very large amount of future growth
+must materialize before conventional valuation multiples
+become attractive.
+
+</div>
+
+
+<h3>Foxorox valuation interpretation</h3>
+
+<p>
+Palantir currently combines characteristics normally found
+in much smaller software companies with a market capitalization
+normally associated with mature global technology platforms.
+</p>
+
+<p>
+Revenue growth approaching 100% would be extraordinary for almost any business.
+At Palantir's scale it is even more remarkable.
+</p>
+
+<p>
+But investors are not paying for Palantir's current financial profile.
+They are paying for what the company could become during the next decade.
+</p>
+
+
+<p class="warning">
+
+<b>Foxorox conclusion:</b>
+
+Palantir's business performance is extraordinary,
+but its valuation already assumes that extraordinary performance
+will continue for many years.
+
+The primary investment question is therefore not whether Palantir
+will grow.
+
+It is whether the company can grow fast enough,
+for long enough, to outperform expectations that are already
+embedded in the share price.
+
+</p>
+
+
+<p class="small">
+* Valuation multiples change continuously with share prices,
+earnings estimates and analyst revisions.
+Values shown in this article are approximate analytical estimates
+and should be refreshed before publication or investment use.
+</p>
+
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- EXECUTIVE THESIS -->
+<!-- ========================================================= -->
+
+
+<h2>Executive thesis</h2>
+
+<p>
+Palantir Technologies has evolved from a specialized government
+data and intelligence software provider into one of the fastest-growing
+enterprise artificial intelligence companies in the world.
+</p>
+
+<p>
+Its business increasingly sits at the intersection of
+data infrastructure, artificial intelligence,
+enterprise operations and national security.
+</p>
+
+<p>
+The company's Artificial Intelligence Platform – AIP –
+is particularly important because it allows organizations
+to connect large language models and other AI systems
+directly with internal company data and operational workflows.
+</p>
+
+
+<p class="warning">
+
+<b>Foxorox thesis:</b>
+
+Palantir may become one of the most important operating layers
+between artificial intelligence models and real-world organizations.
+
+But at approximately $400 billion of market capitalization,
+the market already assumes that Palantir will become
+substantially larger than it is today.
+
+The valuation debate is therefore no longer about whether
+Palantir has good technology.
+
+It is about the scale of the company Palantir must become
+to justify today's share price.
+
+</p>
+
+
+
+<!-- ========================================================= -->
+<!-- 1 -->
+<!-- ========================================================= -->
+
+<h2>1. What Palantir actually does</h2>
+
+<p>
+Palantir develops software platforms that allow organizations
+to integrate large amounts of fragmented data,
+understand relationships inside that data
+and use it to support operational decisions.
+</p>
+
+<p>
+The company's main platforms include Gotham,
+Foundry, Apollo and AIP.
+</p>
+
+
+<div class="grid">
+
+<div class="card">
+<strong>Gotham</strong>
+Government, defense, intelligence and national-security applications.
+</div>
+
+<div class="card">
+<strong>Foundry</strong>
+Enterprise data integration, analytics and operational workflows.
+</div>
+
+<div class="card">
+<strong>AIP</strong>
+Artificial intelligence integrated directly with enterprise data and decisions.
+</div>
+
+</div>
+
+
+<p>
+This distinction is important.
+Palantir is not simply selling access to a large language model.
+</p>
+
+<p>
+The company attempts to connect AI with the actual operating
+infrastructure of an organization.
+</p>
+
+<p>
+A manufacturing company, for example,
+may connect production data, inventory,
+financial information, logistics and customer orders
+inside the same operational environment.
+</p>
+
+<p>
+Artificial intelligence can then be applied directly
+to these real-world processes.
+</p>
+
+
+
+<!-- ========================================================= -->
+<!-- 2 -->
+<!-- ========================================================= -->
+
+<h2>2. Q2 2026 – growth accelerated again</h2>
+
+<p>
+Palantir delivered another exceptionally strong quarter.
+Revenue reached approximately $1.94 billion,
+representing approximately 93% year-over-year growth.
+</p>
+
+
+<div class="grid">
+
+<div class="card">
+<strong>Q2 2026 Revenue</strong>
+<span class="highlight-number">$1.94B</span>
+<br>
+<span class="good">~+93% YoY</span>
+</div>
+
+<div class="card">
+<strong>U.S. Government</strong>
+<span class="highlight-number">$809M</span>
+<br>
+<span class="good">~+90% YoY</span>
+</div>
+
+<div class="card">
+<strong>U.S. Commercial Growth</strong>
+<span class="highlight-number">+149%</span>
+<br>
+Year over year
+</div>
+
+</div>
+
+
+<table>
+
+<thead>
+<tr>
+<th>Q2 2026 Metric</th>
+<th>Result</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td><b>Revenue</b></td>
+<td>$1.94B</td>
+<td class="good">~+93% YoY</td>
+</tr>
+
+<tr>
+<td><b>U.S. Government Revenue</b></td>
+<td>$809M</td>
+<td class="good">~+90% YoY</td>
+</tr>
+
+<tr>
+<td><b>U.S. Commercial Growth</b></td>
+<td>+149% YoY</td>
+<td class="good">Exceptional enterprise acceleration</td>
+</tr>
+
+<tr>
+<td><b>Adjusted EPS</b></td>
+<td>~$0.41</td>
+<td class="good">Strong profitability</td>
+</tr>
+
+<tr>
+<td><b>Q2 Free Cash Flow</b></td>
+<td>~$1.22B</td>
+<td class="good">Very strong cash conversion</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+<p class="info">
+
+The combination is unusual.
+
+Many companies can produce very high revenue growth
+while remaining unprofitable.
+
+Palantir increasingly combines very high growth
+with strong operating profitability and free cash flow.
+
+</p>
+
+
+
+<!-- ========================================================= -->
+<!-- 3 -->
+<!-- ========================================================= -->
+
+<h2>3. FY2026 is becoming a breakout year</h2>
+
+<p>
+Following the Q2 results,
+Palantir increased its expected FY2026 revenue
+to approximately $8.15–8.16 billion.
+</p>
+
+<p>
+That implies roughly 82% year-over-year revenue growth.
+</p>
+
+
+<table>
+
+<thead>
+<tr>
+<th>FY2026 Metric</th>
+<th>Foxorox Estimate / Guidance</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td><b>Revenue</b></td>
+<td class="good">$8.15–8.16B</td>
+</tr>
+
+<tr>
+<td><b>Revenue Growth</b></td>
+<td class="good">~82%</td>
+</tr>
+
+<tr>
+<td><b>Estimated Adjusted FCF</b></td>
+<td>~$3.6–3.8B</td>
+</tr>
+
+<tr>
+<td><b>Estimated Diluted Shares</b></td>
+<td>~2.57B</td>
+</tr>
+
+<tr>
+<td><b>Reference Share Price</b></td>
+<td>$156</td>
+</tr>
+
+<tr>
+<td><b>Approx. Equity Value</b></td>
+<td>~$400B</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+<p>
+For a software company already generating billions of dollars
+of annual revenue, an approximately 82% growth rate
+is extremely unusual.
+</p>
+
+
+
+<!-- ========================================================= -->
+<!-- 4 -->
+<!-- ========================================================= -->
+
+<h2>4. U.S. Commercial may be the most important number</h2>
+
+<p>
+The government business created Palantir.
+The commercial business may ultimately determine
+how large Palantir can become.
+</p>
+
+<p>
+U.S. commercial growth of approximately 149%
+indicates that enterprise adoption is moving
+far beyond experimental AI projects.
+</p>
+
+<p>
+Large companies increasingly want AI systems
+that can operate inside secure corporate environments
+and interact with proprietary data.
+</p>
+
+
+<p class="warning">
+
+This may be Palantir's largest long-term opportunity.
+
+The global enterprise software market is substantially larger
+than Palantir's traditional intelligence and defense market.
+
+If AIP becomes an important enterprise operating layer,
+Palantir's addressable market could expand dramatically.
+
+</p>
+
+
+
+<!-- ========================================================= -->
+<!-- 5 -->
+<!-- ========================================================= -->
+
+<h2>5. Government and defense remain a second growth engine</h2>
+
+<p>
+Palantir simultaneously benefits from increasing government
+and defense demand for artificial intelligence.
+</p>
+
+<p>
+AI is becoming increasingly important across:
+</p>
+
+<ul>
+
+<li>intelligence analysis,</li>
+
+<li>battlefield awareness,</li>
+
+<li>autonomous systems,</li>
+
+<li>military logistics,</li>
+
+<li>satellite and sensor data,</li>
+
+<li>cybersecurity,</li>
+
+<li>operational planning,</li>
+
+<li>and supply-chain management.</li>
+
+</ul>
+
+<p>
+This produces an important strategic advantage.
+</p>
+
+<p>
+Palantir is exposed simultaneously to
+commercial enterprise AI and national-security AI.
+</p>
+
+
+
+<!-- ========================================================= -->
+<!-- 6 -->
+<!-- ========================================================= -->
+
+<h2>6. The real problem is the valuation</h2>
+
+<p>
+At approximately $156 per share,
+Palantir trades at close to 49× expected FY2026 sales.
+</p>
+
+<p>
+This is an extraordinary valuation even for
+a high-growth software business.
+</p>
+
+
+<div class="grid">
+
+<div class="card">
+<strong>FY2026 Revenue</strong>
+<span class="highlight-number">$8.15B</span>
+</div>
+
+<div class="card">
+<strong>Market Capitalization</strong>
+<span class="highlight-number">~$400B</span>
+</div>
+
+<div class="card">
+<strong>Price / Sales</strong>
+<span class="highlight-number">~49×</span>
+</div>
+
+</div>
+
+
+<p class="warning">
+
+<b>The simplest way to understand the valuation:</b>
+
+Investors are paying approximately
+
+<span class="highlight-number">$49</span>
+
+for every $1 of revenue Palantir is expected
+to generate during FY2026.
+
+</p>
+
+
+<p>
+Current earnings and free cash flow alone therefore
+cannot explain Palantir's market capitalization.
+</p>
+
+<p>
+The valuation only becomes logical if revenue
+and cash flow expand enormously during the next decade.
+</p>
+
+
+
+<!-- ========================================================= -->
+<!-- 7 -->
+<!-- ========================================================= -->
+
+<h2>7. Reverse DCF – what does $156 actually assume?</h2>
+
+<p>
+Instead of trying to estimate an arbitrary price target,
+Foxorox uses a reverse discounted cash-flow approach.
+</p>
+
+<p>
+We ask:
+</p>
+
+<p class="warning">
+
+<b>What financial performance does Palantir need to deliver
+to justify approximately $156 per share today?</b>
+
+</p>
+
+
+<h3>Reverse DCF assumptions</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Assumption</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Starting FY2026 Revenue</td>
+<td>$8.15B</td>
+</tr>
+
+<tr>
+<td>Discount Rate / WACC</td>
+<td>9%</td>
+</tr>
+
+<tr>
+<td>Terminal Growth</td>
+<td>3.5%</td>
+</tr>
+
+<tr>
+<td>Long-Term FCF Margin</td>
+<td>~45%</td>
+</tr>
+
+<tr>
+<td>Forecast Horizon</td>
+<td>10 years</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+
+<h3>Revenue trajectory implied by the valuation</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Year</th>
+<th>Revenue</th>
+<th>Growth</th>
+<th>FCF at ~45%</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td><b>2026</b></td>
+<td>$8.2B</td>
+<td class="good">+82%</td>
+<td>$3.7B</td>
+</tr>
+
+<tr>
+<td><b>2027</b></td>
+<td>$12.6B</td>
+<td class="good">+55%</td>
+<td>$5.7B</td>
+</tr>
+
+<tr>
+<td><b>2028</b></td>
+<td>$18.3B</td>
+<td class="good">+45%</td>
+<td>$8.2B</td>
+</tr>
+
+<tr>
+<td><b>2029</b></td>
+<td>$25.1B</td>
+<td>+37%</td>
+<td>$11.3B</td>
+</tr>
+
+<tr>
+<td><b>2030</b></td>
+<td>$32.6B</td>
+<td>+30%</td>
+<td>$14.7B</td>
+</tr>
+
+<tr>
+<td><b>2031</b></td>
+<td>$40.4B</td>
+<td>+24%</td>
+<td>$18.2B</td>
+</tr>
+
+<tr>
+<td><b>2032</b></td>
+<td>$48.1B</td>
+<td>+19%</td>
+<td>$21.6B</td>
+</tr>
+
+<tr>
+<td><b>2033</b></td>
+<td>$55.3B</td>
+<td>+15%</td>
+<td>$24.9B</td>
+</tr>
+
+<tr>
+<td><b>2034</b></td>
+<td>$62.0B</td>
+<td>+12%</td>
+<td>$27.9B</td>
+</tr>
+
+<tr>
+<td><b>2035</b></td>
+<td class="good"><b>~$68B</b></td>
+<td>+10%</td>
+<td class="good"><b>~$31B</b></td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+
+<p class="warning">
+
+<b>The valuation implication is enormous.</b>
+
+Palantir may need to increase annual revenue from approximately
+
+<b>$8 billion in 2026</b>
+
+to almost
+
+<b>$70 billion by 2035</b>
+
+while simultaneously maintaining exceptionally high
+free-cash-flow margins.
+
+</p>
+
+
+
+<!-- ========================================================= -->
+<!-- 8 -->
+<!-- ========================================================= -->
+
+<h2>8. The $30 billion revenue test</h2>
+
+<p>
+Investors may not need to wait until 2035
+to determine whether the current valuation thesis is working.
+</p>
+
+<p>
+The most important checkpoint may arrive around 2030.
+</p>
+
+
+<div class="grid">
+
+<div class="card">
+<strong>2026 Revenue</strong>
+<span class="highlight-number">~$8.2B</span>
+</div>
+
+<div class="card">
+<strong>2030 Required Revenue</strong>
+<span class="highlight-number">~$32.6B</span>
+</div>
+
+<div class="card">
+<strong>Required Expansion</strong>
+<span class="highlight-number">~4×</span>
+<br>
+in approximately four years
+</div>
+
+</div>
+
+
+<p>
+Palantir would therefore need to approximately quadruple
+annual revenue again from FY2026 levels by around 2030.
+</p>
+
+<p>
+If the company remains on this trajectory,
+today's valuation becomes substantially easier to defend.
+</p>
+
+<p>
+If growth falls sharply before reaching this scale,
+multiple compression could become substantial.
+</p>
+
+
+
+<!-- ========================================================= -->
+<!-- 9 -->
+<!-- ========================================================= -->
+
+<h2>9. Why Palantir could actually deliver</h2>
+
+<p>
+The aggressive assumptions embedded in Palantir's valuation
+should not simply be dismissed.
+</p>
+
+<p>
+Several structural factors could support continued high growth.
+</p>
+
+
+<h3>Enterprise AI is moving from experimentation to deployment</h3>
+
+<p>
+Companies spent the first stage of the generative-AI cycle
+testing chatbots and isolated applications.
+</p>
+
+<p>
+The next stage is much more important:
+connecting artificial intelligence with actual business processes.
+</p>
+
+<p>
+This is exactly where Palantir is positioned.
+</p>
+
+
+<h3>AI requires organized proprietary data</h3>
+
+<p>
+Large language models are increasingly commoditized,
+but proprietary enterprise data is not.
+</p>
+
+<p>
+Palantir's value proposition is partly based on organizing
+and controlling this proprietary data so that AI can use it safely.
+</p>
+
+
+<h3>Operating leverage can become enormous</h3>
+
+<p>
+Software businesses can generate extremely powerful economics at scale.
+</p>
+
+<p>
+If Palantir continues expanding revenue faster than operating expenses,
+free cash flow can grow substantially faster than revenue.
+</p>
+
+
+<p class="info">
+
+The most powerful Palantir bull case is therefore not simply
+that AI spending increases.
+
+It is that Palantir becomes part of the permanent operating
+infrastructure used to deploy AI across governments
+and large enterprises.
+
+</p>
+
+
+
+<!-- ========================================================= -->
+<!-- 10 -->
+<!-- ========================================================= -->
+
+<h2>10. A great company can still be a poor investment at the wrong price</h2>
+
+<p>
+The most important risk for Palantir shareholders
+may not be operational failure.
+</p>
+
+<p>
+It may simply be valuation normalization.
+</p>
+
+<p>
+Consider an illustrative scenario.
+</p>
+
+
+<table>
+
+<thead>
+<tr>
+<th>Assumption</th>
+<th>Value</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Future Palantir Revenue</td>
+<td>$20B</td>
+</tr>
+
+<tr>
+<td>Future Price / Sales Multiple</td>
+<td>15×</td>
+</tr>
+
+<tr>
+<td>Implied Equity Valuation</td>
+<td>~$300B</td>
+</tr>
+
+<tr>
+<td>Current Approx. Equity Valuation</td>
+<td>~$400B</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+<p>
+Under this example Palantir could more than double
+its revenue and remain one of the most important
+software companies in the world.
+</p>
+
+<p>
+Yet the resulting valuation could still remain below
+today's market capitalization.
+</p>
+
+
+<p class="warning">
+
+<b>Important valuation principle:</b>
+
+A company can perform exceptionally well
+while its stock performs poorly
+if the expectations embedded in the original share price
+were even higher.
+
+</p>
+
+
+
+<!-- ========================================================= -->
+<!-- 11 -->
+<!-- ========================================================= -->
+
+<h2>11. Palantir valuation scenarios</h2>
+
+
+<table>
+
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Indicative Value</th>
+<th>Main Assumption</th>
+<th>Foxorox Interpretation</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td><b>Bear</b></td>
+<td class="bad">$70–90</td>
+<td>Growth quickly falls toward 20–25%</td>
+<td class="bad">Major multiple compression</td>
+</tr>
+
+<tr>
+<td><b>Base</b></td>
+<td>$120–145</td>
+<td>Several years of 35–50% growth</td>
+<td>Very strong business, more normalized valuation</td>
+</tr>
+
+<tr>
+<td><b>Current Market</b></td>
+<td>~$156</td>
+<td>Long period of exceptional growth</td>
+<td>Extremely high expectations</td>
+</tr>
+
+<tr>
+<td><b>Bull</b></td>
+<td class="good">$160–190</td>
+<td>50%+ growth persists longer than expected</td>
+<td class="good">AIP becomes major enterprise platform</td>
+</tr>
+
+<tr>
+<td><b>Extreme Bull</b></td>
+<td class="good">$200+</td>
+<td>Palantir becomes dominant global AI operating infrastructure</td>
+<td class="good">Platform-scale economics</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+<p class="small">
+The scenarios above are analytical valuation exercises
+and should not be interpreted as investment price targets.
+</p>
+
+
+
+<!-- ========================================================= -->
+<!-- 12 -->
+<!-- ========================================================= -->
+
+<h2>12. Bull case – Palantir becomes the operating system for enterprise AI</h2>
+
+<p>
+The strongest Palantir scenario is much larger
+than selling analytics software.
+</p>
+
+<p>
+It assumes that enterprises increasingly use Palantir
+as the layer connecting:
+</p>
+
+<ul>
+
+<li>corporate data,</li>
+
+<li>AI models,</li>
+
+<li>employees,</li>
+
+<li>physical assets,</li>
+
+<li>production systems,</li>
+
+<li>logistics,</li>
+
+<li>financial systems,</li>
+
+<li>and automated decisions.</li>
+
+</ul>
+
+<p>
+Under this scenario AIP becomes difficult to remove
+once deployed deeply inside an organization.
+</p>
+
+<p>
+Customer relationships become longer,
+revenue per customer increases,
+and Palantir's operating margins continue expanding.
+</p>
+
+
+<p class="info">
+
+If this happens,
+Palantir may ultimately deserve to be compared
+less with traditional analytics companies
+and more with the world's largest enterprise software platforms.
+
+</p>
+
+
+
+<!-- ========================================================= -->
+<!-- 13 -->
+<!-- ========================================================= -->
+
+<h2>13. Bear case – expectations become impossible to beat</h2>
+
+<p>
+The bear case does not require Palantir's technology to fail.
+</p>
+
+<p>
+Revenue growth simply needs to normalize faster
+than the market currently expects.
+</p>
+
+<p>
+The risks include:
+</p>
+
+<ul>
+
+<li>enterprise AI spending slowing,</li>
+
+<li>greater competition from Microsoft, Google, Amazon and other software providers,</li>
+
+<li>customers developing more AI infrastructure internally,</li>
+
+<li>slower government contract growth,</li>
+
+<li>pricing pressure,</li>
+
+<li>stock-based compensation and dilution,</li>
+
+<li>and valuation-multiple compression.</li>
+
+</ul>
+
+
+<p>
+A decline from approximately 49× forward sales
+to a more conventional premium software multiple
+could create significant downside
+even while Palantir continues reporting strong growth.
+</p>
+
+
+
+<!-- ========================================================= -->
+<!-- 14 -->
+<!-- ========================================================= -->
+
+<h2>14. The most important metric may not be EPS</h2>
+
+<p>
+Traditional P/E analysis can be useful,
+but Palantir's current valuation requires investors
+to focus further into the future.
+</p>
+
+<p>
+For Foxorox, the most important metrics to monitor are:
+</p>
+
+
+<table>
+
+<thead>
+<tr>
+<th>Metric</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td><b>Revenue Growth</b></td>
+<td>Determines whether the company can grow into its current valuation</td>
+</tr>
+
+<tr>
+<td><b>U.S. Commercial Growth</b></td>
+<td>Measures enterprise AI adoption</td>
+</tr>
+
+<tr>
+<td><b>Government Growth</b></td>
+<td>Measures durability of defense / government demand</td>
+</tr>
+
+<tr>
+<td><b>Remaining Deal Value / Contract Growth</b></td>
+<td>Provides visibility into future revenue</td>
+</tr>
+
+<tr>
+<td><b>Free Cash Flow Margin</b></td>
+<td>Tests whether operating leverage continues</td>
+</tr>
+
+<tr>
+<td><b>Diluted Share Count</b></td>
+<td>Important because dilution affects per-share value</td>
+</tr>
+
+<tr>
+<td><b>Price / Sales Multiple</b></td>
+<td>Shows how much future growth the market continues to price in</td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+
+<!-- ========================================================= -->
+<!-- 15 -->
+<!-- ========================================================= -->
+
+<h2>15. Foxorox conclusion</h2>
+
+<p>
+Palantir may currently represent one of the strongest
+fundamental growth stories in the U.S. equity market.
+</p>
+
+<p>
+Revenue growth approaching 100% at this scale
+is extremely rare.
+</p>
+
+<p>
+The company simultaneously benefits from two enormous structural markets:
+</p>
+
+<ul>
+
+<li><b>Enterprise Artificial Intelligence</b>,</li>
+
+<li><b>Government and Defense Artificial Intelligence.</b></li>
+
+</ul>
+
+<p>
+The company's financial profile is also becoming increasingly powerful.
+</p>
+
+<p>
+Palantir is no longer simply a high-growth software company.
+It is increasingly a high-growth,
+high-margin and high-free-cash-flow software company.
+</p>
+
+
+<p class="warning">
+
+<b>Foxorox final thesis:</b>
+
+Palantir's operating performance may justify
+a substantial premium to the traditional software market.
+
+But at approximately $156 per share,
+investors are already assuming a remarkable future.
+
+Our reverse DCF indicates that Palantir may need
+to grow from approximately
+
+<b>$8 billion of FY2026 revenue</b>
+
+to roughly
+
+<b>$30–33 billion around 2030</b>
+
+and potentially
+
+<b>$60–70 billion around 2035</b>,
+
+while maintaining exceptionally high free-cash-flow margins.
+
+The Q2 2026 results demonstrate that such growth
+should not be considered impossible. But due to year 2035 situation may change on th market as another players or technologies may come to th market so assumption is that the next five years may be safe for Palantir revenues but We ouldnt bet ont that stock as its P/Sales ratio looks very expensive and it would justify investment at that level. We recon that price drop to level below 100 usd could trigger some fundamental buying based on cheaper valuations. We remember Google stock that had P/Sales 100x during its debut but in our opinion Google was game changer on the globe while Palantir is not. We think also that older software haouses like IBM or Oracle can loose part of the pie but we still belive that Orcale with is huge investment program or IBM can thretened Palantirs' growth.
+
+But today's valuation means there is little room
+for ordinary execution.
+
+</p>
+
+
+<p>
+The fundamental question for Palantir investors
+is therefore no longer:
+</p>
+
+<p>
+<b>"Is Palantir a great AI company?"</b>
+</p>
+
+<p>
+The evidence increasingly suggests that it is.
+</p>
+
+<p>
+The more difficult question is:
+</p>
+
+<p class="warning">
+
+<b>
+Can Palantir grow fast enough,
+for long enough,
+to outperform the enormous expectations
+already embedded in PLTR shares?
+</b>
+
+</p>
+
+
+<p>
+<b>Written by Pawel Demczuk, MSc</b><br>
+<b>Foxorox AI Analyzer</b>
+</p>
+
+
+</div>
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- SOURCES -->
+<!-- ========================================================= -->
+
+<div class="section article-text">
+
+<h2>Source Appendix</h2>
+
+
+<p class="small">
+
+<b>Palantir Investor Relations:</b><br>
+
+<a
+href="https://investors.palantir.com/"
+target="_blank"
+rel="noopener"
+>
+Palantir Technologies Investor Relations
+</a>
+
+
+<br><br>
+
+
+<b>Palantir Q2 2026 Results:</b><br>
+
+<a
+href="https://investors.palantir.com/"
+target="_blank"
+rel="noopener"
+>
+Palantir Q2 2026 earnings and shareholder materials
+</a>
+
+
+<br><br>
+
+
+<b>Palantir Artificial Intelligence Platform:</b><br>
+
+<a
+href="https://www.palantir.com/platforms/aip/"
+target="_blank"
+rel="noopener"
+>
+Palantir AIP
+</a>
+
+
+<br><br>
+
+
+<b>Palantir Foundry:</b><br>
+
+<a
+href="https://www.palantir.com/platforms/foundry/"
+target="_blank"
+rel="noopener"
+>
+Palantir Foundry
+</a>
+
+
+<br><br>
+
+
+<b>Palantir Gotham:</b><br>
+
+<a
+href="https://www.palantir.com/platforms/gotham/"
+target="_blank"
+rel="noopener"
+>
+Palantir Gotham
+</a>
+
+
+</p>
+
+
+<p class="small">
+
+The forward-looking financial projections,
+revenue scenarios and reverse DCF calculations
+contained in this article represent Foxorox analytical assumptions.
+
+They are not Palantir management guidance.
+
+Actual future revenue, margins, free cash flow,
+share count and valuation multiples may differ materially
+from these assumptions.
+
+</p>
+
+
+<p class="small">
+
+This article is provided for informational
+and analytical purposes only and does not constitute
+investment advice, financial advice or a recommendation
+to buy or sell any security.
+
+Equity valuation is sensitive to future revenue growth,
+profitability, interest rates and market valuation multiples.
+
+</p>
+
+</div>
+
+
+
+<div class="footer">
+
+Generated and edited by
+<b>MSc Pawel Demczuk</b>
+and
+<b>Foxorox AI Analyzer</b>.
+
+<br>
+
+<a href="/blog/index.html">
+← Back to blog index
+</a>
+
+</div>
+
+
+</body>
+</html>
