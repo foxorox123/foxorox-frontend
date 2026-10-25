@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Is the Correction Worth Buying? Polish Banks | Foxorox</title>
+
+  <meta
+    name="description"
+    content="Polish bank earnings and a cautious 2027 dividend scenario: PKO BP, Pekao, Millennium, Alior, mBank and Erste Bank Polska. Payout ratios, forward yields and inflation risks."
+  >
+
+  <meta name="author" content="Pawel Demczuk">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Foxorox">
+
+  <meta
+    property="og:title"
+    content="Is the Correction Worth Buying? Polish Banks"
+  >
+
+  <meta
+    property="og:description"
+    content="A cautious earnings and dividend framework for six Polish banks, with projected 2027 yields and the risks behind them."
+  >
+
+  <meta property="article:published_time" content="2026-10-25">
+
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --panel: #1a1a1a;
+      --panel2: #202020;
+      --line: #333;
+      --text: #eee;
+      --muted: #aaa;
+      --accent: #f58220;
+      --accent2: #ffb366;
+      --good: #b9ffb9;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      max-width: 1440px;
+      margin: 40px auto;
+      padding: 0 28px;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      color: var(--accent);
+      line-height: 1.15;
+      max-width: 1000px;
+    }
+
+    h2,
+    h3 {
+      color: var(--accent2);
+      margin-top: 28px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    p,
+    li {
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 26px;
+    }
+
+    .warning {
+      background: #21160f;
+      border-left: 4px solid var(--accent);
+      padding: 15px 17px;
+      border-radius: 8px;
+      margin: 18px 0;
+    }
+
+    .info {
+      background: #111b21;
+      border-left: 4px solid #53b7d5;
+      padding: 15px 17px;
+      border-radius: 8px;
+      margin: 18px 0;
+    }
+
+    .small {
+      font-size: 0.88rem;
+      color: #bbb;
+    }
+
+    .eyebrow {
+      color: var(--accent2);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .lead {
+      font-size: 1.13rem;
+      max-width: 1050px;
+    }
+
+    .signal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin: 22px 0;
+    }
+
+    .signal-card {
+      background: var(--panel2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .signal-card strong {
+      display: block;
+      color: var(--accent2);
+      font-size: 1.75rem;
+      margin: 8px 0;
+    }
+
+    .toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin: 24px 0;
+    }
+
+    .toc a {
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 20px;
+      font-size: 0.92rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--line);
+      padding: 12px 10px;
+      text-align: right;
+      vertical-align: top;
+    }
+
+    th:first-child,
+    td:first-child {
+      text-align: left;
+    }
+
+    thead {
+      background: #262626;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #1f1f1f;
+    }
+
+    .yield {
+      color: var(--good);
+    }
+
+    .formula {
+      font-family: Consolas, monospace;
+      background: #111;
+      padding: 16px;
+      border-radius: 8px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .source-ref {
+      font-size: 0.78em;
+      white-space: nowrap;
+    }
+
+    .sources li {
+      margin-bottom: 9px;
+    }
+
+    .compact td,
+    .compact th {
+      text-align: left;
+    }
+
+    .subtle {
+      color: var(--muted);
+    }
+
+    .charts-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .chart-panel {
+      min-width: 0;
+      background: #111;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .chart-title {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 600;
+    }
+
+    .chart-title span {
+      float: right;
+      color: #aaa;
+      font-family: monospace;
+    }
+
+    .chart-widget {
+      height: 430px;
+      width: 100%;
+    }
+
+    .tradingview-widget-copyright {
+      font-size: 11px;
+      text-align: center;
+      padding: 6px;
+    }
+
+    .footer {
+      margin: 40px 0;
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      .charts-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        margin: 22px auto;
+        padding: 0 14px;
+      }
+
+      .section {
+        padding: 18px;
+      }
+
+      .signal-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .signal-card {
+        padding: 14px;
+      }
+
+      .signal-card strong {
+        font-size: 1.5rem;
+      }
+
+      th,
+      td {
+        padding: 10px 8px;
+        min-width: 90px;
+      }
+
+      th:first-child {
+        min-width: 135px;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: black;
+        padding: 0;
+        font-size: 10pt;
+      }
+
+      .section {
+        background: white;
+        border-color: #ddd;
+      }
+
+      h1,
+      h2,
+      h3,
+      a,
+      .yield {
+        color: black;
+      }
+
+      .toc,
+      .chart-section {
+        display: none;
+      }
+
+      .signal-card,
+      .formula {
+        background: #eee;
+      }
+
+      .table-wrap {
+        overflow: visible;
+      }
+
+      table {
+        font-size: 8pt;
+      }
+
+      thead,
+      tbody tr:nth-child(even) {
+        background: #eee;
+      }
+
+      tr {
+        break-inside: avoid;
+      }
+
+      .small {
+        color: #444;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+
+    <p class="eyebrow">
+      Foxorox AI Market Research · Banks · Poland
+    </p>
+
+    <h1>Is the Correction Worth Buying? Polish Banks</h1>
+
+    <p class="lead">
+      A lower share price can improve the entry yield. The harder question
+      is whether earnings and dividend capacity can withstand weaker credit
+      demand, rising household expenses and pressure on corporate margins.
+    </p>
+
+    <p class="small">
+      <b>Research date:</b> October 25, 2026 ·
+      <b>Price snapshot:</b> October 23, 2026, end-of-session quotations ·
+      <b>Dividend horizon:</b> 2026 earnings, potentially distributed in 2027.
+    </p>
+
+    <section class="section chart-section" id="charts">
+      <h2>Polish Banks — TradingView Charts</h2>
+
+      <p class="small">
+        Daily candles, quoted in PLN. Charts update independently of the
+        October 23 price snapshot used in the dividend calculations and may
+        display delayed data. Erste refers to the Polish bank, not Erste
+        Group Bank AG.
+      </p>
+
+      <div class="charts-row">
+
+        <div class="chart-panel">
+          <div class="chart-title">
+            PKO BP
+            <span>GPW:PKO</span>
+          </div>
+
+          <div class="chart-widget" data-symbol="GPW:PKO">
+            <div
+              class="tradingview-widget-container"
+              style="height: 100%; width: 100%;"
+            >
+              <div
+                class="tradingview-widget-container__widget"
+                style="height: calc(100% - 32px); width: 100%;"
+              ></div>
+
+              <div class="tradingview-widget-copyright">
+                <a
+                  href="https://www.tradingview.com/symbols/GPW-PKO/"
+                  target="_blank"
+                  rel="noopener"
+                >PKO BP chart</a>
+                by TradingView
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-panel">
+          <div class="chart-title">
+            Pekao
+            <span>GPW:PEO</span>
+          </div>
+
+          <div class="chart-widget" data-symbol="GPW:PEO">
+            <div
+              class="tradingview-widget-container"
+              style="height: 100%; width: 100%;"
+            >
+              <div
+                class="tradingview-widget-container__widget"
+                style="height: calc(100% - 32px); width: 100%;"
+              ></div>
+
+              <div class="tradingview-widget-copyright">
+                <a
+                  href="https://www.tradingview.com/symbols/GPW-PEO/"
+                  target="_blank"
+                  rel="noopener"
+                >Pekao chart</a>
+                by TradingView
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-panel">
+          <div class="chart-title">
+            Millennium
+            <span>GPW:MIL</span>
+          </div>
+
+          <div class="chart-widget" data-symbol="GPW:MIL">
+            <div
+              class="tradingview-widget-container"
+              style="height: 100%; width: 100%;"
+            >
+              <div
+                class="tradingview-widget-container__widget"
+                style="height: calc(100% - 32px); width: 100%;"
+              ></div>
+
+              <div class="tradingview-widget-copyright">
+                <a
+                  href="https://www.tradingview.com/symbols/GPW-MIL/"
+                  target="_blank"
+                  rel="noopener"
+                >Millennium chart</a>
+                by TradingView
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-panel">
+          <div class="chart-title">
+            Alior
+            <span>GPW:ALR</span>
+          </div>
+
+          <div class="chart-widget" data-symbol="GPW:ALR">
+            <div
+              class="tradingview-widget-container"
+              style="height: 100%; width: 100%;"
+            >
+              <div
+                class="tradingview-widget-container__widget"
+                style="height: calc(100% - 32px); width: 100%;"
+              ></div>
+
+              <div class="tradingview-widget-copyright">
+                <a
+                  href="https://www.tradingview.com/symbols/GPW-ALR/"
+                  target="_blank"
+                  rel="noopener"
+                >Alior chart</a>
+                by TradingView
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-panel">
+          <div class="chart-title">
+            mBank
+            <span>GPW:MBK</span>
+          </div>
+
+          <div class="chart-widget" data-symbol="GPW:MBK">
+            <div
+              class="tradingview-widget-container"
+              style="height: 100%; width: 100%;"
+            >
+              <div
+                class="tradingview-widget-container__widget"
+                style="height: calc(100% - 32px); width: 100%;"
+              ></div>
+
+              <div class="tradingview-widget-copyright">
+                <a
+                  href="https://www.tradingview.com/symbols/GPW-MBK/"
+                  target="_blank"
+                  rel="noopener"
+                >mBank chart</a>
+                by TradingView
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-panel">
+          <div class="chart-title">
+            Erste Bank Polska
+            <span>GPW:EBP</span>
+          </div>
+
+          <div class="chart-widget" data-symbol="GPW:EBP">
+            <div
+              class="tradingview-widget-container"
+              style="height: 100%; width: 100%;"
+            >
+              <div
+                class="tradingview-widget-container__widget"
+                style="height: calc(100% - 32px); width: 100%;"
+              ></div>
+
+              <div class="tradingview-widget-copyright">
+                <a
+                  href="https://www.tradingview.com/symbols/GPW-EBP/"
+                  target="_blank"
+                  rel="noopener"
+                >Erste Bank Polska chart</a>
+                by TradingView
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="small">
+        If a panel is unavailable, use its TradingView link or the symbol
+        selector. A chart is context, not a trading recommendation.
+      </p>
+    </section>
+
+    <nav class="toc" aria-label="Article sections">
+      <a href="#charts">Market charts</a>
+      <a href="#thesis">Research thesis</a>
+      <a href="#macro">Inflation and lending</a>
+      <a href="#dividends">Dividend comparison</a>
+      <a href="#banks">Bank-by-bank view</a>
+      <a href="#sensitivity">Sensitivity</a>
+      <a href="#verdict">Conclusion</a>
+      <a href="#sources">Sources</a>
+    </nav>
+
+    <section class="section" id="thesis">
+      <h2>
+        1. A Correction Creates a Question, Not an Automatic Buy Signal
+      </h2>
+
+      <p>
+        Polish banks can remain profitable even when interest rates stop
+        changing. But unchanged policy rates alone do not guarantee
+        unchanged net interest margins, credit volumes or loan-loss
+        provisions. Earlier rate changes can continue to affect repricing,
+        while funding competition and customer behaviour alter the
+        economics of the balance sheet.
+      </p>
+
+      <div class="signal-grid">
+        <div class="signal-card">
+          Pekao: illustrative forward yield
+          <strong>6.01%</strong>
+          <span class="small">PLN 15.14 / PLN 251.90</span>
+        </div>
+
+        <div class="signal-card">
+          PKO BP: illustrative forward yield
+          <strong>5.59%</strong>
+          <span class="small">PLN 6.12 / PLN 109.54</span>
+        </div>
+
+        <div class="signal-card">
+          Distribution timing
+          <strong>2027</strong>
+          <span class="small">From 2026 earnings, if approved</span>
+        </div>
+      </div>
+
+      <p class="warning">
+        <b>Foxorox thesis:</b>
+        The dividend screen favours Pekao and PKO BP under the assumptions
+        below. It does not establish that their shares are undervalued or
+        that the correction has finished. Earnings resilience, regulatory
+        capital and the entry price must be assessed together.
+      </p>
+
+      <p class="small">
+        This is a fundamental scenario analysis, not a model-generated
+        Foxorox trading signal. No peak-to-trough drawdown or technical
+        support level is estimated here. The forward dividend figures are
+        author assumptions, not declared distributions.
+      </p>
+    </section>
+
+    <section class="section" id="macro">
+      <h2>
+        2. Inflation and Expensive Fuel: How the Pressure Reaches Banks
+      </h2>
+
+      <h3>Households have less room for new repayments</h3>
+
+      <p>
+        If fuel, food and other essential expenses rise faster than
+        household income, less cash remains available for savings and loan
+        instalments. This can reduce affordability, postpone mortgage
+        decisions and weaken discretionary spending. Credit assessments
+        must account for fixed expenses and the risk of lower disposable
+        income.
+        <a class="source-ref" href="#source-18">[18]</a>
+      </p>
+
+      <h3>Deposits change hands rather than automatically disappear</h3>
+
+      <p>
+        A household paying a fuel retailer transfers money from one account
+        to another. Household savings can fall without an equivalent
+        decline in deposits across the entire banking system. For an
+        individual bank, the key issues are customer flows, the mix of
+        deposits and the price paid to retain funding. Payments to foreign
+        suppliers and subsequent financing decisions can create additional
+        effects; there is no simple one-for-one rule.
+      </p>
+
+      <h3>Companies may borrow differently</h3>
+
+      <p>
+        Higher operating costs can discourage investment borrowing while
+        increasing short-term working-capital needs. More nominal lending
+        is therefore not necessarily evidence of stronger investment
+        demand. The outcome depends on whether businesses can pass costs
+        on to customers and preserve their capacity to repay.
+      </p>
+
+      <p>
+        <b>
+          The most damaging combination is weaker revenue growth and
+          higher credit losses at the same time.
+        </b>
+        This article treats persistent fuel-cost pressure and slower
+        lending as a downside scenario, rather than claiming that either
+        has already produced a measured reduction in each bank’s 2026
+        profit.
+      </p>
+    </section>
+
+    <section class="section" id="method">
+      <h2>3. How the Earnings Scenario Is Constructed</h2>
+
+      <p>
+        The starting point is reported H1 2026 consolidated net profit.
+        The full-year assumptions below imply that H2 earns approximately
+        90–100% of H1 profit. This is a deliberately simple, cautious
+        run-rate exercise: it does not forecast loan balances, interest
+        margins, operating expenses and provisions separately.
+      </p>
+
+      <p class="formula">
+        Full-year scenario profit =
+        reported H1 profit + assumed H2 profit
+        <br>
+        Illustrative dividend per share =
+        scenario profit × assumed payout ratio / shares
+        <br>
+        Forward dividend yield =
+        illustrative dividend per share / reference share price × 100%
+      </p>
+
+      <p class="info">
+        <b>Group profit versus distributable bank profit:</b>
+        The table uses consolidated earnings as a proxy. The legal basis
+        for a dividend is the parent bank’s separate financial statements,
+        subject to capital and supervisory constraints. Subsidiary
+        earnings, upstream dividends and other differences can materially
+        change the final distribution. This limitation applies to PKO BP
+        as well as its peers.
+      </p>
+
+      <p>
+        The payout assumptions reflect recent distributions or stated
+        intentions, rather than a uniform 75% rule. Share counts are held
+        constant. No special dividends, release of historical capital or
+        share repurchases are assumed.
+      </p>
+    </section>
+
+    <section class="section" id="dividends">
+      <h2>
+        4. Polish Banks: Earnings and the 2027 Dividend Scenario
+      </h2>
+
+      <p>
+        All monetary amounts are in PLN. Profit figures are in billions,
+        share counts in millions, and prices and dividends in PLN per
+        share. H1 figures are rounded, especially Erste Bank Polska.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Bank</th>
+              <th scope="col">Reported H1 2026 profit, bn</th>
+              <th scope="col">2026 scenario profit, bn</th>
+              <th scope="col">Assumed payout</th>
+              <th scope="col">Shares, m</th>
+              <th scope="col">Reference price</th>
+              <th scope="col">2027 dividend estimate</th>
+              <th scope="col">Forward gross yield</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <th scope="row">PKO BP</th>
+              <td>5.290</td>
+              <td>10.20</td>
+              <td>75%</td>
+              <td>1,250.00</td>
+              <td>109.54</td>
+              <td><b>6.12</b></td>
+              <td class="yield"><b>5.59%</b></td>
+            </tr>
+
+            <tr>
+              <th scope="row">Pekao</th>
+              <td>2.750</td>
+              <td>5.30</td>
+              <td>75%</td>
+              <td>262.47</td>
+              <td>251.90</td>
+              <td><b>15.14</b></td>
+              <td class="yield"><b>6.01%</b></td>
+            </tr>
+
+            <tr>
+              <th scope="row">Millennium</th>
+              <td>0.708</td>
+              <td>1.35</td>
+              <td>35%</td>
+              <td>1,213.12</td>
+              <td>21.41</td>
+              <td><b>0.39</b></td>
+              <td class="yield"><b>1.82%</b></td>
+            </tr>
+
+            <tr>
+              <th scope="row">Alior</th>
+              <td>0.770</td>
+              <td>1.45</td>
+              <td>50%</td>
+              <td>130.55</td>
+              <td>128.90</td>
+              <td><b>5.55</b></td>
+              <td class="yield"><b>4.31%</b></td>
+            </tr>
+
+            <tr>
+              <th scope="row">mBank</th>
+              <td>2.013</td>
+              <td>3.80</td>
+              <td>30%</td>
+              <td>42.53</td>
+              <td>1,392.50</td>
+              <td><b>26.81</b></td>
+              <td class="yield"><b>1.93%</b></td>
+            </tr>
+
+            <tr>
+              <th scope="row">Erste Bank Polska</th>
+              <td>2.200</td>
+              <td>4.20</td>
+              <td>75%</td>
+              <td>102.19</td>
+              <td>740.40</td>
+              <td><b>30.83</b></td>
+              <td class="yield"><b>4.16%</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="small">
+        Earnings:
+        <a class="source-ref" href="#source-1">[1]</a>,
+        <a class="source-ref" href="#source-3">[3]</a>,
+        <a class="source-ref" href="#source-5">[5]</a>,
+        <a class="source-ref" href="#source-7">[7]</a>,
+        <a class="source-ref" href="#source-9">[9]</a>,
+        <a class="source-ref" href="#source-11">[11]</a>.
+        Payout assumptions:
+        <a class="source-ref" href="#source-2">[2]</a>,
+        <a class="source-ref" href="#source-4">[4]</a>,
+        <a class="source-ref" href="#source-6">[6]</a>,
+        <a class="source-ref" href="#source-8">[8]</a>,
+        <a class="source-ref" href="#source-10">[10]</a>,
+        <a class="source-ref" href="#source-13">[13]</a>.
+        Prices:
+        <a class="source-ref" href="#source-14">[14]</a>–
+        <a class="source-ref" href="#source-17">[17]</a>.
+        Share counts:
+        <a class="source-ref" href="#source-12">[12]</a>,
+        <a class="source-ref" href="#source-19">[19]</a>–
+        <a class="source-ref" href="#source-23">[23]</a>.
+        Dividend estimates retain the rounded values used in the preceding
+        analysis; yields are calculated from those displayed estimates.
+      </p>
+
+      <p class="formula">
+        Pekao:
+        PLN 5.30bn × 75% / 262.470034m shares
+        ≈ PLN 15.14 per share
+        <br>
+        Pekao forward gross yield:
+        PLN 15.14 / PLN 251.90 × 100% ≈ 6.01%
+      </p>
+
+      <p>
+        A high absolute dividend per share does not mean a higher
+        investment yield. mBank’s PLN 26.81 scenario dividend translates
+        into only 1.93% at the reference price, compared with Pekao’s
+        6.01% from a PLN 15.14 payment.
+      </p>
+    </section>
+
+    <section class="section" id="history">
+      <h2>5. Would the Payment Match the Previous Year?</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Bank</th>
+              <th scope="col">Dividend paid in 2026</th>
+              <th scope="col">Scenario payment in 2027</th>
+              <th scope="col">Illustrative change</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <th scope="row">PKO BP</th>
+              <td>6.14</td>
+              <td>6.12</td>
+              <td>-0.3%</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Pekao</th>
+              <td>19.77</td>
+              <td>15.14</td>
+              <td>-23.4%</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Millennium</th>
+              <td>0.00</td>
+              <td>0.39</td>
+              <td>New payment, if approved</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Alior</th>
+              <td>8.93</td>
+              <td>5.55</td>
+              <td>-37.8%</td>
+            </tr>
+
+            <tr>
+              <th scope="row">mBank</th>
+              <td>0.00</td>
+              <td>26.81</td>
+              <td>New payment, if approved</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Erste Bank Polska</th>
+              <td>49.98</td>
+              <td>30.83</td>
+              <td>-38.3%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="small">
+        Historical distributions:
+        <a class="source-ref" href="#source-2">[2]</a>,
+        <a class="source-ref" href="#source-4">[4]</a>,
+        <a class="source-ref" href="#source-8">[8]</a>,
+        <a class="source-ref" href="#source-12">[12]</a>.
+        Millennium and mBank plan a return to distributions from 2026
+        earnings
+        <a class="source-ref" href="#source-6">[6]</a>,
+        <a class="source-ref" href="#source-10">[10]</a>.
+        Erste Bank Polska’s 2026 payment included a small contribution
+        from its dividend reserve, so the comparison is not purely a
+        comparison of current-year payout ratios.
+      </p>
+
+      <p>
+        <b>
+          The same-dividend conclusion for PKO BP cannot be applied to
+          every bank.
+        </b>
+        Under this scenario, PKO BP is broadly flat, Pekao and Alior pay
+        less, while Millennium and mBank could resume payments after a
+        period without distributions.
+      </p>
+    </section>
+
+    <section class="section" id="banks">
+      <h2>6. What Matters for Each Bank</h2>
+
+      <h3>PKO BP — A Relatively Stable Income Scenario</h3>
+
+      <p>
+        Reported H1 net profit of PLN 5.29bn supports the PLN 10.2bn
+        full-year scenario. At a 75% assumed payout, the estimated PLN 6.12
+        dividend is close to the PLN 6.14 paid in 2026. The case depends
+        on avoiding a material deterioration in credit costs and further
+        unexpected legal charges. A stable dividend does not imply a
+        stable share price.
+        <a class="source-ref" href="#source-1">[1]</a>,
+        <a class="source-ref" href="#source-2">[2]</a>
+      </p>
+
+      <h3>Pekao — The Highest Yield in This Particular Screen</h3>
+
+      <p>
+        H1 profit was approximately PLN 2.75bn. The PLN 5.3bn annual
+        scenario produces around PLN 15.14 per share at a 75% payout.
+        That is a 6.01% gross forward yield, despite a payment below the
+        previous PLN 19.77. Investors should distinguish an attractive
+        yield at today’s price from growth in the cash payment itself.
+        <a class="source-ref" href="#source-3">[3]</a>,
+        <a class="source-ref" href="#source-4">[4]</a>
+      </p>
+
+      <h3>Millennium — Dividend Resumption With Legal-Risk Sensitivity</h3>
+
+      <p>
+        H1 profit was approximately PLN 708m. The bank’s H1 report
+        discusses a return to distributions in 2027 and a 35% payout
+        assumption. Applying that ratio to PLN 1.35bn of annual profit
+        produces approximately PLN 0.39 per share. The 1.82% yield makes
+        the case more dependent on future earnings improvement than on a
+        large immediate cash return. FX-mortgage costs and capital
+        requirements remain important variables.
+        <a class="source-ref" href="#source-5">[5]</a>,
+        <a class="source-ref" href="#source-6">[6]</a>
+      </p>
+
+      <h3>Alior — A Lower Payment If Weaker Earnings Persist</h3>
+
+      <p>
+        Reported H1 profit was about PLN 770m. A PLN 1.45bn annual outcome
+        and 50% payout produce approximately PLN 5.55 per share, compared
+        with PLN 8.93 paid in 2026. The 50% assumption is close to the
+        previous payout of 49.6% of separate-bank profit. Credit losses
+        and the sensitivity of net interest income are central to the
+        downside assessment.
+        <a class="source-ref" href="#source-7">[7]</a>,
+        <a class="source-ref" href="#source-8">[8]</a>
+      </p>
+
+      <h3>mBank — Resumption Does Not Necessarily Mean a High Yield</h3>
+
+      <p>
+        H1 consolidated profit attributable to shareholders was
+        PLN 2.013bn. The strategy starts with a 30% payout for 2026
+        earnings and envisages a gradual increase. A PLN 3.8bn annual
+        scenario yields approximately PLN 26.81 per share, or 1.93%.
+        The potential attraction is the future trajectory of earnings
+        and payouts; the initial scenario yield is modest. Legal
+        provisions and differences between group and parent-bank
+        earnings require particular attention.
+        <a class="source-ref" href="#source-9">[9]</a>,
+        <a class="source-ref" href="#source-10">[10]</a>
+      </p>
+
+      <h3>
+        Erste Bank Polska — Keep the Polish Bank Separate From Erste Group
+      </h3>
+
+      <p>
+        This comparison concerns the Warsaw-listed Polish bank, formerly
+        Santander Bank Polska, not Austria’s Erste Group Bank AG.
+        Reported H1 group profit was around PLN 2.2bn. At PLN 4.2bn for
+        the year and a 75% assumed payout, the illustrative dividend is
+        PLN 30.83, or 4.16%. The bank reported integration and rebranding
+        costs in H1. Their future evolution matters, and the previous
+        supervisory allowance for a 75% payout is not a guarantee for
+        2026 earnings.
+        <a class="source-ref" href="#source-11">[11]</a>–
+        <a class="source-ref" href="#source-13">[13]</a>
+      </p>
+    </section>
+
+    <section class="section" id="sensitivity">
+      <h2>7. How Much Can the Yield Change?</h2>
+
+      <p>
+        The following is a mechanical sensitivity: annual scenario earnings
+        move 20% below or above the central case, with payout ratios and
+        reference prices unchanged. These are not confidence intervals or
+        assigned probabilities.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Bank</th>
+              <th scope="col">Profit −20%: forward yield</th>
+              <th scope="col">Central scenario yield</th>
+              <th scope="col">Profit +20%: forward yield</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <th scope="row">PKO BP</th>
+              <td>4.47%</td>
+              <td>5.59%</td>
+              <td>6.70%</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Pekao</th>
+              <td>4.81%</td>
+              <td>6.01%</td>
+              <td>7.21%</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Millennium</th>
+              <td>1.46%</td>
+              <td>1.82%</td>
+              <td>2.19%</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Alior</th>
+              <td>3.44%</td>
+              <td>4.31%</td>
+              <td>5.17%</td>
+            </tr>
+
+            <tr>
+              <th scope="row">mBank</th>
+              <td>1.54%</td>
+              <td>1.93%</td>
+              <td>2.31%</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Erste Bank Polska</th>
+              <td>3.33%</td>
+              <td>4.16%</td>
+              <td>5.00%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Dividend risk can be larger than this table suggests. A bank could
+        generate profit but retain more of it if capital needs increase
+        or the supervisory payout allowance falls. Conversely,
+        distributing historical reserves could lift a payment without
+        representing stronger recurring earnings.
+      </p>
+
+      <p>
+        At a fixed dividend, a 10% lower purchase price raises the yield
+        by approximately 11.1%. If both the share price and the expected
+        dividend fall 10%, the yield is unchanged. A correction only
+        improves the income proposition when the price falls faster than
+        the sustainable cash distribution.
+      </p>
+    </section>
+
+    <section class="section" id="checklist">
+      <h2>8. What Would Make the Correction More Attractive?</h2>
+
+      <div class="table-wrap">
+        <table class="compact">
+          <thead>
+            <tr>
+              <th scope="col">Evidence to examine</th>
+              <th scope="col">Why it changes the investment case</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Net interest margin and deposit costs stabilise</td>
+              <td>
+                Supports the recurring earnings base even without rate
+                increases.
+              </td>
+            </tr>
+
+            <tr>
+              <td>New lending remains profitable</td>
+              <td>
+                Distinguishes healthy growth from lending driven by
+                customer cash shortages.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Credit losses remain contained</td>
+              <td>
+                Reduces the risk that operating profit is absorbed by
+                provisions.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Capital supports the intended payout</td>
+              <td>
+                Turns accounting earnings into a more credible
+                distribution scenario.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Legal costs decline without new offsets</td>
+              <td>
+                Improves the quality and predictability of reported
+                profit.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Valuation offers room for disappointment</td>
+              <td>
+                A dividend yield alone does not establish a sufficient
+                margin of safety.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        A full purchase decision also needs price-to-book, sustainable
+        return on equity, cost of equity and earnings-normalisation
+        analysis. This article does not calculate fair values or claim
+        that the banks are cheap solely because their share prices have
+        declined.
+      </p>
+    </section>
+
+    <section class="section" id="verdict">
+      <h2>9. Foxorox Conclusion</h2>
+
+      <p class="warning">
+        <b>
+          The correction may justify selective buying, but the dividend
+          arithmetic supports a watchlist rather than a blanket sector
+          call.
+        </b>
+        Pekao and PKO BP lead this cautious income screen, with
+        illustrative gross yields of approximately 6.0% and 5.6%.
+        Alior and Erste Bank Polska are around 4.2–4.3%, while Millennium
+        and mBank are below 2% under the initial payout assumptions.
+      </p>
+
+      <p>
+        Stable interest rates remove one source of change; they do not
+        remove credit, funding, tax or legal risk. Expensive fuel and
+        pressure on household budgets could weaken borrowing capacity
+        and repayment performance. Those channels should be tested
+        against incoming results rather than assumed to produce an
+        automatic collapse in deposits or bank profit.
+      </p>
+
+      <p>
+        <b>
+          The question is whether the entry price adequately compensates
+          for the earnings and payout risks.
+        </b>
+        A sustainable dividend at a sensible valuation can make a
+        correction useful. A dividend estimate that falls alongside the
+        share price offers much less protection.
+      </p>
+
+      <p>
+        <b>Written by Pawel Demczuk, MSc</b>
+        <br>
+        <b>Foxorox AI Analyzer</b>
+      </p>
+    </section>
+
+    <section class="section" id="sources">
+      <h2>Sources and Methodology</h2>
+
+      <ol class="sources">
+        <li id="source-1">
+          <a
+            href="https://www.pkobp.pl/relacje-inwestorskie/wyniki-finansowe/raport-okresowy-za-i-polrocze-2026-r"
+            target="_blank"
+            rel="noopener"
+          >PKO BP — H1 2026 financial results</a>
+        </li>
+
+        <li id="source-2">
+          <a
+            href="https://www.pkobp.pl/relacje-inwestorskie/biezace-raporty/raport-nr-232026-uchwalenie-przez-zwz-dywidendy-z-zysku-za-2025-rok"
+            target="_blank"
+            rel="noopener"
+          >PKO BP — dividend from 2025 earnings</a>
+        </li>
+
+        <li id="source-3">
+          <a
+            href="https://media.pekao.com.pl/pr/874557/bank-pekao-publikuje-wyniki-za-i-polowe-2026-roku"
+            target="_blank"
+            rel="noopener"
+          >Pekao — H1 2026 results and operating trends</a>
+        </li>
+
+        <li id="source-4">
+          <a
+            href="https://www.pekao.com.pl/relacje-inwestorskie/akcje/dywidenda.html"
+            target="_blank"
+            rel="noopener"
+          >Pekao — dividend history and 2026 resolution</a>
+        </li>
+
+        <li id="source-5">
+          <a
+            href="https://www.bankmillennium.pl/en/about-the-bank/press-centre/press-releases/-/news/bank-millennium-reported-good-financial-and-business-results-in-1h26?id=337988392"
+            target="_blank"
+            rel="noopener"
+          >Millennium — H1 2026 results</a>
+        </li>
+
+        <li id="source-6">
+          <a
+            href="https://www.bankmillennium.pl/documents/d/guest/millennium_1h2026_pl"
+            target="_blank"
+            rel="noopener"
+          >Millennium — H1 2026 report; planned 35% dividend payout</a>
+        </li>
+
+        <li id="source-7">
+          <a
+            href="https://www.aliorbank.pl/dam/jcr%3A664a751f-890e-4ea8-854b-ed1708e065c5/Alior%20Bank%202Q%202026%20EN.pdf"
+            target="_blank"
+            rel="noopener"
+          >Alior — H1 2026 results presentation</a>
+        </li>
+
+        <li id="source-8">
+          <a
+            href="https://www.aliorbank.pl/dodatkowe-informacje/relacje-inwestorskie/dywidenda.html"
+            target="_blank"
+            rel="noopener"
+          >Alior — dividend policy and historical payouts</a>
+        </li>
+
+        <li id="source-9">
+          <a
+            href="https://pap-mediaroom.pl/biznes-i-finanse/mbank-sa-raport-okresowy-polroczny-za-psr"
+            target="_blank"
+            rel="noopener"
+          >mBank — H1 2026 ESPI financial disclosure</a>
+        </li>
+
+        <li id="source-10">
+          <a
+            href="https://www.mbank.pl/pdf/msp-korporacje/relacje-inwestorskie/strategia-grupy-mbanku-na-lata-2026-2030-prezentacja.pdf"
+            target="_blank"
+            rel="noopener"
+          >mBank — strategy: payout rising from 30% for 2026</a>
+        </li>
+
+        <li id="source-11">
+          <a
+            href="https://media.erste.pl/informacje-prasowe/wyniki-finansowe-grupy-erste-bank-polska-po-i-polroczu-2026"
+            target="_blank"
+            rel="noopener"
+          >Erste Bank Polska — H1 2026 results</a>
+        </li>
+
+        <li id="source-12">
+          <a
+            href="https://www.erste.pl/relacje-inwestorskie/raporty/raporty-lista/raport-biezacy-nr-23-2026"
+            target="_blank"
+            rel="noopener"
+          >Erste Bank Polska — 2026 dividend resolution</a>
+        </li>
+
+        <li id="source-13">
+          <a
+            href="https://www.erste.pl/relacje-inwestorskie/raporty/raporty-lista/raport-biezacy-nr-10-2026"
+            target="_blank"
+            rel="noopener"
+          >Erste Bank Polska — supervisory dividend criteria for 2025 earnings</a>
+        </li>
+
+        <li id="source-14">
+          <a
+            href="https://www.bankier.pl/gielda/notowania/akcje?scroll=true&amp;sector_id=110"
+            target="_blank"
+            rel="noopener"
+          >Bankier — closing-session quotations, 23 October 2026</a>
+        </li>
+
+        <li id="source-15">
+          <a
+            href="https://www.bankier.pl/gielda/notowania/akcje/PEKAO/kalendarium"
+            target="_blank"
+            rel="noopener"
+          >Bankier — Pekao quotation</a>
+        </li>
+
+        <li id="source-16">
+          <a
+            href="https://www.bankier.pl/inwestowanie/profile/quote.html?symbol=MILLENNIUM"
+            target="_blank"
+            rel="noopener"
+          >Bankier — Millennium quotation</a>
+        </li>
+
+        <li id="source-17">
+          <a
+            href="https://www.bankier.pl/inwestowanie/profile/quote.html?symbol=ERSTEPL"
+            target="_blank"
+            rel="noopener"
+          >Bankier — Erste Bank Polska quotation</a>
+        </li>
+
+        <li id="source-18">
+          <a
+            href="https://www.knf.gov.pl/komunikacja/blog?articleId=98936&amp;p_id=18"
+            target="_blank"
+            rel="noopener"
+          >KNF — disposable income, fixed expenses and creditworthiness</a>
+        </li>
+
+        <li id="source-19">
+          <a
+            href="https://www.mbank.pl/relacje-inwestorskie/akcje-mbank/akcje-mbanku.html"
+            target="_blank"
+            rel="noopener"
+          >mBank — share count</a>
+        </li>
+
+        <li id="source-20">
+          <a
+            href="https://www.aliorbank.pl/dodatkowe-informacje/relacje-inwestorskie/akcjonariat.html"
+            target="_blank"
+            rel="noopener"
+          >Alior — share count</a>
+        </li>
+
+        <li id="source-21">
+          <a
+            href="https://pap-mediaroom.pl/biznes-i-finanse/bank-millennium-sa-raport-okresowy-polroczny-za-psr-0"
+            target="_blank"
+            rel="noopener"
+          >Millennium — H1 2026 ESPI report and share count</a>
+        </li>
+
+        <li id="source-22">
+          <a
+            href="https://pap-mediaroom.pl/biznes-i-finanse/bank-pekao-sa-raport-okresowy-polroczny-za-psr"
+            target="_blank"
+            rel="noopener"
+          >Pekao — H1 2026 ESPI report</a>
+        </li>
+
+        <li id="source-23">
+          <a
+            href="https://www.pkobp.pl/relacje-inwestorskie/akcjonariusze"
+            target="_blank"
+            rel="noopener"
+          >PKO BP — shares and shareholders</a>
+        </li>
+      </ol>
+
+      <p class="small">
+        Research cut-off: October 25, 2026. Reported H1 data, historical
+        distributions and reference prices are distinguished from author
+        calculations. The 2026 annual profit assumptions are a simple
+        run-rate scenario, not issuer guidance or analyst consensus.
+        Consolidated profit is used as a proxy for separate-bank
+        distributable profit; share counts and payout ratios are assumed
+        unchanged. All projected dividends and yields are gross, before
+        investor-specific taxes and transaction costs. These are forward
+        scenario yields, not historical yields or total-return forecasts.
+        Share-price movements and dividend-related price adjustments can
+        outweigh the cash received. This analysis is not a personalised
+        investment recommendation.
+      </p>
+    </section>
+
+    <footer class="footer">
+      Generated and edited by <b>MSc Pawel Demczuk</b>
+      and <b>Foxorox AI Analyzer</b>.
+      <br>
+      <br>
+      <a href="/blog/index.html">← Back to blog index</a>
+    </footer>
+
+  </main>
+
+  <script>
+    (function () {
+      document
+        .querySelectorAll(".chart-widget[data-symbol]")
+        .forEach(function (panel) {
+          const script = document.createElement("script");
+
+          script.src =
+            "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+
+          script.type = "text/javascript";
+          script.async = true;
+
+          script.textContent = JSON.stringify({
+            autosize: true,
+            symbol: panel.dataset.symbol,
+            interval: "D",
+            timezone: "Europe/Warsaw",
+            theme: "dark",
+            style: "1",
+            locale: "en",
+            backgroundColor: "#111111",
+            gridColor: "rgba(238,238,238,0.06)",
+            allow_symbol_change: true,
+            hide_top_toolbar: false,
+            hide_side_toolbar: true,
+            hide_legend: false,
+            hide_volume: false,
+            withdateranges: true,
+            save_image: true,
+            calendar: false,
+            support_host: "https://www.tradingview.com"
+          });
+
+          panel
+            .querySelector(".tradingview-widget-container")
+            .appendChild(script);
+        });
+    })();
+  </script>
+
+</body>
+</html>
