@@ -49,6 +49,15 @@ h1 {
   color: #777;
   font-size: 0.9em;
 }
+
+/* Automatic pagination */
+.pagination{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;margin:34px auto;max-width:900px}
+.pagination a,.pagination span{display:inline-block;padding:10px 14px;border:1px solid #333;border-radius:8px;color:#f58220;text-decoration:none;background:#111}
+.pagination a:hover{border-color:#f58220;background:#21170f}
+.pagination .active{background:#f58220;color:#000;font-weight:700;border-color:#f58220}
+.pagination .disabled{color:#666;cursor:default}
+.page-status{text-align:center;color:#aaa;margin:24px auto 0}
+@media(max-width:650px){body{padding:16px}.card{align-items:flex-start}.thumb{width:110px;margin-right:12px}.info h3{font-size:1em}}
 </style>
 </head>
 <body>
@@ -58,7 +67,7 @@ h1 {
 
 <h1>Foxorox Market Forecasts - Blog with recent data and reserach</h1>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-11-05_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-11-05.html">📊 AI Report – 2026-11-05</a></h3>
@@ -66,7 +75,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-10-31_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-10-31.html">📊 AI Report – 2026-10-31</a></h3>
@@ -74,7 +83,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-10-27_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-10-27.html">📊 AI Report – 2026-10-27 -ANTROPIC IPO</a></h3>
@@ -82,7 +91,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-10-25_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-10-25.html">📊 AI Report – 2026-10-25</a></h3>
@@ -90,7 +99,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-10-14_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-10-14.html">📊 AI Report – 2026-10-14</a></h3>
@@ -98,7 +107,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-10-09_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-10-09.html">📊 AI Report – 2026-10-09</a></h3>
@@ -106,7 +115,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-10-02_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-10-02.html">📊 AI Report – 2026-10-02</a></h3>
@@ -114,7 +123,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-09-26_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-09-26.html">📊 AI Report – 2026-09-26</a></h3>
@@ -122,7 +131,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-09-21_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-09-21.html">📊 AI Report – 2026-09-21</a></h3>
@@ -130,7 +139,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-09-13_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-09-13.html">📊 AI Report – 2026-09-13</a></h3>
@@ -139,7 +148,7 @@ h1 {
 </div>
 
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-09-10_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-09-10.html">📊 AI Report – 2026-09-10</a></h3>
@@ -148,7 +157,7 @@ h1 {
 </div>
 
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-09-05_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-09-05.html">📊 AI Report – 2026-09-05</a></h3>
@@ -156,7 +165,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
 
 <img src="images/2026-08-31_1.png" alt="Chart" class="thumb">
   <div class="info">
@@ -165,7 +174,7 @@ h1 {
   </div>
 </div>  
 
-<div class="card">
+<div class="card blog-entry">
 <img src="images/2026-08-24_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-08-24.html">📊 AI Report – 2026-08-24</a></h3>
@@ -174,7 +183,7 @@ h1 {
 </div>
 
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-08-23_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-08-23.html">📊 AI Report – 2026-08-23</a></h3>
@@ -186,28 +195,28 @@ h1 {
 </div>
 
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-08-11_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-08-11.html">Archer Aviation - buying Wisk Aero, Insitu and SkyGrid from Boeing would not help company unless it will start selling its own product Midnight AirTaxi</a></h3>
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-08-10_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-08-10.html">Palantir with its P/Sales ratio looks expensive so who is buying?</a></h3>
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-08-09_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-08-09.html">AMD, Cerebras versus Nvidia and why AMD will not beat Nvidia in AI race</a></h3>
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-07-18_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-07-18.html">Aptiv and Ciena shows bullish sentiment with more 70% probability of move up.</a></h3>
@@ -216,7 +225,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-07-15_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-07-15.html">IBM -Bargain or not?</a></h3>
@@ -226,7 +235,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-07-12_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-07-12.html">Samsung and new factory for KRW 400bn</a></h3>
@@ -235,7 +244,7 @@ h1 {
 </div>
 
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-07-06_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-07-06.html">Micron Report - Why Michael Bury can not by right about Micron</a></h3>
@@ -244,7 +253,7 @@ h1 {
 </div>
 
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-06-15_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-06-15.html">📊SPACEX Report – 2026-06-15</a></h3>
@@ -253,7 +262,7 @@ h1 {
 </div>
   
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-06-04_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-06-04.html">📊 AI Report – 2026-06-04</a></h3>
@@ -261,7 +270,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-05-17_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-05-17.html">📊 AI Report – 2026-05-17</a></h3>
@@ -269,7 +278,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-05-03_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-05-03.html">📊 AI Report – 2026-05-03</a></h3>
@@ -277,7 +286,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-04-19_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-04-19.html">📊 AI Report – 2026-04-19</a></h3>
@@ -286,7 +295,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-04-05_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-04-05.html">📊 AI Report – 2026-04-05</a></h3>
@@ -295,7 +304,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-02-23_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-02-23.html">📊 AI Report – 2026-02-23</a></h3>
@@ -304,7 +313,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-01-18_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-01-18.html">📊 AI Report – 2026-01-18</a></h3>
@@ -312,7 +321,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2026-01-11_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2026-01-11.html">📊 AI Report – 2026-01-11</a></h3>
@@ -320,7 +329,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-12-21_1a.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-12-21.html">📊 AI Report – 2025-12-21</a></h3>
@@ -329,7 +338,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-12-19_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-12-19.html">📊 AI Report – 2025-12-19</a></h3>
@@ -337,7 +346,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-12-17_1a.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-12-17.html">📊 AI Report – 2025-12-17</a></h3>
@@ -345,7 +354,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-12-16_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-12-16.html">📊 AI Report – 2025-12-16</a></h3>
@@ -353,7 +362,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-12-15_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-12-15.html">📊 AI Report – 2025-12-15</a></h3>
@@ -362,7 +371,7 @@ h1 {
 </div>
 
   
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-12-06_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-12-06.html">📊 AI Report – 2025-12-06</a></h3>
@@ -370,7 +379,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-12-04_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-12-04.html">📊 AI Report – 2025-12-04</a></h3>
@@ -378,7 +387,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-12-01_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-12-01.html">📊 AI Report – 2025-12-01</a></h3>
@@ -386,7 +395,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-30_1a.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-30.html">📊 AI Report – 2025-11-30</a></h3>
@@ -394,7 +403,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-27_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-27.html">📊 AI Report – 2025-11-27</a></h3>
@@ -402,7 +411,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-26_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-26.html">📊 AI Report – 2025-11-26</a></h3>
@@ -410,7 +419,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-25_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-25.html">📊 AI Report – 2025-11-25</a></h3>
@@ -418,7 +427,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-18_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-18.html">📊 AI Report – 2025-11-18</a></h3>
@@ -426,7 +435,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-17_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-17.html">📊 AI Report – 2025-11-17</a></h3>
@@ -434,7 +443,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-16_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-16.html">📊 AI Report – 2025-11-16</a></h3>
@@ -442,7 +451,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-12_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-12.html">📊 AI Report – 2025-11-12</a></h3>
@@ -450,7 +459,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-11_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-11.html">📊 AI Report – 2025-11-11</a></h3>
@@ -458,7 +467,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-10_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-10.html">📊 AI Report – 2025-11-10</a></h3>
@@ -466,7 +475,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-09_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-09.html">📊 AI Report – 2025-11-09</a></h3>
@@ -474,7 +483,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-08_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-08.html">📊 AI Report – 2025-11-08</a></h3>
@@ -482,7 +491,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-07_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-07.html">📊 AI Report – 2025-11-07</a></h3>
@@ -490,7 +499,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-06_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-06.html">📊 AI Report – 2025-11-06</a></h3>
@@ -498,7 +507,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-05_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-05.html">📊 AI Report – 2025-11-05</a></h3>
@@ -506,7 +515,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-04_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-04.html">📊 AI Report – 2025-11-04</a></h3>
@@ -514,7 +523,7 @@ h1 {
   </div>
 </div>
 
-<div class="card">
+<div class="card blog-entry">
   <img src="images/2025-11-03_1.png" alt="Chart" class="thumb">
   <div class="info">
     <h3><a href="/blog/ai-report-2025-11-03.html">📊 AI Report – 2025-11-03</a></h3>
@@ -522,9 +531,60 @@ h1 {
   </div>
 </div>
 
+  <div id="page-status" class="page-status" aria-live="polite"></div>
+  <nav id="pagination" class="pagination" aria-label="Blog pages"></nav>
+
   <div class="footer">
     Generated by <b>Foxorox AI Analyzer</b> – Data driven insights, not quotes.<br>
     <a href="/">← Back to main site</a>
   </div>
+<script>
+(function () {
+  'use strict';
+  const PAGE_SIZE = 20;
+  const posts = Array.from(document.querySelectorAll('.blog-entry'));
+  const pageCount = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
+  const params = new URLSearchParams(window.location.search);
+  const requested = Number(params.get('page'));
+  const page = Number.isInteger(requested) && requested >= 1
+    ? Math.min(requested, pageCount) : 1;
+
+  posts.forEach((post, index) => {
+    post.hidden = !(index >= (page - 1) * PAGE_SIZE && index < page * PAGE_SIZE);
+    post.style.display = post.hidden ? 'none' : '';
+  });
+
+  const status = document.getElementById('page-status');
+  const first = (page - 1) * PAGE_SIZE + 1;
+  const last = Math.min(page * PAGE_SIZE, posts.length);
+  status.textContent = posts.length
+    ? `Showing ${first}–${last} of ${posts.length} articles`
+    : 'No articles available';
+
+  const nav = document.getElementById('pagination');
+  function link(target, label, active, disabled) {
+    const node = document.createElement(disabled || active ? 'span' : 'a');
+    node.textContent = label;
+    if (active) {
+      node.className = 'active';
+      node.setAttribute('aria-current', 'page');
+    } else if (disabled) {
+      node.className = 'disabled';
+    } else {
+      const url = new URL(window.location.href);
+      if (target === 1) url.searchParams.delete('page');
+      else url.searchParams.set('page', String(target));
+      node.href = url.pathname + url.search + url.hash;
+    }
+    nav.appendChild(node);
+  }
+  if (pageCount <= 1) return;
+  link(page - 1, '← Previous', false, page === 1);
+  for (let i = 1; i <= pageCount; i++) {
+    link(i, String(i), i === page, false);
+  }
+  link(page + 1, 'Next →', false, page === pageCount);
+})();
+</script>
 </body>
 </html>
